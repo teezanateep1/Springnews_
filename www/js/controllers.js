@@ -706,6 +706,54 @@ angular.module('starter.controllers', [])
 
 })
 
+// --------------------- Search ------------------------
+.controller('SearchCtrl', function($scope,$http,$timeout,_function) {
+   var timeoutID=null;  
+    $scope.dict_result=[]; 
+    $scope.showloading=false;  
+      
+
+    $scope.showMydict = function(keyword,event){  
+          
+      if(keyword.length>2 && event.keyCode!=8){ 
+        timeoutID=$timeout(function(){ 
+            $scope.showloading=true;  
+            $scope.dict_result=[]; 
+            
+            $http.get("http://artbeat.mfec.co.th/SpringNews_mb/api/wp/Posts/postSearch?api-key=test&keyword="+keyword).success(function(result){ 
+               console.log(result)
+               $scope.dict_result=result; 
+               $scope.showloading=false; 
+            })  
+            .error(function(){  
+              $scope.showloading=false; 
+            });
+        },2000); // เริ่มทำงานน 2 วินาที // 1000 เท่ากับ 1 วินาที  
+      }  
+    };  
+      
+    $scope.setkeyword = function(){  
+        $timeout.cancel(timeoutID);
+    };  
+
+    //วันที่
+  $scope.date = function(d){
+    if(d != undefined){
+      return _function._date(d.substring(0, 10),d.substring(12, 16));
+    }else{ return ""; }
+  }
+  //substring
+  $scope.substring = function(str){
+    if(str.length > 65){
+      return str.substring(0, 65)+"...";
+    }else{
+      return str;
+    } 
+  }
+
+
+})
+
 // ---------------------- NEWS DETAIL ---------------------
 .controller('NewsCtrl', function($scope, $stateParams , SpringNews,$ionicLoading,$timeout,_function, $sce,$cordovaSocialSharing) {
   

@@ -86,6 +86,10 @@
           <span ng-class="{'active':link == '/app/activity'}" style="margin-left: 10px;"> กิจกรรม </span>
         </ion-item>
 
+        <ion-item menu-close class="menu" href="#/app/search" ng-click="cl_link('/app/search')" >
+          <i class="nut-menu-search" ng-class="{'active':link == '/app/search'}" ></i> 
+          <span ng-class="{'active':link == '/app/search'}" style="margin-left: 10px;"> ค้นหา </span>
+        </ion-item>
 
         <ion-item class="menu" href=""  ng-click="toggleAboutUs(menu_toggle_)" style="cursor:pointer;">
           <i class="nut-menu-contact"  ng-class="{'active':link == '/app/contact_'}" ></i> 
