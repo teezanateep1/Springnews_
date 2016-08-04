@@ -43,7 +43,7 @@
 		        				active-slide="0"  
 		        				>
 							  <ion-slide ng-repeat="new in news | limitTo: 5">
-							  <a style="cursor:pointer;" ng-click="share(new.post_title,new.post_content,new.url)"> <i class="nut-menu-share float-right"></i></a>
+							  <a style="cursor:pointer;" ng-click="show_social(new.post_title,new.post_content,new.url)"> <i class="nut-menu-share float-right"></i></a>
 							  	<a href="#/app/news/{{new.ID}}/{{new.term_taxonomy_id}}" >
 								  	<img  ng-src="{{new.guid != null ? new.guid:'img/default.jpg'}}" class="box-news-img">
 							  	</a>
@@ -79,7 +79,7 @@
 		        				on-slide-changed="_slideHasChanged_HotNews($index)">
 		        			
 							  <ion-slide ng-repeat="hot in hots | limitTo: 5">
-							    <a style="cursor:pointer;" ng-click="share(hot.post_title,hot.post_content,hot.url)"> 
+							    <a style="cursor:pointer;" ng-click="show_social(hot.post_title,hot.post_content,hot.url)"> 
 							    	<i class="nut-menu-share float-right"></i
 							    </a>
 							  	<a href="#/app/news/{{hot.ID}}/{{hot.term_taxonomy_id}}">

@@ -317,7 +317,7 @@ angular.module('starter.controllers', [])
     $scope.message = message
     $scope.content_ = content
     $scope.url = url
-    //$scope.modal_social.show();
+    alert(message+content+url)
     $cordovaSocialSharing
     .share($scope.message,$scope.content_, null, $scope.url) // Share via native share sheet
     .then(function(result) {
