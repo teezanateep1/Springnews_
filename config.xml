@@ -15,7 +15,6 @@
   <access origin="tel:*" launch-external="yes" />
   <access origin="http://*" launch-external="yes" />
   <access origin="https://*" launch-external="yes" />
-  <access origin="*.google.*" launch-external="yes" />
 
   <allow-intent href="http://*/*"/>
   <allow-intent href="https://*/*"/>
