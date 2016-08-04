@@ -43,7 +43,7 @@
 		        				active-slide="0"  
 		        				>
 							  <ion-slide ng-repeat="new in news | limitTo: 5">
-							  <a style="cursor:pointer;" ng-click="share(new.post_title,new.guid != null ? new.guid:'img/default.jpg',new.url)"> <i class="nut-menu-share float-right"></i></a>
+							  <a style="cursor:pointer;" ng-click="show_social(new.post_title,new.guid != null ? new.guid:'img/default.jpg',new.url)"> <i class="nut-menu-share float-right"></i></a>
 							  	<a href="#/app/news/{{new.ID}}/{{new.term_taxonomy_id}}" >
 								  	<img  ng-src="{{new.guid != null ? new.guid:'img/default.jpg'}}" class="box-news-img">
 							  	</a>
@@ -79,9 +79,7 @@
 		        				on-slide-changed="_slideHasChanged_HotNews($index)">
 		        			
 							  <ion-slide ng-repeat="hot in hots | limitTo: 5">
-							    <a style="cursor:pointer;" ng-click="share(hot.post_title,hot.guid != null ? hot.guid:'img/default.jpg',hot.url)"> 
-							    	<i class="nut-menu-share float-right"></i
-							    </a>
+							   <a style="cursor:pointer;" ng-click="show_social(hot.post_title,hot.guid != null ? hot.guid:'img/default.jpg',hot.url)"> <i class="nut-menu-share float-right"></i></a>
 							  	<a href="#/app/news/{{hot.ID}}/{{hot.term_taxonomy_id}}">
 								  	<img  ng-src="{{hot.guid != null ? hot.guid:'img/default.jpg'}}" class="box-news-img"> 
 							  	</a>
@@ -185,7 +183,7 @@
 							    </div>
 					    	  </div>
 							  <div class="item item-text-wrap" style="border-color: #31b5c2;height: 250px;padding: 0px;margin: 0px;">
-							     <!-- <a style="cursor:pointer;" ng-click="show_social(item.post_title,item.guid != null ? item.guid:'img/default.jpg',item.url)"> <i class="nut-menu-share float-right"></i></a> -->
+
 							    <img  ng-src="{{item.guid != null ? item.guid:'img/default.jpg'}}" class="box-news-img"> 
 
 							  </div>

@@ -76,8 +76,7 @@
 }
 
 .nut-menu-share{
-  background: url("../img/icon/icon_share.png") no-repeat;
-  background-position: center;
+  background: url("../img/icon/icon_share.png");
   width: 25px;
   height: 25px;
   margin: 0px;
@@ -467,7 +466,7 @@
   background-color: #dcdcdc;
   color: #4c4c4c;
   white-space: normal;
-  line-height: 22px;
+  line-height: 25px;
   font-family: 'Conv_SukhumvitReg','Conv_Frank-Regular';
   padding: 15px 15px 0px;
   position: relative;
@@ -1064,4 +1063,11 @@ color: #31b5c2;
 }
 .popup-body {
   color: #000;
+}
+
+.thai{
+  font-size: 17px;
+  line-height: 25px;
+  margin: 20px;
+  font-family: 'Conv_SukhumvitReg','Conv_Frank-Regular';
 }
