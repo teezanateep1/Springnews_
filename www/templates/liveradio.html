@@ -10,14 +10,14 @@
 			<div class="item item-text-wrap" style="border-color: #31b5c2; padding: 0px;margin: 0px;">
 		   	
 		   		<div class="radioimg">
-		   			<div class="range" class="but-play" ng-show="range">
+		   			<div class="range radioimg" class="but-play" ng-show="range">
 					  <i class="icon ion-volume-low"></i>
 					  <input type="range" min="{{data.min}}" max="{{data.max}}" step="1" ng-model="data.value" ng-change="myChange(data.value)">
 					  <i class="icon ion-volume-high"></i>
 					</div>
 
 		   		</div>
-		   		<div id="springradio" ></div>
+		   		<div id="springradio"></div>
 
 			</div>
 			<div class="box-item-new box-news-footer buttonradio"  >
@@ -31,7 +31,10 @@
 				<a href="javascript:jwplayer().pause(true);" ng-show="stop" ng-click="toggleCustom()">
 					<div class="nut-icon-stop"></div>
 				</a>
-
+				<!-- <a href="http://www.facebook.com/sharer.php?u=http://www.springnews.co.th/radio" target="_blank">
+					<div class="nut-icon-share"></div>
+				</a> -->
+				<!-- <a onclick="window.plugins.socialsharing.share('Live Radio', null, null, 'http://goo.gl/TCRgF2')" > -->
 				<a ng-click = "share()">
 					<div class="nut-icon-share"></div>
 				</a>
