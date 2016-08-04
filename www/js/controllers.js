@@ -215,7 +215,7 @@ angular.module('starter.controllers', [])
 })
 
 // --------------------- HOME ------------------------
-.controller('HomeCtrl', function($scope, $stateParams, SpringNews, $ionicSlideBoxDelegate, _function, $ionicModal,$ionicLoading) { //admobSvc
+.controller('HomeCtrl', function($scope, $stateParams, SpringNews, $ionicSlideBoxDelegate, _function, $ionicModal,$ionicLoading,$cordovaSocialSharing) { //admobSvc
 
   $ionicLoading.show();
 
@@ -313,13 +313,13 @@ angular.module('starter.controllers', [])
   $scope.message = '';
   $scope.img = '';
   $scope.url = '';
-  $scope.show_social = function(message,content,url){
-    $scope.message = message
-    $scope.content_ = content
+
+  $scope.share = function(title,url){
+    $scope.title_ = title
     $scope.url = url
-    alert(message+content+url)
+    alert(title+url)
     $cordovaSocialSharing
-    .share($scope.message,$scope.content_, null, $scope.url) // Share via native share sheet
+    .share($scope.title_, null,null, $scope.url) // Share via native share sheet
     .then(function(result) {
       // Success!
     }, function(err) {
@@ -548,7 +548,7 @@ angular.module('starter.controllers', [])
     }
     $scope.share = function (){
       $cordovaSocialSharing
-      .share("Live Radio",null,"http://www.springnews.co.th/radio")
+      .share("Live Radio",null,null,"http://www.springnews.co.th/radio")
       .then(function(result) {
         // Success!
       }, function(err) {
@@ -561,7 +561,7 @@ angular.module('starter.controllers', [])
 })
 
 // --------------------- CLIP ------------------------
-.controller('ClipCtrl', function($scope,_function,SpringNews,_function,$stateParams) {
+.controller('ClipCtrl', function($scope,_function,SpringNews,_function,$stateParams,$cordovaSocialSharing) {
   $scope.clips = [];
   $scope.clips_loop = [];
   $scope.title = $stateParams.title;
@@ -586,7 +586,7 @@ angular.module('starter.controllers', [])
 })
 
 // --------------------- PROGRAM ------------------------
-.controller('ProgramCtrl', function($scope,_function,SpringNews,$ionicSlideBoxDelegate,$ionicLoading) {
+.controller('ProgramCtrl', function($scope,_function,SpringNews,$ionicSlideBoxDelegate,$ionicLoading,$cordovaSocialSharing) {
   
   $scope.tabs = [];
   $scope.newsCategory = [];
@@ -709,7 +709,7 @@ angular.module('starter.controllers', [])
 })
 
 // ---------------------- NEWS DETAIL ---------------------
-.controller('NewsCtrl', function($scope, $stateParams , SpringNews,$ionicLoading,$timeout,_function, $sce) {
+.controller('NewsCtrl', function($scope, $stateParams , SpringNews,$ionicLoading,$timeout,_function, $sce,$cordovaSocialSharing) {
   
   $scope.newsDetail = [];
   $scope.newsConnected = [];
@@ -723,17 +723,26 @@ angular.module('starter.controllers', [])
   SpringNews._newsconnected($scope,$stateParams.newsId,$stateParams.catId);
 
   $scope.message = '';
-  $scope.img = '';
   $scope.url = '';
-  $scope.show_social = function(message,img,url){
-    $scope.message = message
-    $scope.img = img
-    $scope.url = url
-    console.log($scope.message)
-    console.log($scope.img)
-    console.log($scope.url)
+  $scope.share = function(title,url){
+    
     //$scope.modal_social.show();
   };
+
+  $scope.share = function (title,url){
+      $scope.title_ = title
+      $scope.url = url
+      $cordovaSocialSharing
+      .share($scope.title_,null,null,$scope.url)
+      .then(function(result) {
+        // Success!
+      }, function(err) {
+        // An error occurred. Show a message to the user
+        $ionicPopup.alert({
+           title: 'An error occurred.'
+         });
+      });
+    }
 
   $scope.trustSrc = function(src) {
     if(src != ""){
@@ -754,7 +763,7 @@ angular.module('starter.controllers', [])
 })
 
 // ---------------------- VIDEOS DETAIL ---------------------
-.controller('VideosCtrl', function($scope, $stateParams , SpringNews,$ionicLoading,$timeout,_function, $sce,$ionicModal,$ionicLoading) { //admobSvc
+.controller('VideosCtrl', function($scope, $stateParams , SpringNews,$ionicLoading,$timeout,_function, $sce,$ionicModal,$ionicLoading,$cordovaSocialSharing) { //admobSvc
   
   $scope.videosDetail = [];
   $scope.newsConnected = [];
