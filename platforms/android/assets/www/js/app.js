@@ -4,9 +4,9 @@
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'starter.controllers',"angular-md5",'services','tabSlideBox','admobModule','ngStorage', 'ionic-cache-src'])
+angular.module('starter', ['ionic', 'starter.controllers',"angular-md5",'services','tabSlideBox','ngStorage', 'ionic-cache-src'])
 
-.run(function($ionicPlatform,admobSvc,$rootScope,$ionicPopup, $cordovaDialogs) {
+.run(function($ionicPlatform,$rootScope,$ionicPopup, $cordovaDialogs) { //admobSvc
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -22,7 +22,7 @@ angular.module('starter', ['ionic', 'starter.controllers',"angular-md5",'service
         });
 
       }else{
-        admobSvc.createBannerView();
+       // admobSvc.createBannerView();
       }
     }
 
@@ -53,21 +53,21 @@ angular.module('starter', ['ionic', 'starter.controllers',"angular-md5",'service
     template: '<ion-spinner class="spinner-calm"></ion-spinner>  Loading...', // กำหนด template   
     noBackdrop:false, // ไม่แสดพื้นหลังทึบ หรือไม่ true ไม่แสดง | false แสดง  
     delay:500,// กำหนดแสดงหลังจากกี่วินาที ตัวเลข milisecond หาร 1000 เท่ากับ 1 วินาที   
-    duration:1000  // กำหนดให้ซ่อนอัตโนมัติในกี่วินาที แบบไม่ต้องเรียก method hide() อีก  
+    duration:1500  // กำหนดให้ซ่อนอัตโนมัติในกี่วินาที แบบไม่ต้องเรียก method hide() อีก  
 })  
 
-.config(function($stateProvider, $urlRouterProvider, admobSvcProvider) {
+.config(function($stateProvider, $urlRouterProvider) {  //admobSvcProvider
 
-  admobSvcProvider.setOptions({
-    publisherId :         "ca-app-pub-7291107843041210/9939517281" , 
-    interstitialAdId :    "ca-app-pub-7291107843041210/9939517281" , 
-    tappxIdiOs:           "",        // Optional
-    tappxIdAndroid:       "",        // Optional
-    tappxShare:           0.5        // Optional                                 
-  });
+  // admobSvcProvider.setOptions({
+  //   publisherId :         "ca-app-pub-7291107843041210/9939517281" , 
+  //   interstitialAdId :    "ca-app-pub-7291107843041210/9939517281" , 
+  //   tappxIdiOs:           "",        // Optional
+  //   tappxIdAndroid:       "",        // Optional
+  //   tappxShare:           0.5        // Optional                                 
+  // });
 
-  // Optionally configure the events prefix (by default set to 'admob:')
-  admobSvcProvider.setPrefix('myTag~');
+  // // Optionally configure the events prefix (by default set to 'admob:')
+  // admobSvcProvider.setPrefix('myTag~');
 
   $stateProvider
     .state('app', {

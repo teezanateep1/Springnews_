@@ -17,7 +17,7 @@
        under the License.
  */
 
-package com.ionicframework.springnews612047;
+package com.sp.springnews;
 
 import android.os.Bundle;
 import org.apache.cordova.*;

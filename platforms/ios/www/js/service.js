@@ -394,6 +394,7 @@ angular.module('services', [])
         var url=path+"Pages/pagesID?api-key="+key+"&page_id=493"; 
         $ionicLoading.show();   
         $http.get(url).success(function(result){ 
+            $scope.contactImg = result[0].guid;
             $scope.contact = result[0].post_content;
             $ionicLoading.hide();            
         })  
