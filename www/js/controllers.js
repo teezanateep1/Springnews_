@@ -310,20 +310,6 @@ angular.module('starter.controllers', [])
   }
   
    //------ Popup Social
-  
-  // $ionicModal.fromTemplateUrl('templates/modal/social.html', {
-  //   scope: $scope,
-  //   animation: 'slide-in-up'
-  // }).then(function(modal) {
-  //   $scope.modal_social = modal;
-  // });
-  // Cleanup the modal when we're done with it!
-  // $scope.$on('$destroy', function() {
-  //   $scope.modal_social.remove();
-  // });
-  // $scope.closeModal = function() {
-  //   $scope.modal_social.hide();
-  // };
   $scope.message = '';
   $scope.img = '';
   $scope.url = '';
@@ -386,6 +372,8 @@ angular.module('starter.controllers', [])
           );
       } 
       else{
+
+        
           window.open(
             'google.navigation:q=SpringNews+Corporation+Co.,+Ltd.+Vibhavadi+Rangsit+Rd,+Lat+Yao,+Khet+Chatuchak,+Krung+Thep+Maha+Nakhon+10900&avoid=tf',
             '_system' // <- This is what makes it open in a new window.
@@ -398,10 +386,9 @@ angular.module('starter.controllers', [])
 
         var url = str.split(/src="?"/g)[1].replace(/<\/p><\/center>/g,'').substr(0,70);
         var uri = encodeURI(url);
-        var targetPath = cordova.file.externalRootDirectory + "Map_.jpg";
+        var targetPath = cordova.file.applicationStorageDirectory + "Map_.jpg";
         var trustHosts = true;
         var options = {};
-
        alert(targetPath);
         $ionicLoading.show({
             template: 'Loading...'
@@ -414,7 +401,7 @@ angular.module('starter.controllers', [])
              $ionicLoading.hide();
                alert(JSON.stringify(err));
           }, function (progress) {
-            alert(JSON.stringify(progress));
+            alert((progress.loaded / progress.total) * 100);
             //$cordovaProgress.showDeterminate(false, (progress.loaded / progress.total) * 100)
             // $timeout(function () {
             //   $scope.downloadProgress = (progress.loaded / progress.total) * 100;
