@@ -15,6 +15,7 @@
   <access origin="tel:*" launch-external="yes" />
   <access origin="http://*" launch-external="yes" />
   <access origin="https://*" launch-external="yes" />
+  <access origin="*.google.*" launch-external="yes" />
 
   <allow-intent href="http://*/*"/>
   <allow-intent href="https://*/*"/>
@@ -48,7 +49,6 @@
   <platform name="ios">
     <preference name="iosPersistentFileLocation" value="Library" />
     <preference name="iosPersistentFileLocation" value="Compatibility" />
-    <preference name="iosExtraFilesystems" value="library,library-nosync,documents,documents-nosync,cache,bundle,root" />
     <icon src="resources/ios/icon/icon.png" width="57" height="57"/>
     <icon src="resources/ios/icon/icon@2x.png" width="114" height="114"/>
     <icon src="resources/ios/icon/icon-40.png" width="40" height="40"/>
@@ -81,7 +81,6 @@
   <platform name="android">
     <preference name="AndroidPersistentFileLocation" value="Internal" />
     <preference name="AndroidPersistentFileLocation" value="Compatibility" />
-    <preference name="AndroidExtraFilesystems" value="files,files-external,documents,sdcard,cache,cache-external,assets,root" />
     <icon src="resources/android/icon/drawable-ldpi-icon.png" density="ldpi"/>
     <icon src="resources/android/icon/drawable-mdpi-icon.png" density="mdpi"/>
     <icon src="resources/android/icon/drawable-hdpi-icon.png" density="hdpi"/>

@@ -366,14 +366,11 @@ angular.module('starter.controllers', [])
     $scope.location = function(){
       if (ionic.Platform.isIOS()) {
           window.open(
-            // 'google.navigation:q=SpringNews+Corporation+Co.,+Ltd.+Vibhavadi+Rangsit+Rd,+Lat+Yao,+Khet+Chatuchak,+Krung+Thep+Maha+Nakhon+10900&avoid=tf',
-            'http://maps.apple.com/?daddr=Spring+News&dirflg=d&t=n',
+             'http://maps.apple.com/?daddr=Spring+News&dirflg=d&t=n',
             '_system' // <- This is what makes it open in a new window.
           );
       } 
       else{
-
-        
           window.open(
             'google.navigation:q=SpringNews+Corporation+Co.,+Ltd.+Vibhavadi+Rangsit+Rd,+Lat+Yao,+Khet+Chatuchak,+Krung+Thep+Maha+Nakhon+10900&avoid=tf',
             '_system' // <- This is what makes it open in a new window.
@@ -386,23 +383,24 @@ angular.module('starter.controllers', [])
 
         var url = str.split(/src="?"/g)[1].replace(/<\/p><\/center>/g,'').substr(0,70);
         var uri = encodeURI(url);
-        var targetPath = cordova.file.applicationStorageDirectory + "Map_.jpg";
+        if (ionic.Platform.isIOS()) {
+          var targetPath = cordova.file.documentsDirectory + "springnews/"+url.substr(url.lastIndexOf('/') + 1);
+        }else{
+          var targetPath = cordova.file.externalRootDirectory + "springnews/"+url.substr(url.lastIndexOf('/') + 1); 
+        }
         var trustHosts = true;
         var options = {};
-       alert(targetPath);
+        $scope.progressval = 0;
         $ionicLoading.show({
             template: 'Loading...'
         });
         $cordovaFileTransfer.download(uri, targetPath, options, trustHosts)
           .then(function(result) {
              $ionicLoading.hide();
-               alert(JSON.stringify(result));
           }, function(err) {
              $ionicLoading.hide();
-               alert(JSON.stringify(err));
+             alert('Error');
           }, function (progress) {
-            alert((progress.loaded / progress.total) * 100);
-            //$cordovaProgress.showDeterminate(false, (progress.loaded / progress.total) * 100)
             // $timeout(function () {
             //   $scope.downloadProgress = (progress.loaded / progress.total) * 100;
             // });
