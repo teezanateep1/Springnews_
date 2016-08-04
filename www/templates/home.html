@@ -43,7 +43,7 @@
 		        				active-slide="0"  
 		        				>
 							  <ion-slide ng-repeat="new in news | limitTo: 5">
-							  <a style="cursor:pointer;" ng-click="share(new.post_title,new.guid != null ? new.guid:'img/default.jpg',new.url)"> <i class="nut-menu-share float-right"></i></a>
+							  <a style="cursor:pointer;" ng-click="share(new.post_title,new.post_content,new.url)"> <i class="nut-menu-share float-right"></i></a>
 							  	<a href="#/app/news/{{new.ID}}/{{new.term_taxonomy_id}}" >
 								  	<img  ng-src="{{new.guid != null ? new.guid:'img/default.jpg'}}" class="box-news-img">
 							  	</a>
@@ -79,7 +79,7 @@
 		        				on-slide-changed="_slideHasChanged_HotNews($index)">
 		        			
 							  <ion-slide ng-repeat="hot in hots | limitTo: 5">
-							    <a style="cursor:pointer;" ng-click="share(hot.post_title,hot.guid != null ? hot.guid:'img/default.jpg',hot.url)"> 
+							    <a style="cursor:pointer;" ng-click="share(hot.post_title,hot.post_content,hot.url)"> 
 							    	<i class="nut-menu-share float-right"></i
 							    </a>
 							  	<a href="#/app/news/{{hot.ID}}/{{hot.term_taxonomy_id}}">
@@ -112,7 +112,7 @@
 							   <a href="#/app/clips/{{title}}" style="text-decoration: none;color:#000;">
 							    {{clips[0].post_title}}
 							   </a>
-							     <i class="nut-menu-share02 float-right" ng-click="show_social(clips[0].post_title,clips[0].guid != null ? clips[0].guid:'img/default.jpg',clips[0].url)"></i> 
+							     <i class="nut-menu-share02 float-right" ng-click="show_social(clips[0].post_title,clips[0].post_content,clips[0].url)"></i> 
 							    <div class="col box-clip-date">
 							    <i class="icon ion-ios-calendar-outline box-news-icon"></i>	
 							    	{{date(clips[0].post_date)}}
@@ -189,7 +189,6 @@
 							    </div>
 					    	  </div>
 							  <div class="item item-text-wrap" style="border-color: #31b5c2;height: 250px;padding: 0px;margin: 0px;">
-							     <!-- <a style="cursor:pointer;" ng-click="show_social(item.post_title,item.guid != null ? item.guid:'img/default.jpg',item.url)"> <i class="nut-menu-share float-right"></i></a> -->
 							    <img  ng-src="{{item.guid != null ? item.guid:'img/default.jpg'}}" class="box-news-img"> 
 
 							  </div>
@@ -197,7 +196,7 @@
 							  	{{item.post_title}} น.
 							  </div>
 							</a>
-							<a style="cursor:pointer;top: 30px;right: 0px;position: absolute;" ng-click="show_social(item.post_title,item.guid != null ? item.guid:'img/default.jpg',item.url)"> <i class="nut-menu-share float-right"></i></a>
+							<a style="cursor:pointer;top: 30px;right: 0px;position: absolute;" ng-click="show_social(item.post_title,item.post_content,item.url)"> <i class="nut-menu-share float-right"></i></a>
 						</div>
 						<!-- ./ -->
 						<div class="advertise" >

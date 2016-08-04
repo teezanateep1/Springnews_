@@ -313,18 +313,18 @@ angular.module('starter.controllers', [])
   $scope.message = '';
   $scope.img = '';
   $scope.url = '';
-  $scope.show_social = function(message,img,url){
+  $scope.show_social = function(message,content,url){
     $scope.message = message
-    $scope.img = img
+    $scope.content_ = content
     $scope.url = url
     //$scope.modal_social.show();
     $cordovaSocialSharing
-    .share($scope.message,"Test", $scope.img, $scope.url) // Share via native share sheet
+    .share($scope.message,$scope.content_, '', $scope.url) // Share via native share sheet
     .then(function(result) {
       // Success!
     }, function(err) {
       // An error occured. Show a message to the user
-      alert("111");
+      alert("Error");
     });
   };
   //-----------\\ 
@@ -354,15 +354,14 @@ angular.module('starter.controllers', [])
 })
 
 // --------------------- CONTACT ------------------------
-.controller('ContentCtrl', function($scope,$cordovaFileTransfer,$ionicLoading,_geolocation,SpringNews) { 
+.controller('ContentCtrl', function($scope,$cordovaFileTransfer,$ionicLoading,SpringNews) { 
     $scope.contact = []; 
     $scope.contactImg = [];
     $scope.adver = [];
     $scope.link = [];
     SpringNews._pages_contact($scope); 
-    // SpringNews._advertise($scope,'14'); 
-    //_geolocation._navigator($scope);
-    
+    // SpringNews._advertise($scope,'14');
+
     $scope.location = function(){
       if (ionic.Platform.isIOS()) {
           window.open(
