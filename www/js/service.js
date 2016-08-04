@@ -241,9 +241,9 @@ angular.module('services', [])
         $http.get(url).success(function(result){ 
             if(result != ""){
                 $scope.newsDetail = result; 
-                video_id = regex.exec(result[0].post_content);
+                video_id = regex.exec(result[0].post_content);         
                 if(video_id != null){
-                 $scope.video = video_id[0].replace("</p>","");
+                    $scope.video = video_id[0].replace("[/embed]","").split('/')[3];
                 }
                 $scope.date = _function._date($scope.newsDetail[0].post_date.substring(0, 10),$scope.newsDetail[0].post_date.substring(12, 16));
 

@@ -26,14 +26,14 @@
 				</div>
 			</div>
 			
-			<div style="font-family: 'Conv_SukhumvitReg','Conv_Frank-Regular';margin: 25px;" ng-bind-html="newsDetail[0].post_content">
+			<div style="font-family: 'Conv_SukhumvitReg','Conv_Frank-Regular';margin: 25px;" ng-bind-html="replace(newsDetail[0].post_content)">
 			</div>
-
-			<ion-item>
+			<ion-item ng-if="video != null">
                 <div class="video-container">
-                     <iframe ng-src="{{trustSrc(video)}}" frameborder="0" width="100%" height="250" allowfullscreen class="fullscreen-image"></iframe>
+                     <iframe ng-src="https://www.youtube.com/embed/video" frameborder="0" width="100%" height="250" allowfullscreen class="fullscreen-image"></iframe>
                 </div>
             </ion-item>
+
             <br/>
 
 			<div class="row" style="padding: 0px;">

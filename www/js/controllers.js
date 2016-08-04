@@ -317,13 +317,11 @@ angular.module('starter.controllers', [])
   $scope.share = function(title,url){
     $scope.title_ = title
     $scope.url = url
-    alert(title+url)
     $cordovaSocialSharing
     .share($scope.title_, null,null, $scope.url) // Share via native share sheet
     .then(function(result) {
       // Success!
     }, function(err) {
-      // An error occured. Show a message to the user
       alert("Error");
     });
   };
@@ -388,7 +386,7 @@ angular.module('starter.controllers', [])
 
       if (ionic.Platform.isIOS()) {
 
-          var targetPath = cordova.file.documentsDirectory + "springnews/"+url.substr(url.lastIndexOf('/') + 1);
+          var targetPath = cordova.file.documentsDirectory + "Download/"+url.substr(url.lastIndexOf('/') + 1);
 
           window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, fileSystemSuccess, fileSystemFail);
           
@@ -435,7 +433,7 @@ angular.module('starter.controllers', [])
       } 
       else{
         
-        var targetPath = cordova.file.externalRootDirectory + "springnews/"+url.substr(url.lastIndexOf('/') + 1);
+        var targetPath = cordova.file.externalRootDirectory + "Download/"+url.substr(url.lastIndexOf('/') + 1);
 
         $ionicLoading.show({
             template: 'Loading...'
@@ -724,10 +722,6 @@ angular.module('starter.controllers', [])
 
   $scope.message = '';
   $scope.url = '';
-  $scope.share = function(title,url){
-    
-    //$scope.modal_social.show();
-  };
 
   $scope.share = function (title,url){
       $scope.title_ = title
@@ -752,7 +746,11 @@ angular.module('starter.controllers', [])
     }
   }
   $scope.replace = function (str) {
-    return str.replace(/(<([^>]+)>)/ig,"");
+    if(str != undefined){
+      return str.replace(/[embed][^]+/g,"").replace('[',"");
+    }else{
+      return "";
+    }
   }
   //วันที่
   $scope.date_ = function(d){
