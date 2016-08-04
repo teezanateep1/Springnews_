@@ -319,7 +319,7 @@ angular.module('starter.controllers', [])
     $scope.url = url
     //$scope.modal_social.show();
     $cordovaSocialSharing
-    .share($scope.message,"Test", $scope.img, $scope.url) // Share via native share sheet
+    .share($scope.message,null, null, $scope.url) // Share via native share sheet
     .then(function(result) {
       // Success!
     }, function(err) {
@@ -366,11 +366,14 @@ angular.module('starter.controllers', [])
     $scope.location = function(){
       if (ionic.Platform.isIOS()) {
           window.open(
-             'http://maps.apple.com/?daddr=Spring+News&dirflg=d&t=n',
+            // 'google.navigation:q=SpringNews+Corporation+Co.,+Ltd.+Vibhavadi+Rangsit+Rd,+Lat+Yao,+Khet+Chatuchak,+Krung+Thep+Maha+Nakhon+10900&avoid=tf',
+            'http://maps.apple.com/?daddr=Spring+News&dirflg=d&t=n',
             '_system' // <- This is what makes it open in a new window.
           );
       } 
       else{
+
+        
           window.open(
             'google.navigation:q=SpringNews+Corporation+Co.,+Ltd.+Vibhavadi+Rangsit+Rd,+Lat+Yao,+Khet+Chatuchak,+Krung+Thep+Maha+Nakhon+10900&avoid=tf',
             '_system' // <- This is what makes it open in a new window.
@@ -381,30 +384,80 @@ angular.module('starter.controllers', [])
 
     $scope.dowloadMap = function(str){
 
-        var url = str.split(/src="?"/g)[1].replace(/<\/p><\/center>/g,'').substr(0,70);
-        var uri = encodeURI(url);
-        if (ionic.Platform.isIOS()) {
-          var targetPath = cordova.file.documentsDirectory + "springnews/"+url.substr(url.lastIndexOf('/') + 1);
-        }else{
-          var targetPath = cordova.file.externalRootDirectory + "springnews/"+url.substr(url.lastIndexOf('/') + 1); 
-        }
-        var trustHosts = true;
-        var options = {};
-        $scope.progressval = 0;
+      var url = str.split(/src="?"/g)[1].replace(/<\/p><\/center>/g,'').substr(0,70);
+      var uri = encodeURI(url);
+      var targetPath = cordova.file.dataDirectory + "Map_.jpg";
+      var trustHosts = true;
+      var options = {};
+      // alert(targetPath);
+
+      if (ionic.Platform.isIOS()) {
+
+          window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, fileSystemSuccess, fileSystemFail);
+          
+          function fileSystemSuccess(fileSystem) {
+
+            var Folder_Name = 'SpringNews';
+            ext = uri.substr(uri.lastIndexOf('.') + 1); //Get extension of URL
+            var directoryEntry = fileSystem.root; // For root path of directory
+            directoryEntry.getDirectory(Folder_Name, { create: true, exclusive: false }, onDirectorySuccess, onDirectoryFail); // creating folder in sdcard
+            var rootdir = fileSystem.root;
+            var fp = rootdir.fullPath; // Gives Fullpath of local directory
+            fp = fp + "/" + Folder_Name + "/" + "Map_.jpg" + "." + ext; // fullpath and name of the file which we want to give
+            // Function call to download
+            filetransfer(uri, fp);
+
+          }
+          function onDirectorySuccess(parent) {
+            // Directory successfuly created 
+            alert("created new directory: " + parent.code);
+          }
+          function onDirectoryFail(error) {
+              // On error
+              alert("Unable to create new directory: " + error.code);
+          }
+            function fileSystemFail(evt) {
+              //Unable to access file system
+              alert(evt.target.error.code);
+          }
+
+          function filetransfer(uri, fp) {
+            var fileTransfer = new FileTransfer();
+            // Local path and File download function with URL
+            fileTransfer.download(uri, fp,
+              function (entry) {
+                  alert("download complete: " + entry.fullPath);
+              },
+              function (error) {
+                 // Failed errors
+                 alert("download error source " + error.source);
+              }
+            );
+    }
+
+      } 
+      else{
+
+        
         $ionicLoading.show({
             template: 'Loading...'
         });
         $cordovaFileTransfer.download(uri, targetPath, options, trustHosts)
           .then(function(result) {
              $ionicLoading.hide();
+               alert(JSON.stringify(result));
           }, function(err) {
              $ionicLoading.hide();
-             alert('Error');
+               alert(JSON.stringify(err));
           }, function (progress) {
+            alert((progress.loaded / progress.total) * 100);
+            //$cordovaProgress.showDeterminate(false, (progress.loaded / progress.total) * 100)
             // $timeout(function () {
             //   $scope.downloadProgress = (progress.loaded / progress.total) * 100;
             // });
         });
+      };
+        
     }
      
 
@@ -433,8 +486,9 @@ angular.module('starter.controllers', [])
   // })
   
   $scope.sharing = function(){
+
     $cordovaSocialSharing
-    .share("Live TV","Live TV","http://www.springnews.co.th/live") // Share via native share sheet
+    .share("Live TV",null,"http://www.springnews.co.th/live") // Share via native share sheet
     .then(function(result) {
       // Success!
     }, function(err) {
@@ -497,7 +551,7 @@ angular.module('starter.controllers', [])
     }
     $scope.share = function (){
       $cordovaSocialSharing
-      .share("Live Radio","Live TV","http://www.springnews.co.th/radio")
+      .share("Live Radio",null,"http://www.springnews.co.th/radio")
       .then(function(result) {
         // Success!
       }, function(err) {
