@@ -319,11 +319,7 @@ angular.module('starter.controllers', [])
     $scope.url = url
     //$scope.modal_social.show();
     $cordovaSocialSharing
-<<<<<<< HEAD
-    .share($scope.message,$scope.content_, '', $scope.url) // Share via native share sheet
-=======
-    .share($scope.message,null, null, $scope.url) // Share via native share sheet
->>>>>>> origin/master
+    .share($scope.message,$scope.content_, null, $scope.url) // Share via native share sheet
     .then(function(result) {
       // Success!
     }, function(err) {
@@ -438,7 +434,6 @@ angular.module('starter.controllers', [])
 
       } 
       else{
-
         
         var targetPath = cordova.file.externalRootDirectory + "springnews/"+url.substr(url.lastIndexOf('/') + 1);
 
