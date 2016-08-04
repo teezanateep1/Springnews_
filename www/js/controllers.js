@@ -244,7 +244,7 @@ angular.module('starter.controllers', [])
   SpringNews._newsupdate($scope,'908'); 
   SpringNews._newshot($scope,'ประเด็นร้อน');
   SpringNews._clips($scope,'30','4'); 
-  SpringNews._category($scope,'889');
+  // SpringNews._category($scope,'889');
   SpringNews._oil($scope);
   SpringNews._part($scope);
   SpringNews._thaigold($scope);
@@ -376,11 +376,22 @@ angular.module('starter.controllers', [])
     SpringNews._pages_contact($scope); 
     // SpringNews._advertise($scope,'14'); 
     //_geolocation._navigator($scope);
+    
     $scope.location = function(){
-      window.open(
-        'google.navigation:q=SpringNews+Corporation+Co.,+Ltd.+Vibhavadi+Rangsit+Rd,+Lat+Yao,+Khet+Chatuchak,+Krung+Thep+Maha+Nakhon+10900&avoid=tf',
-        '_system' // <- This is what makes it open in a new window.
-      );
+      if (ionic.Platform.isIOS()) {
+          window.open(
+            // 'google.navigation:q=SpringNews+Corporation+Co.,+Ltd.+Vibhavadi+Rangsit+Rd,+Lat+Yao,+Khet+Chatuchak,+Krung+Thep+Maha+Nakhon+10900&avoid=tf',
+            'http://maps.apple.com/?daddr=Spring+News&dirflg=d&t=n',
+            '_system' // <- This is what makes it open in a new window.
+          );
+      } 
+      else{
+          window.open(
+            'google.navigation:q=SpringNews+Corporation+Co.,+Ltd.+Vibhavadi+Rangsit+Rd,+Lat+Yao,+Khet+Chatuchak,+Krung+Thep+Maha+Nakhon+10900&avoid=tf',
+            '_system' // <- This is what makes it open in a new window.
+          );
+      };
+
     }
 
     $scope.dowloadMap = function(str){
