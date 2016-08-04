@@ -1,0 +1,90 @@
+<ion-view view-title="{{newsConnected[0].name}}">
+  <ion-nav-bar class="bar-calm">
+     <ion-nav-back-button></ion-nav-back-button>
+  </ion-nav-bar>
+  <ion-nav-buttons side="right">
+   <i class="nut-menu-share float-right" ng-click="share(newsDetail[0].post_title,newsDetail[0].guid != null ? newsDetail[0].guid:'img/default.jpg',newsDetail[0].url)"></i> 
+  </ion-nav-buttons>
+
+
+  <!-- NEWS DETAIL -->
+  <ion-content style="margin-top: 15px;">
+		 <div class="advertise" >
+		 	<ion-spinner class="spinner-calm" style="z-index:10;position: absolute;margin: 50%;" ng-show="loading_newsdetail"></ion-spinner>
+			<img ng-src="{{adver.thumbnail.replace('$','http://artbeat.mfec.co.th/SpringNew/wp-content/')}}"></img>
+		</div>
+		<!--  BOX -->
+		<div class="box-news">
+			<div class="item item-text-wrap" style="border-color: #31b5c2;height: 250px;padding: 0px;margin: 0px;">
+			 <img a.renderedlt="Company Logo" ng-src="{{newsDetail[0].guid}}" class="box-news-img"> 
+			</div>
+			<div class="box-item-clip" >
+				{{newsDetail[0].post_title}}
+				<div class="col box-clip-date">
+					<i class="icon ion-ios-calendar-outline box-news-icon"></i>	
+				{{date}}
+				</div>
+			</div>
+			
+			<div style="font-family: 'Conv_SukhumvitReg','Conv_Frank-Regular';margin: 25px;" ng-bind-html="newsDetail[0].post_content">
+			</div>
+
+			<ion-item>
+                <div class="video-container">
+                     <iframe ng-src="{{trustSrc(video)}}" frameborder="0" width="100%" height="250" allowfullscreen class="fullscreen-image"></iframe>
+                </div>
+            </ion-item>
+            <br/>
+
+			<div class="row" style="padding: 0px;">
+				<div class="box-news-header col col-40">
+							ข่าวที่เกี่ยวข้อง
+				</div>
+			</div>	    
+				<ul class="list" >
+					<li ng-repeat="_newsConnected in newsConnected | limitTo: 2">
+						<div style="background-color: #fff;" ng-style="{width:'100%'}" >    
+						    <a  href="#/app/news/{{_newsConnected.ID}}/{{_newsConnected.term_taxonomy_id}}" class=" ">
+							    <div class="sp-list-news" >
+									<div class="col-40">
+									    <img ng-src="{{_newsConnected.guid}}" style="margin: 1px;">
+									</div>
+									<div class="sp-list-detail-news ">
+									    <div class="sp-list-header">
+									    {{_newsConnected.post_title}}
+									    </div>
+									    <div class="sp-list-date-news">
+											<i class="icon ion-ios-calendar-outline box-news-icon"></i>	
+										{{date_(_newsConnected.post_date)}} น.
+										</div>
+									</div>
+								</div>
+							</a>
+						</div> 
+					</li>
+				</ul>
+			
+
+		</div>  
+					   
+		<br/>
+		<!-- FOLLOW US -->
+		 <div class="sp-follow-us" >
+			<div class="sp-title">FOLLOW US</div>
+			<div class="sp-social">
+				<a href="https://www.facebook.com/SpringNewsTV" onclick="window.open(this.href, '_blank', 'location=yes');return false;" alt="Facebook" title="Facebook"><img  ng-src="./img/social/facebook.png" class="box-news-img"></a>
+				<a href="http://www.twitter.com/SpringNews_TV" onclick="window.open(this.href, '_blank', 'location=yes');return false;" alt="Twitter" title="Twitter"><img  ng-src="./img/social/twitter.png" class="box-news-img"></a>
+				<a href="http://www.google.com/+springnews" onclick="window.open(this.href, '_blank', 'location=yes');return false;" alt="Google+" title="Google+"><img  ng-src="./img/social/google_plus.png" class="box-news-img"></a>
+				<a href="https://www.instagram.com/springnewstv/" class="the-social-links tsl-circle tsl-24 tsl-default tsl-youtube" onclick="window.open(this.href, '_blank', 'location=yes');return false;" alt="Instagram" title="Instagram"><img  ng-src="./img/social/ig.png" class="box-news-img"></a>
+				<a href="http://www.youtube.com/springnewsonline" class="the-social-links tsl-circle tsl-24 tsl-default tsl-instagram" onclick="window.open(this.href, '_blank', 'location=yes');return false;" alt="Youtube" title="Youtube"><img  ng-src="./img/social/tyoutube.png" class="box-news-img"></a>
+				<a href=" http://line.me/ti/p/~odeen" onclick="window.open(this.href, '_blank', 'location=yes');return false;" alt="Line" title="Line"><img  ng-src="./img/social/line.png" class="box-news-img"></a>
+			</div>
+		</div>	
+		<div class="googleADV" >
+					    	
+		</div>
+	</ion-content>
+	<!-- ./BOX -->
+
+
+</ion-view>

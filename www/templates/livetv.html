@@ -1,0 +1,60 @@
+<ion-view >
+  	 <!-- OTHER -->
+	<ion-content >
+		<!-- รายการ TV -->
+		<div class="box-news">
+		    <div class="item item-text-wrap" style="border-color: #31b5c2;height: 200px;padding: 0px;margin-top: 10px;">
+				<div id="broadcast"></div>
+			</div>
+			<div class="box-item-clip padding" >
+				{{schedules[0].post_title}}
+				<i class="nut-menu-share02 float-right" ng-click="sharing()" ></i> 
+				<div class="col box-clip-date">
+				    <i class="icon ion-ios-calendar-outline box-news-icon"></i>	
+					{{date(schedules[0].PerDate)}} {{schedules[0].start_hour.substring(5,-4)}} - {{schedules[0].end_hour.substring(5,-4)}} น.
+				</div>
+			</div>
+		</div>  
+		<!--  -->
+		<!-- ผังรายการ -->
+
+		<div class="box-news" style="padding-bottom: 1px">
+			<div class="row borderblue" style="padding: 0px;">
+				<div class="box-news-header col col-33">
+						ผังรายการทีวี
+				</div>
+			</div>			  
+		</div>
+		<ion-scroll style="height:240px;"> 
+		<div class="box-schedule">
+			<ion-spinner class="spinner-calm" style="z-index:10;margin: 45%;" ng-show="loading_schedule"></ion-spinner>
+				<ul class="accordion css-accordion" ng-repeat="schedule in schedules" ng-if"$index != 0">
+	  				<li class="accordion-item" ng-if="$index != 0">
+					<input class="accordion-item-input" type="checkbox" name="accordion" id="{{$index}}" />
+					
+					<div class="acdropdown" style="display: -webkit-box;" >
+					    <label for="{{$index}}" class="accordion-item-hd"> </label>
+						<div class="box-item-schedule-1 item-text-wrap col col-50" >
+							<div style="font-size: 18px;margin-top: 5px;">
+							    {{schedule.start_hour.substring(5,-4)}} - {{schedule.end_hour.substring(5,-4)}} น.
+							</div>	
+						</div>
+						<div class="box-item-schedule-2 item-text-wrap col " >
+								{{schedule.post_title}}
+						</div>
+					</div>
+					<div class="accordion-item-bd " style="display: -webkit-box;" >
+						<div class="box-item-schedule-1 item-text-wrap col col-50" ng-bind-html="tagTable_img(schedule.post_content)">
+						</div>
+						<div class="box-item-schedule-2 item-text-wrap col col-50" >
+							<div>{{tagTable(schedule.post_content)}}</div>
+						</div>
+					</div>
+				</li>
+			</ul>
+		</div>
+		</ion-scroll>
+		<br/>
+		<br/>
+	</ion-content>
+</ion-view>

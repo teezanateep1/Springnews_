@@ -1,0 +1,222 @@
+<ion-tabs class="tabs-striped tabs-top tabs-icon-top tabs-background-dark tabs-stable">  
+  
+	<ion-tab title="แนะนำติชม"  icon-on="ion-ios7-clock" icon-off="ion-ios7-clock-outline">  
+		<!-- Tab 1 content -->  
+		<ion-view >
+		    <ion-content >
+		    <form name="introduceForm" ng-submit="submitForm()" novalidate>
+			    <div class="introduce_form form-group">
+					<div >ส.ส.ท. เปิดรับแจ้งเรื่องร้องเรียน กรณีปรากฏข้อความ เสียงหรือภาพทางวิทยุกระจายเสียงหรือวิทยุโทรทัศน์ รวมถึงสื่ออื่นๆของ ส.ส.ท. หรือปรากฏพฤติกรรมของบุคลากรของ ส.ส.ท. ทุกระดับหรือผู้เกี่ยวข้อง รวมถึงผู้ผลิตรายการกระทำการหรือผลิตรายการ ขัดต่อจริยธรรม ของวิชาชีพโดยท่านสามารถแจ้งข้อมูลได้ตาม ช่องทางต่างๆ หรือกรอกข้อมูลผ่านแบบฟอร์มออนไลน์ข้างล่างนี้</div>
+					<div >
+					  	<label class="introduce_item item-input">
+					    	<input type="text" placeholder="เรื่อง" name="subject" class="form-control" ng-model="user.subject" required>
+						  	
+					  	</label>
+					  	<p ng-show="introduceForm.subject.$invalid && !introduceForm.subject.$pristine" class="help-block">*กรุณากรอกชื่อเรื่อง</p>
+					</div>
+					<div>มีความประสงค์จะร้องเรียนประเดนผิดจริยธรรมวิชาชีพว่าด้วยการผลิตและเผยแพร่รายการตามข้อกล่าวหาและความเสียหายที่ผู้ร้องเรียนได้รับ หรือ คำแนะนำติชมดังนี้</div>
+					<div>
+					  <label class="introduce_item item-input">
+					    <textarea rows="8" placeholder="ข้อความ" name="message" class="form-control" ng-model="user.message" required>
+					    </textarea>
+					  </label>
+					  <p ng-show="introduceForm.message.$invalid && !introduceForm.message.$pristine" class="help-block">*กรุณากรอกข้อความ</p>
+					</div>
+					<div>
+
+						<label class="introduce_item item-input">
+						    <input type="text"  placeholder="ชื่อ"  name="name" class="form-control" ng-model="user.name" required>
+						</label>
+					  	<p ng-show="introduceForm.name.$invalid && !introduceForm.name.$pristine" class="help-block">*กรุณากรอกชื่อ</p>
+
+						<label class="introduce_item item-input">
+						    <input type="text"  placeholder="นามสกุล"  name="lastname" class="form-control" ng-model="user.lastname" required>
+						</label>
+					  	<p ng-show="introduceForm.lastname.$invalid && !introduceForm.lastname.$pristine" class="help-block">*กรุณากรอกนามสกุล</p>
+						  
+						<label class="introduce_item item-input">
+						    <input type="email" placeholder="อีเมล์" name="email" class="form-control" ng-model="user.email" required >
+						</label>
+						<p ng-show="introduceForm.email.$invalid && !introduceForm.email.$pristine" class="help-block">*กรุณากรอก E-mail ให้ถูกต้อง</p>
+					</div>
+					<div>กรณีท่านมีอีเมล์ ส.ส.ท. จะยืนยันและแจ้งสถานะเรื่องร้องเรียนของท่านทางอีเมล์ที่ให้ไว้ กรุณากรอกอีเมล์ให้ถูกต้องและใช้ได้จริง
+					</div>
+					</br>
+					<div style="text-align: center;height: 30px;">
+						<button type="submit" class="button button-sp" ng-disabled="introduceForm.$invalid">
+						  ส่งข้อความ
+						</button>
+					</div>
+				</br>
+				</div>
+
+			</form>
+
+					    <!-- FORM ============ -->
+					  
+					   	<!-- <form name="introduceForm">
+							<div class="form-group">
+							 	<label>Name</label>
+							  	<input type="text" name="name" class="form-control" ng-model="name" required>
+							  	{{introduceForm.name.$invalid}}
+							  	<p ng-show="introduceForm.name.$invalid && !introduceForm.name.$pristine" class="help-block">You name is required.</p>
+							</div> -->
+
+							<!-- EMAIL -->
+					      <!--   <div class="form-group" ng-class="{ 'has-error' : introduceForm.email.$invalid && !introduceForm.email.$pristine }">
+					            <label>Email</label>
+					            <input type="email" name="email" class="form-control" ng-model="user.email">
+					            <p ng-show="introduceForm.email.$invalid && !introduceForm.email.$pristine" class="help-block">Enter a valid email.</p>
+					        </div>
+					    </form> -->
+
+					<div class="sp-footer" >
+						<div class="sp-title">FOLLOW US</div>
+						<div class="sp-social">
+
+								<a href="https://www.facebook.com/SpringNewsTV" target="_blank" alt="Facebook" title="Facebook"><img  ng-src="./img/social/facebook.png" class="box-news-img"></a>
+
+								<a href="http://www.twitter.com/SpringNews_TV" target="_blank" alt="Twitter" title="Twitter"><img  ng-src="./img/social/twitter.png" class="box-news-img"></a>
+
+								<a href="http://www.google.com/+springnews" target="_blank" alt="Google+" title="Google+"><img  ng-src="./img/social/google_plus.png" class="box-news-img"></a>
+
+								<a href="https://www.instagram.com/springnewstv/" class="the-social-links tsl-circle tsl-24 tsl-default tsl-youtube" target="_blank" alt="Instagram" title="Instagram"><img  ng-src="./img/social/ig.png" class="box-news-img"></a>
+
+								<a href="http://www.youtube.com/springnewsonline" class="the-social-links tsl-circle tsl-24 tsl-default tsl-instagram" target="_blank" alt="Youtube" title="Youtube"><img  ng-src="./img/social/tyoutube.png" class="box-news-img"></a>
+
+								<a href=" http://line.me/ti/p/~odeen" target="_blank" alt="Line" title="Line">
+								<img  ng-src="./img/social/line.png" class="box-news-img">
+								</a>
+						</div>
+						<br/>
+					</div>	
+					<br/>
+					<div class="advertise" >
+					    <img ng-src="{{adver.thumbnail.replace('$','http://artbeat.mfec.co.th/SpringNew/wp-content/')}}"></img>
+					    <!-- <ins class="adsbygoogle"
+			     			style="display:inline-block;width:350px;height:50px"
+			     			data-ad-client="ca-pub-3184775764477086"
+			     			data-ad-slot="4978003061">
+			     		</ins> -->
+					</div>
+					<br/>
+			</ion-content>
+		</ion-view>
+
+    </ion-tab>  
+		  
+	<ion-tab title="ร้องเรียน" icon-on="ion-ios7-gear" icon-off="ion-ios7-gear-outline">  
+		<!-- Tab 2 content -->  
+		<ion-view >
+		    <ion-content >
+		    	<form name="introduceForm" ng-submit="submitForm()" novalidate>
+				    <div class="introduce_form">		
+				    	<div>ส.ส.ท. เปิดรับแจ้งเรื่องร้องเรียน กรณีปรากฏข้อความ เสียงหรือภาพทางวิทยุกระจายเสียงหรือวิทยุโทรทัศน์ รวมถึงสื่ออื่นๆของ ส.ส.ท. หรือปรากฏพฤติกรรมของบุคลากรของ ส.ส.ท. ทุกระดับหรือผู้เกี่ยวข้อง รวมถึงผู้ผลิตรายการกระทำการหรือผลิตรายการ ขัดต่อจริยธรรม ของวิชาชีพโดยท่านสามารถแจ้งข้อมูลได้ตาม ช่องทางต่างๆ หรือกรอกข้อมูลผ่านแบบฟอร์มออนไลน์ข้างล่างนี้</div>
+				    	<div >
+						  	<label class="introduce_item item-input">
+					    	<input type="text" placeholder="เรื่อง" name="subject" class="form-control" ng-model="user.subject" required>
+						  	
+					  		</label>
+					  		<p ng-show="introduceForm.subject.$invalid && !introduceForm.subject.$pristine" class="help-block">*กรุณากรอกชื่อเรื่อง</p>
+						</div>
+						<div>มีความประสงค์จะร้องเรียนประเดนผิดจริยธรรมวิชาชีพว่าด้วยการผลิตและเผยแพร่รายการตามข้อกล่าวหาและความเสียหายที่ผู้ร้องเรียนได้รับ หรือ คำแนะนำติชมดังนี้</div>
+						<div >
+						  	<label class="introduce_item item-input">
+					    	<textarea rows="8" placeholder="ข้อความ" name="message" class="form-control" ng-model="user.message" required>
+					    	</textarea>
+					  		</label>
+					  		<p ng-show="introduceForm.message.$invalid && !introduceForm.message.$pristine" class="help-block">*กรุณากรอกข้อความ</p>
+						</div>
+						<div>พบการเผยแพร่ประเดนดังกล่าวทาง *</div>
+						<div>
+							<input type="radio" name="_ra1"  value="" checked /> 
+							สถานีโทรทัศน์ Spring news
+						</div>
+						<div>
+							<input type="radio" name="_ra1"  value=""  />
+							 เว็บไซต์ (โปรดระบุ) 
+							 	<div>
+								 	<label class="introduce_item item-input">
+						    		<input type="text" placeholder="เว็บไซต์ (โปรดระบุ)" name="website" class="form-control" ng-model="user.website" required> 	
+						  			</label>
+						  			<p ng-show="introduceForm.website.$invalid && !introduceForm.website.$pristine" class="help-block">*กรุณากรอกให้ครบถ้วน</p>
+							 	</div>
+						</div>
+						<div>
+							<input type="radio" name="_ra1"  value=""  />
+							 สื่ออื่นๆ (โปรดระบุ) 
+							 	<div>
+									<label class="introduce_item item-input">
+						    		<input type="text" placeholder="สื่ออื่นๆ (โปรดระบุ)" name="others" class="form-control" ng-model="user.others" required> 	
+						  			</label>
+						  			<p ng-show="introduceForm.others.$invalid && !introduceForm.others.$pristine" class="help-block">*กรุณากรอกให้ครบถ้วน</p>
+							 	</div>
+						</div>
+						<div>วันที่ออกอากาศหรือเผยแพร่ *</div>
+						<div>
+							<input type="radio" name="_ra2"  value="" checked /> 
+							ไม่ทราบ
+						</div>
+						<div>
+							<input type="radio" name="_ra2"  value=""  />
+							 ทราบ(โปรดระบุ) 
+							 	<div>
+								 	<label class="introduce_item item-input">
+						    		<input type="text" placeholder="ทราบ (โปรดระบุ)" name="know" class="form-control" ng-model="user.know" required> 	
+						  			</label>
+						  			<p ng-show="introduceForm.know.$invalid && !introduceForm.know.$pristine" class="help-block">*กรุณากรอกให้ครบถ้วน</p>
+							 	</div>
+						</div>
+						<div class="fileUpload btn btn-primary">
+						    <span>Upload</span>
+						    <input type="file" class="upload" />
+						</div>
+						<div>
+							<input type="checkbox" name="_ch"  value=""  /> 
+							ไม่ประสง์เปิดเผยชื่อต่อสาธารณะ
+						</div>
+						</br>
+						<div style="text-align: center;height: 30px;">
+							<button type="submit" class="button button-sp" ng-disabled="introduceForm.$invalid">
+							  ส่งข้อความ
+							</button>
+						</div>
+					</div>
+				</form>
+					<div class="sp-footer" >
+					</br>
+						<div class="sp-title">FOLLOW US</div>
+						<div class="sp-social">
+
+								<a href="https://www.facebook.com/SpringNewsTV" target="_blank" alt="Facebook" title="Facebook"><img  ng-src="./img/social/facebook.png" class="box-news-img"></a>
+
+								<a href="http://www.twitter.com/SpringNews_TV" target="_blank" alt="Twitter" title="Twitter"><img  ng-src="./img/social/twitter.png" class="box-news-img"></a>
+
+								<a href="http://www.google.com/+springnews" target="_blank" alt="Google+" title="Google+"><img  ng-src="./img/social/google_plus.png" class="box-news-img"></a>
+
+								<a href="https://www.instagram.com/springnewstv/" class="the-social-links tsl-circle tsl-24 tsl-default tsl-youtube" target="_blank" alt="Instagram" title="Instagram"><img  ng-src="./img/social/ig.png" class="box-news-img"></a>
+
+								<a href="http://www.youtube.com/springnewsonline" class="the-social-links tsl-circle tsl-24 tsl-default tsl-instagram" target="_blank" alt="Youtube" title="Youtube"><img  ng-src="./img/social/tyoutube.png" class="box-news-img"></a>
+
+								<a href=" http://line.me/ti/p/~odeen" target="_blank" alt="Line" title="Line">
+								<img  ng-src="./img/social/line.png" class="box-news-img">
+								</a>
+						</div>
+						<br/>
+					</div>	
+					<br/>
+					<div class="advertise" >
+						<img ng-src="{{adver.source_url}}"></img>
+						<!-- <ins class="adsbygoogle"
+			     			style="display:inline-block;width:350px;height:50px"
+			     			data-ad-client="ca-pub-3184775764477086"
+			     			data-ad-slot="4978003061">
+			     		</ins>
+ -->				</div>
+					<br/>
+			</ion-content>
+		</ion-view>
+
+	</ion-tab>  
+		  
+</ion-tabs>

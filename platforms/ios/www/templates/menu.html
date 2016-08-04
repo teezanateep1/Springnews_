@@ -1,0 +1,132 @@
+<ion-side-menus enable-menu-with-back-views="false">
+  <ion-side-menu-content>
+    <ion-nav-bar class="bar-stable mynavbar">
+      <ion-nav-back-button>
+      </ion-nav-back-button>
+     
+      <ion-nav-title class="logo title title-center header-item " >
+        <img  height="40" ng-src="img/logo.png"  >
+      </ion-nav-title>
+
+      <ion-nav-buttons side="left">
+        <button class="button button-icon button-clear ion-navicon-round" menu-toggle="left">
+        </button>
+      </ion-nav-buttons>
+
+      <ion-nav-buttons side="right">
+        <a menu-close href="#/app/liveradio" > <img ng-src="img/icon/Radio_button.png"></a>
+         <a menu-close href="#/app/livetv" ><img  ng-src="img/icon/Live_TV_button.png"></a>
+      </ion-nav-buttons>
+
+    </ion-nav-bar>
+    <ion-nav-view name="menuContent"></ion-nav-view>
+  </ion-side-menu-content>
+
+
+
+  <ion-side-menu side="left">
+    <!-- <ion-header-bar class="bar-stable">
+      <h1 class="title">Left</h1>
+    </ion-header-bar> -->
+    <ion-header-bar class="bar-profile" ng-show="profile" >
+        <div class="profile">
+            <img class="profile-picture" src="img/logo.png"  />
+            <!--  <img class="profile-picture" ng-src="{{ user.img }}"  /> -->
+            <h3 class="name" >{{user.name}} Spring News</h3>
+            <!-- <span class="lang-fr" ><a href="#">EN</a></span>
+            <span class="lang-se" ><a href="#" class="active">TH</a></span> -->
+            <h4 class="email" style="display: none;">{{user.email}}</h4>
+       </div>
+    </ion-header-bar>
+    <ion-content style="background-color: #4c4c4c;">
+      <ion-list>
+
+       <!--  <div class="list list-inset">
+          <label class="item item-input input-search">
+            <input type="text" placeholder="Search">
+            <i class="icon ion-search "></i>
+          </label>
+        </div> -->
+        <div class="list ">
+          <!-- <label class="item item-input input-search">
+            <input type="text" placeholder="Search">
+            <i class="icon ion-search "></i>
+          </label> -->
+        </div>
+
+        <ion-item menu-close class="menu" href="#/app/home" ng-click="cl_link('/app/home')"  style="border: none;" >
+          <i class="icon nut-menu-home"  ng-class="{'active':link == '/app/home'}" ></i> 
+           <span ng-class="{'active':link == '/app/home'}" style="margin-left: 10px;">หน้าหลัก</span>
+        </ion-item>
+        <ion-item menu-close class="menu" ng-click="cl_link('/app/program')" href="#/app/program">
+          <i class="icon nut-menu-livetv"   ng-class="{'active':link == '/app/program'}" ></i> 
+          <span ng-class="{'active':link == '/app/program'}" style="margin-left: 10px;">รายการทีวี </span>
+        </ion-item>
+        <ion-item  class="menu" ng-click="toggleSchedule(menu_toggle)" href="" style="cursor:pointer;" >
+          <i class="nut-menu-schedule" ng-class="{'active':link == '/app/schedule'}" > </i> 
+          <span ng-class="{'active':link == '/app/schedule'}" style="margin-left: 10px;">ผังรายการ </span>
+        </ion-item>
+
+          <div ng-show="submenu_schedule ">
+             <ion-item menu-close class="sub-menu" ng-click="cl_link('mo')" href="#/app/schedule/1"><span ng-class="{'active':sublink_schedule == 'mo'}">วันจันทร์ </span></ion-item>
+             <ion-item menu-close class="sub-menu" ng-click="cl_link('tu')" href="#/app/schedule/2"><span ng-class="{'active':sublink_schedule == 'tu'}"> วันอังคาร </span></ion-item>
+             <ion-item menu-close class="sub-menu" ng-click="cl_link('we')" href="#/app/schedule/3"><span ng-class="{'active':sublink_schedule == 'we'}"> วันพุธ </span></ion-item>
+             <ion-item menu-close class="sub-menu" ng-click="cl_link('th')" href="#/app/schedule/4"><span ng-class="{'active':sublink_schedule == 'th'}"> วันพฤหัสบดี </span></ion-item>
+             <ion-item menu-close class="sub-menu" ng-click="cl_link('fa')" href="#/app/schedule/5"><span ng-class="{'active':sublink_schedule == 'fa'}"> วันศุกร์ </span></ion-item>
+             <ion-item menu-close class="sub-menu" ng-click="cl_link('sa')" href="#/app/schedule/6"><span ng-class="{'active':sublink_schedule == 'sa'}"> วันเสาร์ </span></ion-item>
+             <ion-item menu-close class="sub-menu" ng-click="cl_link('su')" href="#/app/schedule/0"><span ng-class="{'active':sublink_schedule == 'su'}"> วันอาทิตย์ </span></ion-item>
+          </div>
+
+        <!-- <ion-item menu-close class="menu" href="" ng-click="cl_link('/app/pr')">
+          <i class="nut-menu-pr"   ng-class="{'active':link == '/app/pr'}" ></i> 
+          <span ng-class="{'active':link == '/app/pr'}" style="margin-left: 10px;"> ประชาสัมพนธ์ </span>
+        </ion-item> -->
+        <ion-item menu-close class="menu" href="#/app/activity" ng-click="cl_link('/app/activity')" >
+          <i class="nut-menu-activity" ng-class="{'active':link == '/app/activity'}" ></i> 
+          <span ng-class="{'active':link == '/app/activity'}" style="margin-left: 10px;"> กิจกรรม </span>
+        </ion-item>
+
+
+        <ion-item class="menu" href=""  ng-click="toggleAboutUs(menu_toggle_)" style="cursor:pointer;">
+          <i class="nut-menu-contact"  ng-class="{'active':link == '/app/contact_'}" ></i> 
+          <span ng-class="{'active':link == '/app/contact_'}" style="margin-left: 10px;"> เกี่ยวกับเรา </span>
+        </ion-item>
+
+         <div ng-show="submenu_aboutUs">
+             <ion-item menu-close class="sub-menu" ng-click="cl_link('vision')" href="#/app/vision"><span ng-class="{'active':sublink_aboutUs == 'vision'}">วิสัยทัศ์ / ภารกิจ </span></ion-item>
+             <ion-item menu-close class="sub-menu" ng-click="cl_link('history')" href="#/app/history"><span ng-class="{'active':sublink_aboutUs == 'history'}"> ประวัติ </span></ion-item>
+             <ion-item menu-close class="sub-menu" ng-click="cl_link('contact')" href="#/app/contact"><span ng-class="{'active':sublink_aboutUs == 'contact'}">ติดต่อเรา </span></ion-item>
+             <ion-item menu-close class="sub-menu" ng-click="cl_link('introduce')" href="#/app/introduce"><span ng-class="{'active':sublink_aboutUs == 'introduce'}"> แนะนำติชม / ร้องเรียน </span></ion-item>
+        </div>
+
+
+
+        <!-- <ion-item menu-close class="menu" href="#/app/setting" ng-click="cl_link('/app/setting')">
+          <i class="nut-menu-setting"  ng-class="{'active':link == '/app/setting'}" ></i> 
+          <span ng-class="{'active':link == '/app/setting'}" style="margin-left: 10px;"> ตั้งค่า </span>
+        </ion-item> -->
+        
+
+       <!--  <ion-item ng-click="toggleGames()" class="item-icon-right">
+          Games
+          <i class="icon ion-chevron-{{icon}}"></i>
+        </ion-item>
+        <ion-item class="item-accordion"  ng-show="submenu">
+           <ion-item menu-close href="#/app/shake"> Shake Shake </ion-item>
+           <ion-item menu-close href="#/app/pick"> 360 And Pick Item </ion-item>
+        </ion-item> -->
+
+        <ion-item menu-close class="menu" ng-click="login()" href="#" ng-show="login_">
+          <i class="nut-menu-logout"></i> 
+          <span style="margin-left: 10px;"> เข้าสู่ระบบ </span>
+        </ion-item>
+        
+        <ion-item menu-close class="menu" ng-click="logout()" href="#" ng-show="logout_" >
+          <i class="nut-menu-logout"></i> 
+          <span style="margin-left: 10px;"> ออกจากระบบ </span>
+        </ion-item>
+
+      </ion-list>
+    </ion-content>
+  </ion-side-menu>
+</ion-side-menus>

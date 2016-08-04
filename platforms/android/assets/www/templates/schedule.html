@@ -1,0 +1,72 @@
+<ion-view >
+  	<!-- schedule -->
+  	<ion-content style="margin-top: 11px;">
+	<!-- 	<ion-refresher on-refresh="refresh()"></ion-refresher> -->
+			<!-- ผังรายการ -->
+
+			<div class="box-news" style="padding-bottom: 1px">
+				<div class="row borderblue" style="padding: 0px;">
+				   <div class="box-news-header col col-40" ng-click="test()">
+						ผังรายการทีวี
+					</div>
+				</div>			  
+			</div>
+
+			<div class="box-schedule">
+				<ion-spinner class="spinner-calm" style="z-index:10;margin: 50%;" ng-show="loading_schedule"></ion-spinner>
+				<ul class="accordion css-accordion" ng-repeat="schedule in schedules">
+					
+	  				<li class="accordion-item">
+					    <input class="accordion-item-input" type="checkbox" name="accordion" id="{{schedule.id_schedule}}" />
+						
+						<i class="nut-icon-alert " ng-class="{'active':schedulesActive.indexOf(schedule.id_schedule) > -1}"  ng-click="LocalNotification(schedule.id_schedule,schedule.post_title,schedule.start_hour.substring(2,0),schedule.start_hour.substring(3,5),$event)" ></i>
+					    <div class="acdropdown" style="display: -webkit-box;" >
+					    	<label for="{{schedule.id_schedule}}" class="accordion-item-hd"> </label>
+						    <div class="box-item-schedule-1 item-text-wrap col col-50" >
+							   <div style="font-size: 18px;margin-top: 5px;">
+							    {{schedule.start_hour.substring(5,-4)}} - {{schedule.end_hour.substring(5,-4)}} น.
+							    </div>	
+							</div>
+							<div class="box-item-schedule-2 item-text-wrap col " >
+									{{schedule.post_title}}
+							</div>
+						</div>
+					    <div class="accordion-item-bd " style="display: -webkit-box;" >
+							<div class="box-item-schedule-1 item-text-wrap col col-50" ng-bind-html="tagTable_img(schedule.post_content)">
+							</div>
+							
+							<div class="box-item-schedule-2 item-text-wrap col col-50" >
+								<div><ion-scroll direction="y" >{{tagTable(schedule.post_content)}}</ion-scroll></div>
+							</div>
+							
+							
+						</div>
+					</li>
+				</ul>
+				
+			</div>
+				<br/>
+				<!-- FOLLOW US -->
+				<div class="sp-follow-us" >
+					<div class="sp-title">FOLLOW US</div>
+						<div class="sp-social">
+
+								<a href="https://www.facebook.com/SpringNewsTV" target="_blank" alt="Facebook" title="Facebook"><img  ng-src="./img/social/facebook.png" class="box-news-img"></a>
+
+								<a href="http://www.twitter.com/SpringNews_TV" target="_blank" alt="Twitter" title="Twitter"><img  ng-src="./img/social/twitter.png" class="box-news-img"></a>
+
+								<a href="http://www.google.com/+springnews" target="_blank" alt="Google+" title="Google+"><img  ng-src="./img/social/google_plus.png" class="box-news-img"></a>
+
+								<a href="https://www.instagram.com/springnewstv/" class="the-social-links tsl-circle tsl-24 tsl-default tsl-youtube" target="_blank" alt="Instagram" title="Instagram"><img  ng-src="./img/social/ig.png" class="box-news-img"></a>
+
+								<a href="http://www.youtube.com/springnewsonline" class="the-social-links tsl-circle tsl-24 tsl-default tsl-instagram" target="_blank" alt="Youtube" title="Youtube"><img  ng-src="./img/social/tyoutube.png" class="box-news-img"></a>
+
+								<a href=" http://line.me/ti/p/~odeen" target="_blank" alt="Line" title="Line">
+								<img  ng-src="./img/social/line.png" class="box-news-img">
+								</a>
+						</div>
+				</div>
+				<br/>
+	</ion-content>
+	<!-- ./schedule -->
+</ion-view>
