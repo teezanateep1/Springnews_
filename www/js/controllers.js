@@ -647,17 +647,17 @@ angular.module('starter.controllers', [])
 // --------------------- Schedule ------------------------
 .controller('ScheduleCtrl', function($scope,SpringNews,$stateParams,$cordovaLocalNotification) {
   $scope.schedules = []; 
-  //$scope.schedulesActive = [];
+  $scope.schedulesActive = [];
   $scope.loading_schedule = true;
   SpringNews._schedules($scope,$stateParams.scheId); 
-  
+  $scope.schedulesActive = JSON.parse( window.localStorage.getItem('Notification'));
 
   $scope.test = function(){
     $cordovaLocalNotification.getAllIds().then(function(result_){
       alert('Get all ids: ' + result_) //Returned 2nd: 'Get all ids: 1,0,4,5,3,2'
-       for (var i = 0 ;i < result_.length ; i++) {
-          $scope.schedulesActive.push(result_[i]);
-       }
+       // for (var i = 0 ;i < result_.length ; i++) {
+       //    $scope.schedulesActive.push(result_[i]);
+       // }
     });
   }
 
@@ -687,10 +687,12 @@ angular.module('starter.controllers', [])
     var alarmTime = new Date();
     alarmTime.setDate(today.getDate() + daysUntilNext);
     alarmTime.setHours(hour, min, 0);
-
     if(angular.element(event.target).hasClass('active')){
       angular.element(event.target).removeClass('active');
       $cordovaLocalNotification.cancel(id, function() {});
+      $cordovaLocalNotification.getAllIds().then(function(result){
+        window.localStorage.setItem('Notification', JSON.stringify(result))
+      });
     }else{
       angular.element(event.target).addClass('active');
        $cordovaLocalNotification.schedule({
@@ -699,11 +701,15 @@ angular.module('starter.controllers', [])
           message: "แต่เพื่อดูข้อมูล",
           title: title,
           autoCancel: false,
-          every: "day",
+          every: "week",
           sound: null,
           icon: "../img/icon/icon_pr_blue.png"
         }).then(function () {
           console.log("The notification has been set");
+        });
+
+        $cordovaLocalNotification.getAllIds().then(function(result){
+          window.localStorage.setItem( 'Notification', JSON.stringify(result))
         });
     }
 

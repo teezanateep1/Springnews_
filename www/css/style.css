@@ -13,6 +13,9 @@
 .mynavbar{
  /* height: 60px !important;*/
 }
+.xs-float-none {
+  display: none;
+}
 
 /* Empty. Add your own CSS if you like */
 

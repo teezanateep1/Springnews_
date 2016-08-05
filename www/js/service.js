@@ -310,11 +310,6 @@ angular.module('services', [])
         }
         $http.get(url).success(function(result){ 
             if(result != ""){
-                $cordovaLocalNotification.getAllIds().then(function(result){
-                  for (var i = 0 ;i < result.length ; i++) {
-                      $scope.schedulesActive.push(result[i]);
-                   }
-                });
                 $scope.schedules = result;
             }
 
