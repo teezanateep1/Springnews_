@@ -373,7 +373,6 @@ angular.module('starter.controllers', [])
     $scope.link = [];
     SpringNews._pages_contact($scope); 
     // SpringNews._advertise($scope,'14');
-
     $scope.location = function(){
       if (ionic.Platform.isIOS()) {
           window.open(
@@ -403,7 +402,7 @@ angular.module('starter.controllers', [])
            url,
             '_system' // <- This is what makes it open in a new window.
           );
-        
+
         //   var targetPath = cordova.file.documentsDirectory + "Download/"+url.substr(url.lastIndexOf('/') + 1);
 
         //   window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, fileSystemSuccess, fileSystemFail);
@@ -650,30 +649,16 @@ angular.module('starter.controllers', [])
 })
 
 // --------------------- Schedule ------------------------
-.controller('ScheduleCtrl', function($scope,SpringNews,$stateParams,$cordovaLocalNotification) {
+.controller('ScheduleCtrl', function($scope,SpringNews,$stateParams,$cordovaLocalNotification,$timeout) {
   $scope.schedules = []; 
   $scope.schedulesActive = [];
   $scope.loading_schedule = true;
   SpringNews._schedules($scope,$stateParams.scheId); 
-  $scope.schedulesActive = JSON.parse( window.localStorage.getItem('Notification'));
-
+  $scope.schedulesActive = window.localStorage.getItem('Notification');
   $scope.test = function(){
     $cordovaLocalNotification.getAllIds().then(function(result_){
       alert('Get all ids: ' + result_) //Returned 2nd: 'Get all ids: 1,0,4,5,3,2'
-       // for (var i = 0 ;i < result_.length ; i++) {
-       //    $scope.schedulesActive.push(result_[i]);
-       // }
     });
-  }
-
-  $scope.test2 = function (ids,event) {
-    //console.log(angular.element(ids).addClass('active'))
-    //angular.element(event.target).addClass('active');
-    // $cordovaLocalNotification.isScheduled(ids).then(function(isScheduled) {
-    //   if(isScheduled){
-    //     angular.element(event.target).addClass('active');
-    //   }
-    // });
   }
 
   $scope.LocalNotification = function(id,title,hour,min,event){
@@ -695,24 +680,22 @@ angular.module('starter.controllers', [])
     if(angular.element(event.target).hasClass('active')){
       angular.element(event.target).removeClass('active');
       $cordovaLocalNotification.cancel(id, function() {});
-      $cordovaLocalNotification.getAllIds().then(function(result){
-        window.localStorage.setItem('Notification', JSON.stringify(result))
-      });
+      $timeout(function(){ 
+        $cordovaLocalNotification.getAllIds().then(function(result){
+          window.localStorage.setItem('Notification', JSON.stringify(result))
+        });
+      },1000); 
     }else{
       angular.element(event.target).addClass('active');
-       $cordovaLocalNotification.schedule({
+       $cordovaLocalNotification.add({
           id: id,
           at: alarmTime,
           message: "แต่เพื่อดูข้อมูล",
           title: title,
-          autoCancel: false,
-          every: "week",
-          sound: null,
-          icon: "../img/icon/icon_pr_blue.png"
+          autoCancel: true
         }).then(function () {
           console.log("The notification has been set");
         });
-
         $cordovaLocalNotification.getAllIds().then(function(result){
           window.localStorage.setItem( 'Notification', JSON.stringify(result))
         });

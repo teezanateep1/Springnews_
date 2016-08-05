@@ -173,7 +173,7 @@
 /* accordion*/
 
 .accordion {
-  /*border: 1px solid white;*/
+  border: 1px solid white;
   /*padding: 0 10px;*/
   margin: 0 auto;
   list-style: none outside;
@@ -192,6 +192,7 @@
 
 .accordion-item-input:checked ~ .accordion-item-bd {
   max-height: 1000px;
+  background: #31b5c2;
   /*padding-top: 15px;*/
   /*margin-bottom: 15px;*/
   -webkit-transition: max-height 1s ease-in, margin .3s ease-in, padding .3s ease-in;
@@ -251,7 +252,7 @@
 
 .accordion-item-bd .box-item-schedule-2{
   min-height: 140px;
-  overflow: hidden;
+  overflow: scroll;
 }
 
 .accordion-item-bd .box-item-schedule-2 > div{
@@ -263,6 +264,7 @@
 
 .acdropdown {
   position: relative;
+  height: 45px;
 }
 
 .acdropdown > label {
