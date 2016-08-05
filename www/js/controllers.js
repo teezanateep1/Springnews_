@@ -1,6 +1,6 @@
 angular.module('starter.controllers', [])
 
-.controller('AppCtrl', function($scope, $ionicModal, $timeout, $ionicPopup, $http, $location, md5) {
+.controller('AppCtrl', function($scope, $ionicModal, $timeout, $ionicPopup, $http ,$window, $ionicSideMenuDelegate, $location, md5) {
 
   // With the new view caching in Ionic, Controllers are only called
   // when they are recreated or on app start, instead of every page change.
@@ -67,6 +67,20 @@ angular.module('starter.controllers', [])
       $scope.submenu_aboutUs = false;
     }
   }
+
+  //---------------- Search ----------
+  var timeoutID=null;  
+  $scope.showMydict = function(keyword,event){  
+    if(keyword.length>2 && event.keyCode!=8){ 
+        timeoutID=$timeout(function(){ 
+           $window.location.href = ('#/app/search/'+keyword);
+           $ionicSideMenuDelegate.toggleLeft(false);
+        },2000); // เริ่มทำงานน 2 วินาที // 1000 เท่ากับ 1 วินาที  
+    }  
+  };  
+  $scope.setkeyword = function(){  
+      $timeout.cancel(timeoutID);
+  };  
 
   // Form data for the login modal
   $scope.loginData = {};
@@ -382,7 +396,6 @@ angular.module('starter.controllers', [])
       var uri = encodeURI(url);
       var trustHosts = true;
       var options = {};
-      // alert(targetPath);
 
       if (ionic.Platform.isIOS()) {
 
@@ -441,7 +454,7 @@ angular.module('starter.controllers', [])
         $cordovaFileTransfer.download(uri, targetPath, options, trustHosts)
           .then(function(result) {
              $ionicLoading.hide();
-             alert("Success");
+               alert("Success");
           }, function(err) {
              $ionicLoading.hide();
                alert("Error");
@@ -720,35 +733,24 @@ angular.module('starter.controllers', [])
 })
 
 // --------------------- Search ------------------------
-.controller('SearchCtrl', function($scope,$http,$timeout,_function) {
+.controller('SearchCtrl', function($scope,$http,$timeout,$stateParams,_function,SpringNews) {
    var timeoutID=null;  
     $scope.dict_result=[]; 
     $scope.showloading=false;  
-      
-
+    $scope.keyword = $stateParams.key;
+    SpringNews._search($scope,$stateParams.key);
     $scope.showMydict = function(keyword,event){  
-          
       if(keyword.length>2 && event.keyCode!=8){ 
         timeoutID=$timeout(function(){ 
             $scope.showloading=true;  
             $scope.dict_result=[]; 
-            
-            $http.get("http://artbeat.mfec.co.th/SpringNews_mb/api/wp/Posts/postSearch?api-key=test&keyword="+keyword).success(function(result){ 
-               console.log(result)
-               $scope.dict_result=result; 
-               $scope.showloading=false; 
-            })  
-            .error(function(){  
-              $scope.showloading=false; 
-            });
+            SpringNews._search($scope,keyword);
         },2000); // เริ่มทำงานน 2 วินาที // 1000 เท่ากับ 1 วินาที  
       }  
     };  
-      
     $scope.setkeyword = function(){  
         $timeout.cancel(timeoutID);
     };  
-
     //วันที่
   $scope.date = function(d){
     if(d != undefined){

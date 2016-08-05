@@ -422,6 +422,19 @@ angular.module('services', [])
            $scope.$broadcast("scroll.refreshComplete"); 
         });  
     } 
+    // ------------ Search ค้นหา
+    this._search = function($scope,keyword){
+        var url=path+"Posts/postSearch?api-key="+key+"&keyword="+keyword; 
+        $http.get(url).success(function(result){ 
+            if(result != ""){
+               $scope.dict_result=result; 
+            }
+            $scope.showloading=false; 
+        })  
+        .error(function(){  
+            $scope.showloading=false; 
+        });
+    }
     
    
 

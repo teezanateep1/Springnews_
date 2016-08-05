@@ -1,39 +1,22 @@
 <ion-view >
 
-  	<div class="bar bar-subheader item-input-inset">  
-	  <label class="item-input-wrapper">  
-	    <i class="icon ion-ios7-search placeholder-icon"></i>  
+  	<div class="bar bar-subheader item-input-inset" style="height: 65px;">  
+	  <label class="item-input-wrapper" style="margin-top: 3%;">  
+	    <i class="icon ion-search placeholder-icon"></i> 
 	    <input type="search" ng-model="keyword" ng-keydown="setkeyword()" ng-keyup="showMydict(keyword,event=$event)" placeholder="Search">  
 	  </label>  
-	  <button ng-click="keyword='';dict_result='พิมพ์คำศัพท์ที่ต้องการค้นหา';showloading=false;" class="button button-clear">  
-	    Cancel  
-	  </button>  
+
+   	  <button style="height: 10px;margin-top: 3%;" ng-click="keyword='';dict_result=[];showloading=false;" class="button button-small button-stable">Cancel</button>
+
 	</div>  
 
 	<ion-content  class="scroll-content ionic-scroll  has-subheader">    
-	<div class="list card">  
 	  
-	  
-	    <button ng-show="showloading" class="button button-icon button-block">  
-		  <i class="icon ion-loading-c"></i> Loading...  
-		</button>  
-	   <!--  <div ng-show="!showloading" class="item item-text-wrap" ng-bind-html="dict_result">  
-		      
-		</div>   -->
-		 <!-- <ion-list ng-show="!showloading">  
-          <ion-item   
-           collection-repeat="item in dict_result"   
-           collection-item-width="'100%'"   
-           collection-item-height="49"   
-           ng-style="{width:'100%'}"  
-           >  
-            Hello, {{item.post_title}}!  
-          </ion-item>  
-        </ion-list>  -->
-	 
-	</div>    
+	<button ng-show="showloading" class="button button-full" style="margin-top: 6%;">  
+		<ion-spinner icon="lines"> Loading...  </ion-spinner> 
+    </button>  
 
-	<ul  ng-show="!showloading" style="margin-top: 10px; " collection-repeat="item in dict_result" collection-item-width="'100%'"  item-height="99px"  ng-style="{width:'100%'}"   >
+	<ul style="margin-top: 30px;" ng-show="!showloading" style="margin-top: 10px; " collection-repeat="item in dict_result" collection-item-width="'100%'"  item-height="99px"  ng-style="{width:'100%'}"   >
 		<li >
 			<div style="background-color: #fff;" ng-style="{width:'100%'}" >    
 				<a href="#/app/news/{{item.ID}}/{{item.term_taxonomy_id}}" >
@@ -56,6 +39,6 @@
 			</div> 
 		</li>
 	</ul> 
-	  
+	</br>
 	</ion-content>     
 </ion-view>

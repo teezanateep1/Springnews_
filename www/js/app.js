@@ -220,7 +220,7 @@ angular.module('starter', ['ionic', 'starter.controllers',"angular-md5",'service
   })
   // search
   .state('app.search', {
-    url: '/search',
+    url: '/search/:key',
     views: {
       'menuContent': {
         templateUrl: 'templates/search.html',
