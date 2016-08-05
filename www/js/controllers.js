@@ -385,50 +385,53 @@ angular.module('starter.controllers', [])
       // alert(targetPath);
 
       if (ionic.Platform.isIOS()) {
+          window.open(
+             url,
+            '_system' // <- This is what makes it open in a new window.
+          );
+        //   var targetPath = cordova.file.documentsDirectory + "Download/"+url.substr(url.lastIndexOf('/') + 1);
 
-          var targetPath = cordova.file.documentsDirectory + "Download/"+url.substr(url.lastIndexOf('/') + 1);
-
-          window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, fileSystemSuccess, fileSystemFail);
+        //   window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, fileSystemSuccess, fileSystemFail);
           
-          function fileSystemSuccess(fileSystem) {
+        //   function fileSystemSuccess(fileSystem) {
 
-            var Folder_Name = 'SpringNews';
-            ext = uri.substr(uri.lastIndexOf('.') + 1); //Get extension of URL
-            var directoryEntry = fileSystem.root; // For root path of directory
-            directoryEntry.getDirectory(Folder_Name, { create: true, exclusive: false }, onDirectorySuccess, onDirectoryFail); // creating folder in sdcard
-            var rootdir = fileSystem.root;
-            var fp = rootdir.fullPath; // Gives Fullpath of local directory
-            fp = fp + "/" + Folder_Name + "/" + "Map_.jpg" + "." + ext; // fullpath and name of the file which we want to give
-            // Function call to download
-            filetransfer(uri, fp);
+        //     var Folder_Name = 'SpringNews';
+        //     ext = uri.substr(uri.lastIndexOf('.') + 1); //Get extension of URL
+        //     var directoryEntry = fileSystem.root; // For root path of directory
+        //     directoryEntry.getDirectory(Folder_Name, { create: true, exclusive: false }, onDirectorySuccess, onDirectoryFail); // creating folder in sdcard
+        //     var rootdir = fileSystem.root;
+        //     var fp = rootdir.fullPath; // Gives Fullpath of local directory
+        //     fp = fp + "/" + Folder_Name + "/" + "Map_.jpg" + "." + ext; // fullpath and name of the file which we want to give
+        //     // Function call to download
+        //     filetransfer(uri, fp);
 
-          }
-          function onDirectorySuccess(parent) {
-            // Directory successfuly created 
-            alert("created new directory: " + parent.code);
-          }
-          function onDirectoryFail(error) {
-              // On error
-              alert("Unable to create new directory: " + error.code);
-          }
-            function fileSystemFail(evt) {
-              //Unable to access file system
-              alert(evt.target.error.code);
-          }
+        //   }
+        //   function onDirectorySuccess(parent) {
+        //     // Directory successfuly created 
+        //     alert("created new directory: " + parent.code);
+        //   }
+        //   function onDirectoryFail(error) {
+        //       // On error
+        //       alert("Unable to create new directory: " + error.code);
+        //   }
+        //     function fileSystemFail(evt) {
+        //       //Unable to access file system
+        //       alert(evt.target.error.code);
+        //   }
 
-          function filetransfer(uri, fp) {
-            var fileTransfer = new FileTransfer();
-            // Local path and File download function with URL
-            fileTransfer.download(uri, fp,
-              function (entry) {
-                  alert("download complete: " + entry.fullPath);
-              },
-              function (error) {
-                 // Failed errors
-                 alert("download error source " + error.source);
-              }
-            );
-        }
+        //   function filetransfer(uri, fp) {
+        //     var fileTransfer = new FileTransfer();
+        //     // Local path and File download function with URL
+        //     fileTransfer.download(uri, fp,
+        //       function (entry) {
+        //           alert("download complete: " + entry.fullPath);
+        //       },
+        //       function (error) {
+        //          // Failed errors
+        //          alert("download error source " + error.source);
+        //       }
+        //     );
+        // }
 
       } 
       else{
@@ -451,7 +454,7 @@ angular.module('starter.controllers', [])
             //   $scope.downloadProgress = (progress.loaded / progress.total) * 100;
             // });
         });
-      };
+      }
         
     }
      
