@@ -843,17 +843,21 @@ angular.module('starter.controllers', [])
   SpringNews._videosdetail($scope,$stateParams.videosId);
   SpringNews._newsconnected($scope,$stateParams.videosId,$stateParams.catId);
 
-  $scope.message = '';
-  $scope.img = '';
+
+
+  $scope.title_ = '';
   $scope.url = '';
-  $scope.show_social = function(message,img,url){
-    $scope.message = message
-    $scope.img = img
+
+  $scope.share = function(title,url){
+    $scope.title_ = title
     $scope.url = url
-    console.log($scope.message)
-    console.log($scope.img)
-    console.log($scope.url)
-    //$scope.modal_social.show();
+    $cordovaSocialSharing
+    .share($scope.title_, null,null, $scope.url) // Share via native share sheet
+    .then(function(result) {
+      // Success!
+    }, function(err) {
+      alert("Error");
+    });
   };
   $scope.playVideo = function() {
     $scope.showModal('templates/modal/video-popover.html');
