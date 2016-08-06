@@ -675,8 +675,22 @@ angular.module('starter.controllers', [])
     }
     var daysUntilNext = day - today_day;
     var alarmTime = new Date();
-    alarmTime.setDate(today.getDate() + daysUntilNext);
-    alarmTime.setHours(hour, min, 0);
+    if($stateParams.scheId == today.getDate() && hour == today.getHours()){
+      if( (min-today.getMinutes()) >= 0){
+        alarmTime.setHours(hour, min, 0);
+      }else{
+        alarmTime.setDate(today.getDate() + daysUntilNext);
+        alarmTime.setHours(hour, min, 0);
+      }
+    }else if($stateParams.scheId == today.getDate() && hour > today.getHours()){
+      alarmTime.setHours(hour, min, 0);
+    }
+    else{
+      alarmTime.setDate(today.getDate() + daysUntilNext);
+      alarmTime.setHours(hour, min, 0);
+    }
+
+    
     if(angular.element(event.target).hasClass('active')){
       angular.element(event.target).removeClass('active');
       $cordovaLocalNotification.cancel(id, function() {});
