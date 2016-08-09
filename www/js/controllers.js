@@ -675,14 +675,15 @@ angular.module('starter.controllers', [])
     }
     var daysUntilNext = day - today_day;
     var alarmTime = new Date();
-    if($stateParams.scheId == today.getDate() && hour == today.getHours()){
+    // alarmTime.setMinutes(alarmTime.getMinutes() + 1);
+    if($stateParams.scheId == today_day && hour == today.getHours()){
       if( (min-today.getMinutes()) >= 0){
         alarmTime.setHours(hour, min, 0);
       }else{
         alarmTime.setDate(today.getDate() + daysUntilNext);
         alarmTime.setHours(hour, min, 0);
       }
-    }else if($stateParams.scheId == today.getDate() && hour > today.getHours()){
+    }else if($stateParams.scheId == today_day && hour > today.getHours()){
       alarmTime.setHours(hour, min, 0);
     }
     else{
