@@ -482,6 +482,8 @@ angular.module('starter.controllers', [])
     // SpringNews._pages_introduce($scope); 
     SpringNews._advertise($scope,'14'); 
     // (adsbygoogle = window.adsbygoogle || []).push({});
+
+    
 })
 
 // --------------------- LIVE TV ------------------------

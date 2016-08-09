@@ -125,41 +125,41 @@
 					  		<p ng-show="introduceForm.message.$invalid && !introduceForm.message.$pristine" class="help-block">*กรุณากรอกข้อความ</p>
 						</div>
 						<div>พบการเผยแพร่ประเดนดังกล่าวทาง *</div>
-						<div>
-							<input type="radio" name="_ra1"  value="" checked /> 
+						<div ng-init="entry.client='' ">
+							<input type="radio" ng-model="entry.client " name="_ra1"  value="" ng-checked="entry.client == ''" /> 
 							สถานีโทรทัศน์ Spring news
 						</div>
 						<div>
-							<input type="radio" name="_ra1"  value=""  />
+							<input type="radio" ng-model="entry.client" name="_ra1"  value="web"  />
 							 เว็บไซต์ (โปรดระบุ) 
-							 	<div>
+							 	<div ng-show="entry.client=='web'" >
 								 	<label class="introduce_item item-input">
-						    		<input type="text" placeholder="เว็บไซต์ (โปรดระบุ)" name="website" class="form-control" ng-model="user.website" required> 	
+						    		<input type="text" placeholder="เว็บไซต์ (โปรดระบุ)" name="website" class="form-control" ng-model="user.website" ng-required="entry.client == 'web'"> 	
 						  			</label>
 						  			<p ng-show="introduceForm.website.$invalid && !introduceForm.website.$pristine" class="help-block">*กรุณากรอกให้ครบถ้วน</p>
 							 	</div>
 						</div>
 						<div>
-							<input type="radio" name="_ra1"  value=""  />
+							<input type="radio" ng-model="entry.client" name="_ra1"  value="ohters"  />
 							 สื่ออื่นๆ (โปรดระบุ) 
-							 	<div>
+							 	<div ng-show="entry.client=='ohters'">
 									<label class="introduce_item item-input">
-						    		<input type="text" placeholder="สื่ออื่นๆ (โปรดระบุ)" name="others" class="form-control" ng-model="user.others" required> 	
+						    		<input type="text" placeholder="สื่ออื่นๆ (โปรดระบุ)" name="others" class="form-control" ng-model="user.others" ng-required="entry.client == 'ohters'"> 	
 						  			</label>
 						  			<p ng-show="introduceForm.others.$invalid && !introduceForm.others.$pristine" class="help-block">*กรุณากรอกให้ครบถ้วน</p>
 							 	</div>
 						</div>
 						<div>วันที่ออกอากาศหรือเผยแพร่ *</div>
-						<div>
-							<input type="radio" name="_ra2"  value="" checked /> 
+						<div ng-init="entry.client2=''">
+							<input type="radio" ng-model="entry.client2" name="_ra2"  value="" ng-checked="entry.client2 == ''" /> 
 							ไม่ทราบ
 						</div>
 						<div>
-							<input type="radio" name="_ra2"  value=""  />
+							<input type="radio" ng-model="entry.client2" name="_ra2"  value="know"  />
 							 ทราบ(โปรดระบุ) 
-							 	<div>
+							 	<div ng-show="entry.client2=='know'">
 								 	<label class="introduce_item item-input">
-						    		<input type="text" placeholder="ทราบ (โปรดระบุ)" name="know" class="form-control" ng-model="user.know" required> 	
+						    		<input type="text" placeholder="ทราบ (โปรดระบุ)" name="know" class="form-control" ng-model="user.know" ng-required="entry.client2 == 'know'"> 	
 						  			</label>
 						  			<p ng-show="introduceForm.know.$invalid && !introduceForm.know.$pristine" class="help-block">*กรุณากรอกให้ครบถ้วน</p>
 							 	</div>
@@ -174,7 +174,7 @@
 						</div>
 						</br>
 						<div style="text-align: center;height: 30px;">
-							<button type="submit" class="button button-sp" ng-disabled="introduceForm.$invalid">
+							<button type="submit" class="button button-sp" ng-disabled="introduceForm.$invalid ">
 							  ส่งข้อความ
 							</button>
 						</div>
