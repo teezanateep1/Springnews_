@@ -3,7 +3,14 @@
 	<ion-content style="margin-top: 15px;">
 		<!-- radio -->
 		<div class="advertise" >
-			<img ng-src="{{adver.thumbnail.replace('$','http://artbeat.mfec.co.th/SpringNew/wp-content/')}}"></img>
+			<ion-slide-box does-continue="true"  
+				auto-play="true"  
+				slide-interval="3000"  
+				show-pager="false" >  
+	      		<ion-slide ng-repeat="item in adver">  
+	      			<img ng-src="{{item.thumbnail.replace('$','http://artbeat.mfec.co.th/SpringNew/wp-content/')}}"></img> 
+	      		</ion-slide>  
+	    	</ion-slide-box> 
 		</div>
 
 		<div class="box-news">

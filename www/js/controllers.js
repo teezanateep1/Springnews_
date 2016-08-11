@@ -1,6 +1,6 @@
 angular.module('starter.controllers', [])
 
-.controller('AppCtrl', function($scope, $ionicModal, $timeout, $ionicPopup, $http ,$window, $ionicSideMenuDelegate, $location, md5) {
+.controller('AppCtrl', function($scope, $ionicModal, $timeout, $ionicPopup, $http ,$window, $location, md5) {
 
   // With the new view caching in Ionic, Controllers are only called
   // when they are recreated or on app start, instead of every page change.
@@ -229,7 +229,7 @@ angular.module('starter.controllers', [])
 })
 
 // --------------------- HOME ------------------------
-.controller('HomeCtrl', function($scope, $stateParams, SpringNews, $ionicSlideBoxDelegate, _function, $ionicModal,$ionicLoading,$cordovaSocialSharing) { //admobSvc
+.controller('HomeCtrl', function($scope, $stateParams, SpringNews, $ionicSlideBoxDelegate, $ionicSlideBoxDelegate,_function, $ionicModal,$ionicLoading,$cordovaSocialSharing) { //admobSvc
 
   $ionicLoading.show();
 
@@ -788,6 +788,7 @@ angular.module('starter.controllers', [])
   $scope.date = [];
   $scope.video = [];
   $scope.loading_newsdetail = true;
+  $scope.adver = [];
   
 
   SpringNews._advertise($scope,'14');

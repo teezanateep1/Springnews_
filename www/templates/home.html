@@ -200,12 +200,26 @@
 						</div>
 						<!-- ./ -->
 						<div class="advertise" >
-							 <img ng-src="{{adver.thumbnail.replace('$','http://artbeat.mfec.co.th/SpringNew/wp-content/')}}"></img>
+							     <ion-slide-box does-continue="true"  
+ 									auto-play="true"  
+ 									slide-interval="3000"  
+ 									show-pager="false" >  
+							      <ion-slide ng-repeat="item in adver">  
+							      	<img ng-src="{{item.thumbnail.replace('$','http://artbeat.mfec.co.th/SpringNew/wp-content/')}}"></img> 
+							      </ion-slide>  
+							    </ion-slide-box>  
 						</div>
 						<ul collection-repeat="item in newsCategory |filter: tab.term_id " collection-item-width="'100%'" item-height="($index+1)%5 == 0 ? 175 : 99">
 
 							<li ng-if="($index+1)%5 == 0" class="advertise" >
-             							<img ng-src="{{adver.thumbnail.replace('$','http://artbeat.mfec.co.th/SpringNew/wp-content/')}}"></img>
+             					<ion-slide-box does-continue="true"  
+									auto-play="true"  
+ 									slide-interval="3000"  
+ 									show-pager="false" >  
+							      	<ion-slide ng-repeat="item in adver">  
+							      		<img ng-src="{{item.thumbnail.replace('$','http://artbeat.mfec.co.th/SpringNew/wp-content/')}}"></img> 
+							      	</ion-slide>  
+							    </ion-slide-box> 
             				</li>
 							<li style="margin-top: 3px; "   item-height="99px"  id="newsList_{{tab.term_id}}" >	
 								<div style="background-color: #fff;" ng-style="{width:'100%'}" >    
@@ -336,14 +350,15 @@
 						</div>
 						<!-- ./ราคาน้ำมัน -->
 						<div class="advertise" >
-					    	<img ng-src="{{adver.thumbnail.replace('$','http://artbeat.mfec.co.th/SpringNew/wp-content/')}}"style="
-   							position: initial;"></img>
-					    	<!-- <ins class="adsbygoogle"
-			     			style="display:inline-block;width:350px;height:50px"
-			     			data-ad-client="ca-pub-3184775764477086"
-			     			data-ad-slot="4978003061"> -->
-			     		</ins>
-					    </div>
+							<ion-slide-box does-continue="true"  
+								auto-play="true"  
+								slide-interval="3000"  
+								show-pager="false" >  
+					      		<ion-slide ng-repeat="item in adver">  
+					      			<img ng-src="{{item.thumbnail.replace('$','http://artbeat.mfec.co.th/SpringNew/wp-content/')}}"></img> 
+					      		</ion-slide>  
+					    	</ion-slide-box> 
+						</div>
 					</br>
 
 						<!-- ราคาทองคำ -->

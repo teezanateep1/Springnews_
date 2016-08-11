@@ -165,7 +165,9 @@ angular.module('services', [])
     this._advertise = function($scope,id){
         var url=path+"Advertise/id?api-key="+key+"&adv_id="+id; 
         $http.get(url).success(function(result){ 
-            $scope.adver = result[Math.floor(Math.random()*result.length)];
+            // $scope.adver = result[Math.floor(Math.random()*result.length)];
+            $scope.adver = result;
+            console.log(result)
         })  
         .error(function(){  
  
