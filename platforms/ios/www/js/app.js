@@ -4,7 +4,7 @@
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'starter.controllers',"angular-md5",'services','tabSlideBox','ngStorage', 'ionic-cache-src'])
+angular.module('starter', ['ionic', 'starter.controllers',"angular-md5",'services','tabSlideBox','ngStorage', 'ionic-cache-src','ngCordova.plugins.googleAds'])
 
 .run(function($ionicPlatform,$rootScope,$ionicPopup, $cordovaDialogs) { //admobSvc
   $ionicPlatform.ready(function() {
@@ -34,6 +34,38 @@ angular.module('starter', ['ionic', 'starter.controllers',"angular-md5",'service
       // org.apache.cordova.statusbar required
       StatusBar.styleDefault();
     }
+
+  //======admob code start=============
+ 
+      var admobid = {};
+        // select the right Ad Id according to platform
+        if( /(android)/i.test(navigator.userAgent) ) { 
+            admobid = { // for Android
+                banner: 'ca-app-pub-7291107843041210/9939517281',
+                publisherId : "ca-app-pub-7291107843041210/9939517281",
+                interstitial: 'ca-app-pub-7291107843041210/9939517281'
+            };
+        } else if(/(ipod|iphone|ipad)/i.test(navigator.userAgent)) {
+            admobid = { // for iOS
+                banner: 'ca-app-pub-7291107843041210/9939517281',
+                publisherId : "ca-app-pub-7291107843041210/9939517281",
+                interstitial: 'ca-app-pub-7291107843041210/9939517281'
+            };
+        } else {
+            admobid = { // for Windows Phone
+                banner: 'ca-app-pub-7291107843041210/9939517281',
+                publisherId : "ca-app-pub-7291107843041210/9939517281",
+                interstitial: 'ca-app-pub-7291107843041210/9939517281'
+            };
+        }
+ 
+      if(window.AdMob) AdMob.createBanner( {
+          adId:admobid.banner, 
+          position:AdMob.AD_POSITION.BOTTOM_CENTER, 
+          autoShow:true
+      });
+ 
+  //=======AdMob Code End=======
 
  
   });
@@ -220,10 +252,11 @@ angular.module('starter', ['ionic', 'starter.controllers',"angular-md5",'service
   })
   // search
   .state('app.search', {
-    url: '/search',
+    url: '/search/:key',
     views: {
       'menuContent': {
-        templateUrl: 'templates/search.html'
+        templateUrl: 'templates/search.html',
+        controller: 'SearchCtrl'
       }
     }
   })

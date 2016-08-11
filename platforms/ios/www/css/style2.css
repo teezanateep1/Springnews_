@@ -61,9 +61,6 @@
   display: none;
 }
 
-.thai{
-  margin: 0px;
-}
 
 .about .th-2{
   margin-left: 20px;
@@ -140,6 +137,7 @@
 .box-item-schedule-2-feed.two{
   text-align: center;
 }
+
 /*
 .nav-bar-block > .bar-calm {
   background-color: #31b5c2;
@@ -173,10 +171,39 @@
 #springradio {
   position: absolute;
 }
+/*Radio Validate*/
+
+.reveal-if-active {
+  opacity: 0;
+  max-height: 0;
+  overflow: hidden;
+  font-size: 16px;
+  transform: scale(0.8);
+  transition: 0.5s;
+  
+  label {
+    display: block;
+    margin: 0 0 3px 0;
+  }
+  input[type=text] {
+    width: 100%;
+  }
+  
+  input[type="radio"]:checked ~ &,
+  input[type="checkbox"]:checked ~ & {
+    opacity: 1;
+    max-height: 100px;
+    padding: 10px 20px;
+    transform: scale(1);
+    overflow: visible;
+  }
+  
+}
+
 /* accordion*/
 
 .accordion {
-  /*border: 1px solid white;*/
+  border: 1px solid white;
   /*padding: 0 10px;*/
   margin: 0 auto;
   list-style: none outside;
@@ -195,6 +222,7 @@
 
 .accordion-item-input:checked ~ .accordion-item-bd {
   max-height: 1000px;
+  background: #31b5c2;
   /*padding-top: 15px;*/
   /*margin-bottom: 15px;*/
   -webkit-transition: max-height 1s ease-in, margin .3s ease-in, padding .3s ease-in;
@@ -254,7 +282,7 @@
 
 .accordion-item-bd .box-item-schedule-2{
   min-height: 140px;
-  overflow: hidden;
+  overflow: scroll;
 }
 
 .accordion-item-bd .box-item-schedule-2 > div{
@@ -266,6 +294,7 @@
 
 .acdropdown {
   position: relative;
+  height: 45px;
 }
 
 .acdropdown > label {

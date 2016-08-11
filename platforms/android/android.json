@@ -55,6 +55,10 @@
                         {
                             "xml": "<feature name=\"Notification\"><param name=\"android-package\" value=\"org.apache.cordova.dialogs.Notification\" /></feature>",
                             "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"AdMob\"><param name=\"android-package\" value=\"com.rjfun.cordova.admob.AdMobPlugin\" /><param name=\"onload\" value=\"true\" /></feature>",
+                            "count": 1
                         }
                     ]
                 }
@@ -64,11 +68,15 @@
                     "/*": [
                         {
                             "xml": "<uses-permission android:name=\"android.permission.ACCESS_NETWORK_STATE\" />",
-                            "count": 1
+                            "count": 2
                         },
                         {
                             "xml": "<uses-permission android:name=\"android.permission.WRITE_EXTERNAL_STORAGE\" />",
                             "count": 3
+                        },
+                        {
+                            "xml": "<uses-permission android:name=\"android.permission.INTERNET\" />",
+                            "count": 1
                         }
                     ],
                     "/manifest/application": [
@@ -98,6 +106,10 @@
                         },
                         {
                             "xml": "<activity android:exported=\"false\" android:launchMode=\"singleInstance\" android:name=\"de.appplant.cordova.plugin.notification.ClickActivity\" android:theme=\"@android:style/Theme.NoDisplay\" />",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<activity android:configChanges=\"keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize\" android:name=\"com.google.android.gms.ads.AdActivity\" android:theme=\"@android:style/Theme.Translucent\" />",
                             "count": 1
                         }
                     ],
@@ -160,6 +172,12 @@
         },
         "cordova-plugin-dialogs": {
             "PACKAGE_NAME": "com.ionicframework.springnews612047"
+        },
+        "cordova-plugin-extension": {
+            "PACKAGE_NAME": "com.sp.springnews"
+        },
+        "cordova-plugin-admobpro": {
+            "PACKAGE_NAME": "com.sp.springnews"
         }
     },
     "dependent_plugins": {},
@@ -462,6 +480,14 @@
             "merges": [
                 "navigator.notification"
             ]
+        },
+        {
+            "id": "cordova-plugin-admobpro.AdMob",
+            "file": "plugins/cordova-plugin-admobpro/www/AdMob.js",
+            "pluginId": "cordova-plugin-admobpro",
+            "clobbers": [
+                "window.AdMob"
+            ]
         }
     ],
     "plugin_metadata": {
@@ -479,6 +505,8 @@
         "cordova-plugin-compat": "1.0.0",
         "cordova-plugin-file": "4.2.0",
         "cordova-plugin-file-transfer": "1.5.1",
-        "cordova-plugin-dialogs": "1.2.1"
+        "cordova-plugin-dialogs": "1.2.1",
+        "cordova-plugin-extension": "1.5.1",
+        "cordova-plugin-admobpro": "2.19.1"
     }
 }

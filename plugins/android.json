@@ -42,6 +42,9 @@
         },
         "cordova-plugin-x-socialsharing": {
             "PACKAGE_NAME": "com.ionicframework.springnews612047"
+        },
+        "cordova-plugin-admobpro": {
+            "PACKAGE_NAME": "com.sp.springnews"
         }
     },
     "dependent_plugins": {
@@ -53,6 +56,9 @@
         },
         "cordova-plugin-compat": {
             "PACKAGE_NAME": "com.ionicframework.springnews612047"
+        },
+        "cordova-plugin-extension": {
+            "PACKAGE_NAME": "com.sp.springnews"
         }
     }
 }

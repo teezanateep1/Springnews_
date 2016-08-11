@@ -56,6 +56,10 @@
         <param name="ios-package" value="SocialSharing" />
         <param name="onload" value="true" />
     </feature>
+    <feature name="AdMob">
+        <param name="ios-package" value="CDVAdMobPlugin" />
+        <param name="onload" value="true" />
+    </feature>
     <name>springnews</name>
     <description>
         An Ionic Framework and Cordova project.
@@ -139,5 +143,4 @@
     <preference name="xwalkMultipleApk" value="true" />
     <preference name="Orientation" value="portrait" />
     <preference name="iosPersistentFileLocation" value="Compatibility" />
-    <preference name="iosExtraFilesystems" value="library,library-nosync,documents,documents-nosync,cache,bundle,root" />
 </widget>

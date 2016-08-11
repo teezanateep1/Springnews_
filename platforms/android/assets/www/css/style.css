@@ -13,6 +13,9 @@
 .mynavbar{
  /* height: 60px !important;*/
 }
+.xs-float-none {
+  display: none;
+}
 
 /* Empty. Add your own CSS if you like */
 
@@ -485,7 +488,7 @@
 .box-item-schedule-1{
   height: 45px;
   padding: 5px;
-  margin: 0 2px 2px 0;
+  margin: 0px;
   color: #fff;
   border-bottom-color: #f0f0f0;
   border-right-color: #f0f0f0;
@@ -498,7 +501,7 @@
 
 .box-item-schedule-2{
   border-width: 1.9px;
-  height: 45px;
+  /*height: 45px;*/
   padding: 5px;
   margin: 0;
   color: #4c4c4c;
@@ -507,6 +510,7 @@
   border-left-color: #f0f0f0;
   border-right-color: #cccccc;
   background-color: #cccccc;
+  border-left: 2px solid #fff;
   font-family: 'Conv_SukhumvitReg','Conv_Frank-Regular'
 }
 /*------------------*/

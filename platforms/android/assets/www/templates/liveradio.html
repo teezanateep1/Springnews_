@@ -3,21 +3,28 @@
 	<ion-content style="margin-top: 15px;">
 		<!-- radio -->
 		<div class="advertise" >
-			<img ng-src="{{adver.thumbnail.replace('$','http://artbeat.mfec.co.th/SpringNew/wp-content/')}}"></img>
+			<ion-slide-box does-continue="true"  
+				auto-play="true"  
+				slide-interval="3000"  
+				show-pager="false" >  
+	      		<ion-slide ng-repeat="item in adver">  
+	      			<img ng-src="{{item.thumbnail.replace('$','http://artbeat.mfec.co.th/SpringNew/wp-content/')}}"></img> 
+	      		</ion-slide>  
+	    	</ion-slide-box> 
 		</div>
 
 		<div class="box-news">
 			<div class="item item-text-wrap" style="border-color: #31b5c2; padding: 0px;margin: 0px;">
 		   	
 		   		<div class="radioimg">
-		   			<div class="range" class="but-play" ng-show="range">
+		   			<div class="range radioimg" class="but-play" ng-show="range">
 					  <i class="icon ion-volume-low"></i>
 					  <input type="range" min="{{data.min}}" max="{{data.max}}" step="1" ng-model="data.value" ng-change="myChange(data.value)">
 					  <i class="icon ion-volume-high"></i>
 					</div>
 
 		   		</div>
-		   		<div id="springradio" ></div>
+		   		<div id="springradio"></div>
 
 			</div>
 			<div class="box-item-new box-news-footer buttonradio"  >
@@ -31,7 +38,10 @@
 				<a href="javascript:jwplayer().pause(true);" ng-show="stop" ng-click="toggleCustom()">
 					<div class="nut-icon-stop"></div>
 				</a>
-
+				<!-- <a href="http://www.facebook.com/sharer.php?u=http://www.springnews.co.th/radio" target="_blank">
+					<div class="nut-icon-share"></div>
+				</a> -->
+				<!-- <a onclick="window.plugins.socialsharing.share('Live Radio', null, null, 'http://goo.gl/TCRgF2')" > -->
 				<a ng-click = "share()">
 					<div class="nut-icon-share"></div>
 				</a>
@@ -46,12 +56,18 @@
 		<div class="sp-follow-us" >
 			<div class="sp-title">FOLLOW US</div>
 			<div class="sp-social">
-				<a href="https://www.facebook.com/SpringNewsTV" target="_blank" alt="Facebook" title="Facebook"><img  ng-src="./img/social/facebook.png" class="box-news-img"></a>
-				<a href="http://www.twitter.com/SpringNews_TV" target="_blank" alt="Twitter" title="Twitter"><img  ng-src="./img/social/twitter.png" class="box-news-img"></a>
-				<a href="http://www.google.com/+springnews" target="_blank" alt="Google+" title="Google+"><img  ng-src="./img/social/google_plus.png" class="box-news-img"></a>
-				<a href="https://www.instagram.com/springnewstv/" class="the-social-links tsl-circle tsl-24 tsl-default tsl-youtube" target="_blank" alt="Instagram" title="Instagram"><img  ng-src="./img/social/ig.png" class="box-news-img"></a>
-				<a href="http://www.youtube.com/springnewsonline" class="the-social-links tsl-circle tsl-24 tsl-default tsl-instagram" target="_blank" alt="Youtube" title="Youtube"><img  ng-src="./img/social/tyoutube.png" class="box-news-img"></a>
-				<a href="http://line.me/ti/p/~odeen" target="_blank" alt="Line" title="Line"><img  ng-src="./img/social/line.png" class="box-news-img"></a>
+
+				<a href="https://www.facebook.com/SpringNewsTV" target="_system" alt="Facebook" title="Facebook"><img  ng-src="./img/social/facebook.png" class="box-news-img"></a>
+
+				<a href="https://www.twitter.com/SpringNews_TV" target="_system" alt="Twitter" title="Twitter"><img  ng-src="./img/social/twitter.png" class="box-news-img"></a>
+
+				<a href="https://www.google.com/+springnews" target="_system" alt="Google+" title="Google+"><img  ng-src="./img/social/google_plus.png" class="box-news-img"></a>
+
+				<a href="https://www.instagram.com/springnewstv/" class="the-social-links tsl-circle tsl-24 tsl-default tsl-youtube" target="_system" alt="Instagram" title="Instagram"><img  ng-src="./img/social/ig.png" class="box-news-img"></a>
+
+				<a href="https://www.youtube.com/springnewsonline" class="the-social-links tsl-circle tsl-24 tsl-default tsl-instagram" target="_system" alt="Youtube" title="Youtube"><img  ng-src="./img/social/tyoutube.png" class="box-news-img"></a>
+
+				<a href="http://line.me/ti/p/~odeen" target="_system" alt="Line" title="Line"><img  ng-src="./img/social/line.png" class="box-news-img"></a>
 			</div>
 		</div>
 				

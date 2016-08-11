@@ -1,6 +1,6 @@
 angular.module('starter.controllers', [])
 
-.controller('AppCtrl', function($scope, $ionicModal, $timeout, $ionicPopup, $http, $location, md5) {
+.controller('AppCtrl', function($scope, $ionicModal, $timeout, $ionicPopup, $http ,$window, $location, md5) {
 
   // With the new view caching in Ionic, Controllers are only called
   // when they are recreated or on app start, instead of every page change.
@@ -67,6 +67,20 @@ angular.module('starter.controllers', [])
       $scope.submenu_aboutUs = false;
     }
   }
+
+  //---------------- Search ----------
+  var timeoutID=null;  
+  $scope.showMydict = function(keyword,event){  
+    if(keyword.length>2 && event.keyCode!=8){ 
+        timeoutID=$timeout(function(){ 
+           $window.location.href = ('#/app/search/'+keyword);
+           $ionicSideMenuDelegate.toggleLeft(false);
+        },2000); // เริ่มทำงานน 2 วินาที // 1000 เท่ากับ 1 วินาที  
+    }  
+  };  
+  $scope.setkeyword = function(){  
+      $timeout.cancel(timeoutID);
+  };  
 
   // Form data for the login modal
   $scope.loginData = {};
@@ -215,7 +229,7 @@ angular.module('starter.controllers', [])
 })
 
 // --------------------- HOME ------------------------
-.controller('HomeCtrl', function($scope, $stateParams, SpringNews, $ionicSlideBoxDelegate, _function, $ionicModal,$ionicLoading) { //admobSvc
+.controller('HomeCtrl', function($scope, $stateParams, SpringNews, $ionicSlideBoxDelegate, $ionicSlideBoxDelegate,_function, $ionicModal,$ionicLoading,$cordovaSocialSharing) { //admobSvc
 
   $ionicLoading.show();
 
@@ -244,7 +258,7 @@ angular.module('starter.controllers', [])
   SpringNews._newsupdate($scope,'908'); 
   SpringNews._newshot($scope,'ประเด็นร้อน');
   SpringNews._clips($scope,'30','4'); 
-  SpringNews._category($scope,'889');
+  // SpringNews._category($scope,'889');
   SpringNews._oil($scope);
   SpringNews._part($scope);
   SpringNews._thaigold($scope);
@@ -310,35 +324,19 @@ angular.module('starter.controllers', [])
   }
   
    //------ Popup Social
-  
-  // $ionicModal.fromTemplateUrl('templates/modal/social.html', {
-  //   scope: $scope,
-  //   animation: 'slide-in-up'
-  // }).then(function(modal) {
-  //   $scope.modal_social = modal;
-  // });
-  // Cleanup the modal when we're done with it!
-  // $scope.$on('$destroy', function() {
-  //   $scope.modal_social.remove();
-  // });
-  // $scope.closeModal = function() {
-  //   $scope.modal_social.hide();
-  // };
   $scope.message = '';
   $scope.img = '';
   $scope.url = '';
-  $scope.show_social = function(message,img,url){
-    $scope.message = message
-    $scope.img = img
+
+  $scope.share = function(title,url){
+    $scope.title_ = title
     $scope.url = url
-    //$scope.modal_social.show();
     $cordovaSocialSharing
-    .share($scope.message,"Test", $scope.img, $scope.url) // Share via native share sheet
+    .share($scope.title_, null,null, $scope.url) // Share via native share sheet
     .then(function(result) {
       // Success!
     }, function(err) {
-      // An error occured. Show a message to the user
-      alert("111");
+      alert("Error");
     });
   };
   //-----------\\ 
@@ -368,47 +366,110 @@ angular.module('starter.controllers', [])
 })
 
 // --------------------- CONTACT ------------------------
-.controller('ContentCtrl', function($scope,$cordovaFileTransfer,$ionicLoading,_geolocation,SpringNews) { 
+.controller('ContentCtrl', function($scope,$cordovaFileTransfer,$ionicLoading,SpringNews) { 
     $scope.contact = []; 
     $scope.contactImg = [];
     $scope.adver = [];
     $scope.link = [];
     SpringNews._pages_contact($scope); 
-    // SpringNews._advertise($scope,'14'); 
-    //_geolocation._navigator($scope);
+    // SpringNews._advertise($scope,'14');
     $scope.location = function(){
-      window.open(
-        'google.navigation:q=SpringNews+Corporation+Co.,+Ltd.+Vibhavadi+Rangsit+Rd,+Lat+Yao,+Khet+Chatuchak,+Krung+Thep+Maha+Nakhon+10900&avoid=tf',
-        '_system' // <- This is what makes it open in a new window.
-      );
+      if (ionic.Platform.isIOS()) {
+          window.open(
+           'http://maps.apple.com/?daddr=Spring+News&dirflg=d&t=n',
+            '_system' // <- This is what makes it open in a new window.
+          );
+      } 
+      else{
+          window.open(
+            'google.navigation:q=SpringNews+Corporation+Co.,+Ltd.+Vibhavadi+Rangsit+Rd,+Lat+Yao,+Khet+Chatuchak,+Krung+Thep+Maha+Nakhon+10900&avoid=tf',
+            '_system' // <- This is what makes it open in a new window.
+          );
+      };
+
     }
 
     $scope.dowloadMap = function(str){
 
-        var url = str.split(/src="?"/g)[1].replace(/<\/p><\/center>/g,'').substr(0,70);
-        var uri = encodeURI(url);
-        var targetPath = cordova.file.externalRootDirectory + "Map_.jpg";
-        var trustHosts = true;
-        var options = {};
+      var url = str.split(/src="?"/g)[1].replace(/<\/p><\/center>/g,'').substr(0,70);
+      var uri = encodeURI(url);
+      var trustHosts = true;
+      var options = {};
 
-       alert(targetPath);
+      if (ionic.Platform.isIOS()) {
+
+        window.open(
+           url,
+            '_system' // <- This is what makes it open in a new window.
+          );
+
+        //   var targetPath = cordova.file.documentsDirectory + "Download/"+url.substr(url.lastIndexOf('/') + 1);
+
+        //   window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, fileSystemSuccess, fileSystemFail);
+          
+        //   function fileSystemSuccess(fileSystem) {
+
+        //     var Folder_Name = 'SpringNews';
+        //     ext = uri.substr(uri.lastIndexOf('.') + 1); //Get extension of URL
+        //     var directoryEntry = fileSystem.root; // For root path of directory
+        //     directoryEntry.getDirectory(Folder_Name, { create: true, exclusive: false }, onDirectorySuccess, onDirectoryFail); // creating folder in sdcard
+        //     var rootdir = fileSystem.root;
+        //     var fp = rootdir.fullPath; // Gives Fullpath of local directory
+        //     fp = fp + "/" + Folder_Name + "/" + "Map_.jpg" + "." + ext; // fullpath and name of the file which we want to give
+        //     // Function call to download
+        //     filetransfer(uri, fp);
+
+        //   }
+        //   function onDirectorySuccess(parent) {
+        //     // Directory successfuly created 
+        //     alert("created new directory: " + parent.code);
+        //   }
+        //   function onDirectoryFail(error) {
+        //       // On error
+        //       alert("Unable to create new directory: " + error.code);
+        //   }
+        //     function fileSystemFail(evt) {
+        //       //Unable to access file system
+        //       alert(evt.target.error.code);
+        //   }
+
+        //   function filetransfer(uri, fp) {
+        //     var fileTransfer = new FileTransfer();
+        //     // Local path and File download function with URL
+        //     fileTransfer.download(uri, fp,
+        //       function (entry) {
+        //           alert("download complete: " + entry.fullPath);
+        //       },
+        //       function (error) {
+        //          // Failed errors
+        //          alert("download error source " + error.source);
+        //       }
+        //     );
+        // }
+
+      } 
+      else{
+        
+        var targetPath = cordova.file.externalRootDirectory + "Download/"+url.substr(url.lastIndexOf('/') + 1);
+
         $ionicLoading.show({
             template: 'Loading...'
         });
         $cordovaFileTransfer.download(uri, targetPath, options, trustHosts)
           .then(function(result) {
              $ionicLoading.hide();
-               alert(JSON.stringify(result));
+               alert("Success");
           }, function(err) {
              $ionicLoading.hide();
-               alert(JSON.stringify(err));
+               alert("Error");
           }, function (progress) {
-            alert(JSON.stringify(progress));
             //$cordovaProgress.showDeterminate(false, (progress.loaded / progress.total) * 100)
             // $timeout(function () {
             //   $scope.downloadProgress = (progress.loaded / progress.total) * 100;
             // });
         });
+      };
+        
     }
      
 
@@ -421,6 +482,8 @@ angular.module('starter.controllers', [])
     // SpringNews._pages_introduce($scope); 
     SpringNews._advertise($scope,'14'); 
     // (adsbygoogle = window.adsbygoogle || []).push({});
+
+    
 })
 
 // --------------------- LIVE TV ------------------------
@@ -437,8 +500,9 @@ angular.module('starter.controllers', [])
   // })
   
   $scope.sharing = function(){
+
     $cordovaSocialSharing
-    .share("Live TV","Live TV","http://www.springnews.co.th/live") // Share via native share sheet
+    .share("Live TV",null,"http://www.springnews.co.th/live") // Share via native share sheet
     .then(function(result) {
       // Success!
     }, function(err) {
@@ -501,7 +565,7 @@ angular.module('starter.controllers', [])
     }
     $scope.share = function (){
       $cordovaSocialSharing
-      .share("Live Radio","Live TV","http://www.springnews.co.th/radio")
+      .share("Live Radio",null,null,"http://www.springnews.co.th/radio")
       .then(function(result) {
         // Success!
       }, function(err) {
@@ -514,7 +578,7 @@ angular.module('starter.controllers', [])
 })
 
 // --------------------- CLIP ------------------------
-.controller('ClipCtrl', function($scope,_function,SpringNews,_function,$stateParams) {
+.controller('ClipCtrl', function($scope,_function,SpringNews,_function,$stateParams,$cordovaSocialSharing) {
   $scope.clips = [];
   $scope.clips_loop = [];
   $scope.title = $stateParams.title;
@@ -536,10 +600,23 @@ angular.module('starter.controllers', [])
     } 
   }
 
+  $scope.share = function (){
+      $cordovaSocialSharing
+      .share("Live Radio",null,null,"http://artbeat.mfec.co.th/SpringNew/?page_id=1131&lang=th")
+      .then(function(result) {
+        // Success!
+      }, function(err) {
+        // An error occurred. Show a message to the user
+        $ionicPopup.alert({
+           title: 'An error occurred.'
+         });
+      });
+    }
+
 })
 
 // --------------------- PROGRAM ------------------------
-.controller('ProgramCtrl', function($scope,_function,SpringNews,$ionicSlideBoxDelegate,$ionicLoading) {
+.controller('ProgramCtrl', function($scope,_function,SpringNews,$ionicSlideBoxDelegate,$ionicLoading,$cordovaSocialSharing) {
   
   $scope.tabs = [];
   $scope.newsCategory = [];
@@ -574,30 +651,16 @@ angular.module('starter.controllers', [])
 })
 
 // --------------------- Schedule ------------------------
-.controller('ScheduleCtrl', function($scope,SpringNews,$stateParams,$cordovaLocalNotification) {
+.controller('ScheduleCtrl', function($scope,SpringNews,$stateParams,$cordovaLocalNotification,$timeout) {
   $scope.schedules = []; 
-  //$scope.schedulesActive = [];
+  $scope.schedulesActive = [];
   $scope.loading_schedule = true;
   SpringNews._schedules($scope,$stateParams.scheId); 
-  
-
+  $scope.schedulesActive = window.localStorage.getItem('Notification');
   $scope.test = function(){
     $cordovaLocalNotification.getAllIds().then(function(result_){
       alert('Get all ids: ' + result_) //Returned 2nd: 'Get all ids: 1,0,4,5,3,2'
-       for (var i = 0 ;i < result_.length ; i++) {
-          $scope.schedulesActive.push(result_[i]);
-       }
     });
-  }
-
-  $scope.test2 = function (ids,event) {
-    //console.log(angular.element(ids).addClass('active'))
-    //angular.element(event.target).addClass('active');
-    // $cordovaLocalNotification.isScheduled(ids).then(function(isScheduled) {
-    //   if(isScheduled){
-    //     angular.element(event.target).addClass('active');
-    //   }
-    // });
   }
 
   $scope.LocalNotification = function(id,title,hour,min,event){
@@ -614,25 +677,44 @@ angular.module('starter.controllers', [])
     }
     var daysUntilNext = day - today_day;
     var alarmTime = new Date();
-    alarmTime.setDate(today.getDate() + daysUntilNext);
-    alarmTime.setHours(hour, min, 0);
+    // alarmTime.setMinutes(alarmTime.getMinutes() + 1);
+    if($stateParams.scheId == today_day && hour == today.getHours()){
+      if( (min-today.getMinutes()) >= 0){
+        alarmTime.setHours(hour, min, 0);
+      }else{
+        alarmTime.setDate(today.getDate() + daysUntilNext);
+        alarmTime.setHours(hour, min, 0);
+      }
+    }else if($stateParams.scheId == today_day && hour > today.getHours()){
+      alarmTime.setHours(hour, min, 0);
+    }
+    else{
+      alarmTime.setDate(today.getDate() + daysUntilNext);
+      alarmTime.setHours(hour, min, 0);
+    }
 
+    
     if(angular.element(event.target).hasClass('active')){
       angular.element(event.target).removeClass('active');
       $cordovaLocalNotification.cancel(id, function() {});
+      $timeout(function(){ 
+        $cordovaLocalNotification.getAllIds().then(function(result){
+          window.localStorage.setItem('Notification', JSON.stringify(result))
+        });
+      },1000); 
     }else{
       angular.element(event.target).addClass('active');
-       $cordovaLocalNotification.schedule({
+       $cordovaLocalNotification.add({
           id: id,
           at: alarmTime,
           message: "แต่เพื่อดูข้อมูล",
           title: title,
-          autoCancel: false,
-          every: "day",
-          sound: null,
-          icon: "../img/icon/icon_pr_blue.png"
+          autoCancel: true
         }).then(function () {
           console.log("The notification has been set");
+        });
+        $cordovaLocalNotification.getAllIds().then(function(result){
+          window.localStorage.setItem( 'Notification', JSON.stringify(result))
         });
     }
 
@@ -661,14 +743,52 @@ angular.module('starter.controllers', [])
 
 })
 
+// --------------------- Search ------------------------
+.controller('SearchCtrl', function($scope,$http,$timeout,$stateParams,_function,SpringNews) {
+   var timeoutID=null;  
+    $scope.dict_result=[]; 
+    $scope.showloading=false;  
+    $scope.keyword = $stateParams.key;
+    SpringNews._search($scope,$stateParams.key);
+    $scope.showMydict = function(keyword,event){  
+      if(keyword.length>2 && event.keyCode!=8){ 
+        timeoutID=$timeout(function(){ 
+            $scope.showloading=true;  
+            $scope.dict_result=[]; 
+            SpringNews._search($scope,keyword);
+        },2000); // เริ่มทำงานน 2 วินาที // 1000 เท่ากับ 1 วินาที  
+      }  
+    };  
+    $scope.setkeyword = function(){  
+        $timeout.cancel(timeoutID);
+    };  
+    //วันที่
+  $scope.date = function(d){
+    if(d != undefined){
+      return _function._date(d.substring(0, 10),d.substring(12, 16));
+    }else{ return ""; }
+  }
+  //substring
+  $scope.substring = function(str){
+    if(str.length > 65){
+      return str.substring(0, 65)+"...";
+    }else{
+      return str;
+    } 
+  }
+
+
+})
+
 // ---------------------- NEWS DETAIL ---------------------
-.controller('NewsCtrl', function($scope, $stateParams , SpringNews,$ionicLoading,$timeout,_function, $sce) {
+.controller('NewsCtrl', function($scope, $stateParams , SpringNews,$ionicLoading,$timeout,_function, $sce,$cordovaSocialSharing) {
   
   $scope.newsDetail = [];
   $scope.newsConnected = [];
   $scope.date = [];
   $scope.video = [];
   $scope.loading_newsdetail = true;
+  $scope.adver = [];
   
 
   SpringNews._advertise($scope,'14');
@@ -676,17 +796,22 @@ angular.module('starter.controllers', [])
   SpringNews._newsconnected($scope,$stateParams.newsId,$stateParams.catId);
 
   $scope.message = '';
-  $scope.img = '';
   $scope.url = '';
-  $scope.show_social = function(message,img,url){
-    $scope.message = message
-    $scope.img = img
-    $scope.url = url
-    console.log($scope.message)
-    console.log($scope.img)
-    console.log($scope.url)
-    //$scope.modal_social.show();
-  };
+
+  $scope.share = function (title,url){
+      $scope.title_ = title
+      $scope.url = url
+      $cordovaSocialSharing
+      .share($scope.title_,null,null,$scope.url)
+      .then(function(result) {
+        // Success!
+      }, function(err) {
+        // An error occurred. Show a message to the user
+        $ionicPopup.alert({
+           title: 'An error occurred.'
+         });
+      });
+    }
 
   $scope.trustSrc = function(src) {
     if(src != ""){
@@ -696,7 +821,11 @@ angular.module('starter.controllers', [])
     }
   }
   $scope.replace = function (str) {
-    return str.replace(/(<([^>]+)>)/ig,"");
+    if(str != undefined){
+      return str.replace(/[embed][^]+/g,"").replace('[',"");
+    }else{
+      return "";
+    }
   }
   //วันที่
   $scope.date_ = function(d){
@@ -707,7 +836,7 @@ angular.module('starter.controllers', [])
 })
 
 // ---------------------- VIDEOS DETAIL ---------------------
-.controller('VideosCtrl', function($scope, $stateParams , SpringNews,$ionicLoading,$timeout,_function, $sce,$ionicModal,$ionicLoading) { //admobSvc
+.controller('VideosCtrl', function($scope, $stateParams , SpringNews,$ionicLoading,$timeout,_function, $sce,$ionicModal,$ionicLoading,$cordovaSocialSharing) { //admobSvc
   
   $scope.videosDetail = [];
   $scope.newsConnected = [];
@@ -720,17 +849,21 @@ angular.module('starter.controllers', [])
   SpringNews._videosdetail($scope,$stateParams.videosId);
   SpringNews._newsconnected($scope,$stateParams.videosId,$stateParams.catId);
 
-  $scope.message = '';
-  $scope.img = '';
+
+
+  $scope.title_ = '';
   $scope.url = '';
-  $scope.show_social = function(message,img,url){
-    $scope.message = message
-    $scope.img = img
+
+  $scope.share = function(title,url){
+    $scope.title_ = title
     $scope.url = url
-    console.log($scope.message)
-    console.log($scope.img)
-    console.log($scope.url)
-    //$scope.modal_social.show();
+    $cordovaSocialSharing
+    .share($scope.title_, null,null, $scope.url) // Share via native share sheet
+    .then(function(result) {
+      // Success!
+    }, function(err) {
+      alert("Error");
+    });
   };
   $scope.playVideo = function() {
     $scope.showModal('templates/modal/video-popover.html');
