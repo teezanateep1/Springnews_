@@ -60,6 +60,9 @@
         <param name="ios-package" value="CDVAdMobPlugin" />
         <param name="onload" value="true" />
     </feature>
+    <feature name="YoikScreenOrientation">
+        <param name="ios-package" value="YoikScreenOrientation" />
+    </feature>
     <name>springnews</name>
     <description>
         An Ionic Framework and Cordova project.

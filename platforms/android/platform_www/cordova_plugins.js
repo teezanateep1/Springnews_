@@ -306,6 +306,22 @@ module.exports = [
         "clobbers": [
             "window.AdMob"
         ]
+    },
+    {
+        "id": "cordova-plugin-screen-orientation.screenorientation",
+        "file": "plugins/cordova-plugin-screen-orientation/www/screenorientation.js",
+        "pluginId": "cordova-plugin-screen-orientation",
+        "clobbers": [
+            "cordova.plugins.screenorientation"
+        ]
+    },
+    {
+        "id": "cordova-plugin-screen-orientation.screenorientation.android",
+        "file": "plugins/cordova-plugin-screen-orientation/www/screenorientation.android.js",
+        "pluginId": "cordova-plugin-screen-orientation",
+        "merges": [
+            "cordova.plugins.screenorientation"
+        ]
     }
 ];
 module.exports.metadata = 
@@ -327,7 +343,8 @@ module.exports.metadata =
     "cordova-plugin-file-transfer": "1.5.1",
     "cordova-plugin-dialogs": "1.2.1",
     "cordova-plugin-extension": "1.5.1",
-    "cordova-plugin-admobpro": "2.19.1"
+    "cordova-plugin-admobpro": "2.19.1",
+    "cordova-plugin-screen-orientation": "1.4.2"
 };
 // BOTTOM OF METADATA
 });

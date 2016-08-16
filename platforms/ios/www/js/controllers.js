@@ -498,6 +498,14 @@ angular.module('starter.controllers', [])
   // $scope.$on('$ionicView.afterLeave', function(){
   //   admobSvc.createBannerView();
   // })
+
+  $scope.$on('$ionicView.afterLeave', function(){
+    screen.lockOrientation('portrait');
+  });
+
+  $scope.$on('$ionicParentView.beforeEnter', function(){
+    screen.unlockOrientation();
+  });
   
   $scope.sharing = function(){
 
@@ -551,7 +559,6 @@ angular.module('starter.controllers', [])
       }
       $timeout(function() {
         jwplayer().setVolume($scope.data.value)
-        console.log($scope.data.value)
       }, 1);
     }
     $scope.toggleCustom = function(){

@@ -167,7 +167,7 @@ angular.module('services', [])
         $http.get(url).success(function(result){ 
             // $scope.adver = result[Math.floor(Math.random()*result.length)];
             $scope.adver = result;
-            console.log(result)
+            $ionicSlideBoxDelegate.update();
         })  
         .error(function(){  
  
