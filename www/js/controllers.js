@@ -95,7 +95,7 @@ angular.module('starter.controllers', [])
   //    // $scope.login_ = false;
   //    // $scope.logout_ = true;
   // }else{
-  //    $scope.profile = true;
+  //    $scope.profile = true
   //    // $scope.profile = false;
   //    // $scope.login_ = true;
   //    // $scope.logout_ = false;
@@ -229,7 +229,7 @@ angular.module('starter.controllers', [])
 })
 
 // --------------------- HOME ------------------------
-.controller('HomeCtrl', function($scope, $stateParams, SpringNews, $ionicSlideBoxDelegate, $ionicSlideBoxDelegate,_function, $ionicModal,$ionicLoading,$cordovaSocialSharing) { //admobSvc
+.controller('HomeCtrl', function($scope, $stateParams, SpringNews, $ionicSlideBoxDelegate,_function, $ionicModal,$ionicLoading,$cordovaSocialSharing,$ionicScrollDelegate, $ionicNavBarDelegate) { //admobSvc
 
   $ionicLoading.show();
 
@@ -258,11 +258,11 @@ angular.module('starter.controllers', [])
   SpringNews._newsupdate($scope,'908'); 
   SpringNews._newshot($scope,'ประเด็นร้อน');
   SpringNews._clips($scope,'30','4'); 
-  // SpringNews._category($scope,'889');
+  SpringNews._category($scope,'889');
   SpringNews._oil($scope);
   SpringNews._part($scope);
   SpringNews._thaigold($scope);
-
+  
   //วันที่
   $scope.date = function(d){
     if(d != undefined){
@@ -477,13 +477,17 @@ angular.module('starter.controllers', [])
 
 // --------------------- INTRODUCE ------------------------
 .controller('IntroduceCtrl', function($scope,SpringNews) {
-    // $scope.introduce = [];
-    // $scope.appeal = [];
-    // SpringNews._pages_introduce($scope); 
-    SpringNews._advertise($scope,'14'); 
-    // (adsbygoogle = window.adsbygoogle || []).push({});
-
-    
+    $scope.introduce = function(event) {
+      console.log(event)
+    }
+    $scope.submitForm = function(){
+       SpringNews._email(this.intro); 
+       this.intro = null;
+    }
+    $scope.submitForm2 = function(){
+       SpringNews._email(this.user); 
+       this.user = null;
+    }  
 })
 
 // --------------------- LIVE TV ------------------------

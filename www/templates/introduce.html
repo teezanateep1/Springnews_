@@ -8,16 +8,17 @@
 			    <div class="introduce_form form-group">
 					<div >ส.ส.ท. เปิดรับแจ้งเรื่องร้องเรียน กรณีปรากฏข้อความ เสียงหรือภาพทางวิทยุกระจายเสียงหรือวิทยุโทรทัศน์ รวมถึงสื่ออื่นๆของ ส.ส.ท. หรือปรากฏพฤติกรรมของบุคลากรของ ส.ส.ท. ทุกระดับหรือผู้เกี่ยวข้อง รวมถึงผู้ผลิตรายการกระทำการหรือผลิตรายการ ขัดต่อจริยธรรม ของวิชาชีพโดยท่านสามารถแจ้งข้อมูลได้ตาม ช่องทางต่างๆ หรือกรอกข้อมูลผ่านแบบฟอร์มออนไลน์ข้างล่างนี้</div>
 					<div >
+						<input type="hidden" name="type" class="form-control" ng-init="intro.type='แนะนำติชม'" ng-model="intro.type" >
 					  	<label class="introduce_item item-input">
-					    	<input type="text" placeholder="เรื่อง" name="subject" class="form-control" ng-model="user.subject" required>
-						  	
+					    	<input type="text" placeholder="เรื่อง" name="subject" class="form-control" ng-model="intro.subject" required>
 					  	</label>
+
 					  	<p ng-show="introduceForm.subject.$invalid && !introduceForm.subject.$pristine" class="help-block">*กรุณากรอกชื่อเรื่อง</p>
 					</div>
 					<div>มีความประสงค์จะร้องเรียนประเดนผิดจริยธรรมวิชาชีพว่าด้วยการผลิตและเผยแพร่รายการตามข้อกล่าวหาและความเสียหายที่ผู้ร้องเรียนได้รับ หรือ คำแนะนำติชมดังนี้</div>
 					<div>
 					  <label class="introduce_item item-input">
-					    <textarea rows="8" placeholder="ข้อความ" name="message" class="form-control" ng-model="user.message" required>
+					    <textarea rows="8" placeholder="ข้อความ" name="message" class="form-control" ng-model="intro.message" required>
 					    </textarea>
 					  </label>
 					  <p ng-show="introduceForm.message.$invalid && !introduceForm.message.$pristine" class="help-block">*กรุณากรอกข้อความ</p>
@@ -25,17 +26,17 @@
 					<div>
 
 						<label class="introduce_item item-input">
-						    <input type="text"  placeholder="ชื่อ"  name="name" class="form-control" ng-model="user.name" required>
+						    <input type="text"  placeholder="ชื่อ"  name="name" class="form-control" ng-model="intro.name" required>
 						</label>
 					  	<p ng-show="introduceForm.name.$invalid && !introduceForm.name.$pristine" class="help-block">*กรุณากรอกชื่อ</p>
 
 						<label class="introduce_item item-input">
-						    <input type="text"  placeholder="นามสกุล"  name="lastname" class="form-control" ng-model="user.lastname" required>
+						    <input type="text"  placeholder="นามสกุล"  name="lastname" class="form-control" ng-model="intro.lastname" required>
 						</label>
 					  	<p ng-show="introduceForm.lastname.$invalid && !introduceForm.lastname.$pristine" class="help-block">*กรุณากรอกนามสกุล</p>
 						  
 						<label class="introduce_item item-input">
-						    <input type="email" placeholder="อีเมล์" name="email" class="form-control" ng-model="user.email" required >
+						    <input type="email" placeholder="อีเมล์" name="email" class="form-control" ng-model="intro.email" required >
 						</label>
 						<p ng-show="introduceForm.email.$invalid && !introduceForm.email.$pristine" class="help-block">*กรุณากรอก E-mail ให้ถูกต้อง</p>
 					</div>
@@ -51,24 +52,6 @@
 				</div>
 
 			</form>
-
-					    <!-- FORM ============ -->
-					  
-					   	<!-- <form name="introduceForm">
-							<div class="form-group">
-							 	<label>Name</label>
-							  	<input type="text" name="name" class="form-control" ng-model="name" required>
-							  	{{introduceForm.name.$invalid}}
-							  	<p ng-show="introduceForm.name.$invalid && !introduceForm.name.$pristine" class="help-block">You name is required.</p>
-							</div> -->
-
-							<!-- EMAIL -->
-					      <!--   <div class="form-group" ng-class="{ 'has-error' : introduceForm.email.$invalid && !introduceForm.email.$pristine }">
-					            <label>Email</label>
-					            <input type="email" name="email" class="form-control" ng-model="user.email">
-					            <p ng-show="introduceForm.email.$invalid && !introduceForm.email.$pristine" class="help-block">Enter a valid email.</p>
-					        </div>
-					    </form> -->
 
 					<div class="sp-footer" >
 						<div class="sp-title">FOLLOW US</div>
@@ -88,35 +71,25 @@
 						</div>
 					</div>	
 					<br/>
-					<div class="advertise" >
-						<ion-slide-box does-continue="true"  
-							auto-play="true"  
-							slide-interval="3000"  
-							show-pager="false" >  
-				      		<ion-slide ng-repeat="item in adver">  
-				      			<img ng-src="{{item.thumbnail.replace('$','http://artbeat.mfec.co.th/SpringNew/wp-content/')}}"></img> 
-				      		</ion-slide>  
-				    	</ion-slide-box> 
-					</div>
-					<br/>
 			</ion-content>
 		</ion-view>
 
     </ion-tab>  
 		  
-	<ion-tab title="ร้องเรียน" icon-on="ion-ios7-gear" icon-off="ion-ios7-gear-outline">  
+	<ion-tab title="ร้องเรียน" icon-on="ion-ios7-gear" icon-off="ion-ios7-gear-outline"  >  
 		<!-- Tab 2 content -->  
 		<ion-view >
 		    <ion-content >
-		    	<form name="introduceForm" ng-submit="submitForm()" novalidate>
+		    	<form name="introduceForm2" ng-submit="submitForm2()" novalidate>
 				    <div class="introduce_form">		
 				    	<div>ส.ส.ท. เปิดรับแจ้งเรื่องร้องเรียน กรณีปรากฏข้อความ เสียงหรือภาพทางวิทยุกระจายเสียงหรือวิทยุโทรทัศน์ รวมถึงสื่ออื่นๆของ ส.ส.ท. หรือปรากฏพฤติกรรมของบุคลากรของ ส.ส.ท. ทุกระดับหรือผู้เกี่ยวข้อง รวมถึงผู้ผลิตรายการกระทำการหรือผลิตรายการ ขัดต่อจริยธรรม ของวิชาชีพโดยท่านสามารถแจ้งข้อมูลได้ตาม ช่องทางต่างๆ หรือกรอกข้อมูลผ่านแบบฟอร์มออนไลน์ข้างล่างนี้</div>
 				    	<div >
+				    	<input type="hidden" name="type" class="form-control" ng-init="user.type='ร้องเรียน'" ng-model="user.type" >
 						  	<label class="introduce_item item-input">
 					    	<input type="text" placeholder="เรื่อง" name="subject" class="form-control" ng-model="user.subject" required>
 						  	
 					  		</label>
-					  		<p ng-show="introduceForm.subject.$invalid && !introduceForm.subject.$pristine" class="help-block">*กรุณากรอกชื่อเรื่อง</p>
+					  		<p ng-show="introduceForm2.subject.$invalid && !introduceForm2.subject.$pristine" class="help-block">*กรุณากรอกชื่อเรื่อง</p>
 						</div>
 						<div>มีความประสงค์จะร้องเรียนประเดนผิดจริยธรรมวิชาชีพว่าด้วยการผลิตและเผยแพร่รายการตามข้อกล่าวหาและความเสียหายที่ผู้ร้องเรียนได้รับ หรือ คำแนะนำติชมดังนี้</div>
 						<div >
@@ -124,59 +97,58 @@
 					    	<textarea rows="8" placeholder="ข้อความ" name="message" class="form-control" ng-model="user.message" required>
 					    	</textarea>
 					  		</label>
-					  		<p ng-show="introduceForm.message.$invalid && !introduceForm.message.$pristine" class="help-block">*กรุณากรอกข้อความ</p>
+					  		<p ng-show="introduceForm2.message.$invalid && !introduceForm2.message.$pristine" class="help-block">*กรุณากรอกข้อความ</p>
 						</div>
 						<div>พบการเผยแพร่ประเดนดังกล่าวทาง *</div>
-						<div ng-init="entry.client='' ">
-							<input type="radio" ng-model="entry.client " name="_ra1"  value="" ng-checked="entry.client == ''" /> 
+						<div ng-init="user.publicize='' ">
+							<input type="radio" ng-model="user.publicize " name="_ra1"  value="" ng-checked="user.publicize == ''" /> 
 							สถานีโทรทัศน์ Spring news
 						</div>
 						<div>
-							<input type="radio" ng-model="entry.client" name="_ra1"  value="web"  />
+							<input type="radio" ng-model="user.publicize" name="_ra1"  value="web"  />
 							 เว็บไซต์ (โปรดระบุ) 
-							 	<div ng-show="entry.client=='web'" >
+							 	<div ng-show="user.publicize=='web'" >
 								 	<label class="introduce_item item-input">
-						    		<input type="text" placeholder="เว็บไซต์ (โปรดระบุ)" name="website" class="form-control" ng-model="user.website" ng-required="entry.client == 'web'"> 	
+						    		<input type="text" placeholder="เว็บไซต์ (โปรดระบุ)" name="website" class="form-control" ng-model="user.website" ng-required="user.publicize == 'web'"> 	
 						  			</label>
-						  			<p ng-show="introduceForm.website.$invalid && !introduceForm.website.$pristine" class="help-block">*กรุณากรอกให้ครบถ้วน</p>
+						  			<p ng-show="introduceForm2.website.$invalid && !introduceForm2.website.$pristine" class="help-block">*กรุณากรอกให้ครบถ้วน</p>
 							 	</div>
 						</div>
 						<div>
-							<input type="radio" ng-model="entry.client" name="_ra1"  value="ohters"  />
+							<input type="radio" ng-model="user.publicize" name="_ra1"  value="ohters"  />
 							 สื่ออื่นๆ (โปรดระบุ) 
-							 	<div ng-show="entry.client=='ohters'">
+							 	<div ng-show="user.publicize=='ohters'" >
 									<label class="introduce_item item-input">
-						    		<input type="text" placeholder="สื่ออื่นๆ (โปรดระบุ)" name="others" class="form-control" ng-model="user.others" ng-required="entry.client == 'ohters'"> 	
+						    		<input type="text" placeholder="สื่ออื่นๆ (โปรดระบุ)" name="others" class="form-control" ng-model="user.others" ng-required="user.publicize == 'ohters'"> 	
 						  			</label>
-						  			<p ng-show="introduceForm.others.$invalid && !introduceForm.others.$pristine" class="help-block">*กรุณากรอกให้ครบถ้วน</p>
+						  			<p ng-show="introduceForm2.others.$invalid && !introduceForm2.others.$pristine" class="help-block">*กรุณากรอกให้ครบถ้วน</p>
 							 	</div>
 						</div>
 						<div>วันที่ออกอากาศหรือเผยแพร่ *</div>
-						<div ng-init="entry.client2=''">
-							<input type="radio" ng-model="entry.client2" name="_ra2"  value="" ng-checked="entry.client2 == ''" /> 
+						<div ng-init="user.dayonair=''">
+							<input type="radio" ng-model="user.dayonair" name="_ra2"  value="" ng-checked="user.dayonair == ''" /> 
 							ไม่ทราบ
 						</div>
 						<div>
-							<input type="radio" ng-model="entry.client2" name="_ra2"  value="know"  />
+							<input type="radio" ng-model="user.dayonair" name="_ra2"  value="know"  />
 							 ทราบ(โปรดระบุ) 
-							 	<div ng-show="entry.client2=='know'">
+							 	<div ng-show="user.dayonair=='know'">
 								 	<label class="introduce_item item-input">
-						    		<input type="text" placeholder="ทราบ (โปรดระบุ)" name="know" class="form-control" ng-model="user.know" ng-required="entry.client2 == 'know'"> 	
+						    		<input type="text" placeholder="ทราบ (โปรดระบุ)" name="know" class="form-control" ng-model="user.know" ng-required="user.dayonair == 'know'"> 	
 						  			</label>
-						  			<p ng-show="introduceForm.know.$invalid && !introduceForm.know.$pristine" class="help-block">*กรุณากรอกให้ครบถ้วน</p>
+						  			<p ng-show="introduceForm2.know.$invalid && !introduceForm2.know.$pristine" class="help-block">*กรุณากรอกให้ครบถ้วน</p>
 							 	</div>
 						</div>
 						<div class="fileUpload btn btn-primary">
-						    <span>Upload</span>
-						    <input type="file" class="upload" />
+						   
 						</div>
 						<div>
-							<input type="checkbox" name="_ch"  value=""  /> 
+							<input type="checkbox" name="_ch" ng-model="user.nopublicize"  /> 
 							ไม่ประสง์เปิดเผยชื่อต่อสาธารณะ
 						</div>
 						</br>
 						<div style="text-align: center;height: 30px;">
-							<button type="submit" class="button button-sp" ng-disabled="introduceForm.$invalid ">
+							<button type="submit" class="button button-sp" ng-disabled="introduceForm2.$invalid ">
 							  ส่งข้อความ
 							</button>
 						</div>
@@ -200,17 +172,6 @@
 						</div>
 						<br/>
 					</div>	
-					<br/>
-					<div class="advertise" >
-						<ion-slide-box does-continue="true"  
-							auto-play="true"  
-							slide-interval="3000"  
-							show-pager="false" >  
-				      		<ion-slide ng-repeat="item in adver">  
-				      			<img ng-src="{{item.thumbnail.replace('$','http://artbeat.mfec.co.th/SpringNew/wp-content/')}}"></img> 
-				      		</ion-slide>  
-				    	</ion-slide-box> 
-					</div>
 					<br/>
 			</ion-content>
 		</ion-view>

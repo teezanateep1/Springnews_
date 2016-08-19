@@ -432,6 +432,19 @@ angular.module('services', [])
             $scope.showloading=false; 
         });
     }
+    // ------------ Email ค้นหา
+    this._email = function(value){
+        var url=path+"Email/send"; 
+        $http({
+            method  : 'POST',
+            url     :  url,
+            data    :  value,  // pass in data as strings
+            headers : {'api-key': key}  // set the headers so angular passing info as form data (not request payload)
+        })
+        .success(function(data) {
+           alert(data)
+        });
+    }
     
    
 
