@@ -42,10 +42,10 @@
     <ion-content style="background-color: #4c4c4c;">
       <ion-list>
 
-        <div class="list list-inset">
-          <label class="item item-input input-search">
-            <input type="text" ng-model="keyword" ng-keydown="setkeyword()" ng-keyup="showMydict(keyword,event=$event)" placeholder="Search">
-            <i class="icon ion-search "></i>
+        <div class="list list-inset" >
+          <label class="item item-input input-search" >
+            <input type="text" ng-model="keyword"  placeholder="Search">
+            <i class="icon ion-search " ng-click="showMydict(keyword)" ></i>
           </label>
         </div>
        <!--  <div class="list ">

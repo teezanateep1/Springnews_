@@ -1,6 +1,10 @@
 angular.module('starter.controllers', ['ngOpenFB'])
 
+<<<<<<< Updated upstream
 .controller('AppCtrl', function($scope, $ionicModal, $timeout, $ionicPopup, $http ,$window, $location, md5,$localStorage,ngFB,$cordovaOauth) {
+=======
+.controller('AppCtrl', function($scope, $ionicModal, $timeout, $ionicPopup, $http ,$window, $location, md5,$localStorage,ngFB,$ionicSideMenuDelegate) {
+>>>>>>> Stashed changes
 
   // With the new view caching in Ionic, Controllers are only called
   // when they are recreated or on app start, instead of every page change.
@@ -70,12 +74,15 @@ angular.module('starter.controllers', ['ngOpenFB'])
   //---------------- Search ----------
   var timeoutID=null;  
   $scope.showMydict = function(keyword,event){  
-    if(keyword.length>2 && event.keyCode!=8){ 
-        timeoutID=$timeout(function(){ 
-           $window.location.href = ('#/app/search/'+keyword);
-           $ionicSideMenuDelegate.toggleLeft(false);
-        },2000); // เริ่มทำงานน 2 วินาที // 1000 เท่ากับ 1 วินาที  
-    }  
+    $window.location.href = ('#/app/search/'+keyword);
+    // if(keyword.length>2 && event.keyCode!=8){ 
+    //     timeoutID=$timeout(function(){ 
+    //        $window.location.href = ('#/app/search/'+keyword);
+    //         if ($ionicSideMenuDelegate.isOpen()) {
+    //           $ionicSideMenuDelegate.toggleLeft(false); // close
+    //         }
+    //     },1500); // เริ่มทำงานน 2 วินาที // 1000 เท่ากับ 1 วินาที  
+    // }  
   };  
   $scope.setkeyword = function(){  
       $timeout.cancel(timeoutID);
@@ -322,7 +329,7 @@ angular.module('starter.controllers', ['ngOpenFB'])
     SpringNews._oil($scope);
     SpringNews._part($scope);
     SpringNews._thaigold($scope);
-  },1500);
+  },3000);
   
   //วันที่
   $scope.date = function(d){
@@ -724,6 +731,7 @@ angular.module('starter.controllers', ['ngOpenFB'])
   SpringNews._schedules($scope,$stateParams.scheId); 
   $scope.schedulesActive = window.localStorage.getItem('Notification');
   $ionicLoading.show();
+
   $scope.test = function(){
     $cordovaLocalNotification.getAllIds().then(function(result_){
       alert('Get all ids: ' + result_) //Returned 2nd: 'Get all ids: 1,0,4,5,3,2'
@@ -811,12 +819,15 @@ angular.module('starter.controllers', ['ngOpenFB'])
 })
 
 // --------------------- Search ------------------------
-.controller('SearchCtrl', function($scope,$http,$timeout,$stateParams,_function,SpringNews) {
+.controller('SearchCtrl', function($scope,$http,$timeout,$stateParams,$ionicSideMenuDelegate,_function,SpringNews) {
    var timeoutID=null;  
     $scope.dict_result=[]; 
     $scope.showloading=false;  
     $scope.keyword = $stateParams.key;
     SpringNews._search($scope,$stateParams.key);
+    if ($ionicSideMenuDelegate.isOpen()) {
+      $ionicSideMenuDelegate.toggleLeft(false); // close
+    }
     $scope.showMydict = function(keyword,event){  
       if(keyword.length>2 && event.keyCode!=8){ 
         timeoutID=$timeout(function(){ 

@@ -155,7 +155,7 @@ angular.module('starter', ['ionic', 'starter.controllers',"angular-md5",'service
             slider(header3, $element[0], shrinkAmt, headerHeight); //do the shrinking   
           
         });
-      },500);
+      },1500);
     }
   }
 })
@@ -212,6 +212,7 @@ angular.module('starter', ['ionic', 'starter.controllers',"angular-md5",'service
         var header3 = $document[0].body.querySelector('.tsb-program');
 
         var header4 = $document[0].body.querySelector('.slider');
+        console.log(header4)
 
         var headerHeight = chil.offsetHeight;
 
@@ -235,7 +236,7 @@ angular.module('starter', ['ionic', 'starter.controllers',"angular-md5",'service
             slider(header4, $element[0], shrinkAmt, headerHeight); //do the shrinking   
           
         });
-      },1000);
+      },1500);
     }
   }
 })

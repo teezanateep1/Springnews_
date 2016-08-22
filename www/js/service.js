@@ -183,9 +183,8 @@ angular.module('services', [])
     this._advertise = function($scope,id){
         var url=path+"Advertise/id?api-key="+key+"&adv_id="+id; 
         $http.get(url).success(function(result){ 
-            // $scope.adver = result[Math.floor(Math.random()*result.length)];
             $scope.adver = result;
-            console.log(result)
+            $ionicSlideBoxDelegate.update();
         })  
         .error(function(){  
  
@@ -332,9 +331,6 @@ angular.module('services', [])
             if(result != ""){
                 $scope.schedules = result;
             }
-
-           
-
             $scope.loading_schedule = false;
         })  
         .error(function(){  
@@ -439,6 +435,7 @@ angular.module('services', [])
     // ------------ Search ค้นหา
     this._search = function($scope,keyword){
         var url=path+"Posts/postSearch?api-key="+key+"&keyword="+keyword; 
+        $scope.showloading=true; 
         $http.get(url).success(function(result){ 
             if(result != ""){
                $scope.dict_result=result; 
