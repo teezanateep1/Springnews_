@@ -1,10 +1,6 @@
 angular.module('starter.controllers', ['ngOpenFB'])
 
-<<<<<<< Updated upstream
-.controller('AppCtrl', function($scope, $ionicModal, $timeout, $ionicPopup, $http ,$window, $location, md5,$localStorage,ngFB,$cordovaOauth) {
-=======
-.controller('AppCtrl', function($scope, $ionicModal, $timeout, $ionicPopup, $http ,$window, $location, md5,$localStorage,ngFB,$ionicSideMenuDelegate) {
->>>>>>> Stashed changes
+.controller('AppCtrl', function($scope, $ionicModal, $timeout, $ionicPopup, $http ,$window, $location, md5,$localStorage,ngFB,$cordovaOauth,$ionicSideMenuDelegate) {
 
   // With the new view caching in Ionic, Controllers are only called
   // when they are recreated or on app start, instead of every page change.
