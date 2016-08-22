@@ -406,7 +406,6 @@ angular.module('services', [])
     // ----------- Feed น้ำมัน
     this._oil = function($scope){ 
         var url=path+"Feeds/ptt?api-key="+key; 
-        $ionicLoading.show();  
         $http.get(url).success(function(result){
             $scope.oils = result;
             $scope.$broadcast("scroll.refreshComplete"); 
@@ -448,6 +447,19 @@ angular.module('services', [])
         })  
         .error(function(){  
             $scope.showloading=false; 
+        });
+    }
+    // ------------ Email ค้นหา
+    this._email = function(value){
+        var url=path+"Email/send"; 
+        $http({
+            method  : 'POST',
+            url     :  url,
+            data    :  value,  // pass in data as strings
+            headers : {'api-key': key}  // set the headers so angular passing info as form data (not request payload)
+        })
+        .success(function(data) {
+           alert(data)
         });
     }
     

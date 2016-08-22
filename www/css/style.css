@@ -376,7 +376,7 @@
 }
 
 .tab-item-top {
-  top: 70px;
+  top: 60px;
 }
 
 .tsb-icons{
@@ -808,6 +808,7 @@ color: #31b5c2;
 
 .tabs-main-color{
   color: #fff;
+  top: -10px;
 }
 
 

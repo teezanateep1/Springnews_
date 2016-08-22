@@ -6,7 +6,7 @@
    		<i class="nut-menu-share float-right" ng-click="share(newsDetail[0].post_title,newsDetail[0].guid != null ? newsDetail[0].guid:'img/default.jpg',newsDetail[0].url)"></i> 
   	</ion-nav-buttons>
   	<!-- NEWS DETAIL -->
-  	<ion-content style="margin-top: 15px;">
+  	<ion-content style="margin-top: 15px;" ng-hide="newsShow">
 		<div class="advertise" >
 			<ion-slide-box does-continue="true"  
 				auto-play="true"  
@@ -90,9 +90,6 @@
 				<a href="http://line.me/ti/p/~odeen" target="_system" alt="Line" title="Line"><img  ng-src="./img/social/line.png" class="box-news-img"></a>
 			</div>
 		</div>	
-		<div class="googleADV" >
-					    	
-		</div>
 	</ion-content>
 	<!-- ./BOX -->
 

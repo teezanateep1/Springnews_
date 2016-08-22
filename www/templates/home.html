@@ -1,8 +1,8 @@
-<ion-view  >
+<ion-view>
     <ion-content scroll="false" class="tabs-main-color ">
     	
         <tab-slide-box tab="0">
-		    <div class="tsb-icons tsb-main">
+		    <div class="tsb-icons tsb-main tsb-home">
 			    <div class="tsb-ic-wrp">
 			    	<div class="main-menu-home">
 						<a href="javascript:;" style="width: 50px;margin-left: 0px;height: 41px;" on-finish-render="test()"><i class="icon nut-menu-home" ></i> </a>
@@ -18,7 +18,7 @@
         	<ion-slide-box show-pager="false" on-slide-changed="slideHasChanged($index)">
 	            <ion-slide>
 	            	<!-- HOME -->
-					<ion-content style="margin-top: 1px;">
+					<ion-content style="margin-top: 1px;" header-home >
 				    	<!-- <ion-refresher on-refresh="refresh()"></ion-refresher>   -->
 
 				    	<!-- ทันเหตุการณ์ -->
@@ -169,13 +169,16 @@
 					    	
 					    </div>
 					    <br/>
+					    <br/>
+					    <br/>
+					    <br/>
 					</ion-content>
 					<!-- ./HOME -->
 					
 	            </ion-slide>
 	            <ion-slide ng-repeat="tab in tabs" >
 	                <!-- OTHER -->
-	                <ion-content style="margin-top: 1px;" >
+	                <ion-content style="margin-top: 1px;" header-home >
 				    	<!-- <ion-refresher on-refresh="refresh()"></ion-refresher>   -->
 				    	<!--  -->
 				    	<ion-spinner class="spinner-calm" style="z-index:10;margin-top: 45%;" ng-show="loading_catnews" ></ion-spinner>
@@ -245,13 +248,30 @@
 								<div style="cursor:pointer;" ng-click="loadMore(tab.term_id,$index)" class="sp-readmore" ng-show="$last" >
 						    	<i class="nut-menu-seemore but-seemore"></i> แสดงข่าวเพิ่ม 10 ข่าว</div>
 						    	
+						    	<div class="sp-follow-us" ng-show="$last">
+									<div class="sp-title">FOLLOW US</div>
+									<div class="sp-social">
+
+										<a href="https://www.facebook.com/SpringNewsTV" target="_system" alt="Facebook" title="Facebook"><img  ng-src="./img/social/facebook.png" class="box-news-img"></a>
+
+										<a href="https://www.twitter.com/SpringNews_TV" target="_system" alt="Twitter" title="Twitter"><img  ng-src="./img/social/twitter.png" class="box-news-img"></a>
+
+										<a href="https://www.google.com/+springnews" target="_system" alt="Google+" title="Google+"><img  ng-src="./img/social/google_plus.png" class="box-news-img"></a>
+
+										<a href="https://www.instagram.com/springnewstv/" class="the-social-links tsl-circle tsl-24 tsl-default tsl-youtube" target="_system" alt="Instagram" title="Instagram"><img  ng-src="./img/social/ig.png" class="box-news-img"></a>
+
+										<a href="https://www.youtube.com/springnewsonline" class="the-social-links tsl-circle tsl-24 tsl-default tsl-instagram" target="_system" alt="Youtube" title="Youtube"><img  ng-src="./img/social/tyoutube.png" class="box-news-img"></a>
+
+										<a href="http://line.me/ti/p/~odeen" target="_system" alt="Line" title="Line"><img  ng-src="./img/social/line.png" class="box-news-img"></a>
+									</div>
+								</div>	
+						    	
 							</li>
 							
 						</ul>
 						<!-- </ion-list>  -->
 					    <!-- FOLLOW US -->
-					  
-						<br/>
+					    <br/>
 						<br/>
 						<br/>
 						<br/>
@@ -270,7 +290,7 @@
 
 	            <ion-slide>
 	                <!-- ข้อมูลเศรษฐกิจ -->
-					<ion-content style="margin-top: 15px;">
+					<ion-content style="margin-top: 1px;" header-home>
 				    	<ion-refresher on-refresh="refresh()"></ion-refresher>  
 
 				    	<!-- ราคาน้ำมัน -->
