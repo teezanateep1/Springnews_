@@ -388,7 +388,6 @@ angular.module('services', [])
     // ----------- Feed น้ำมัน
     this._oil = function($scope){ 
         var url=path+"Feeds/ptt?api-key="+key; 
-        $ionicLoading.show();  
         $http.get(url).success(function(result){
             $scope.oils = result;
             $scope.$broadcast("scroll.refreshComplete"); 

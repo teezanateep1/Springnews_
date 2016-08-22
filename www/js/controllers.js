@@ -229,7 +229,7 @@ angular.module('starter.controllers', [])
 })
 
 // --------------------- HOME ------------------------
-.controller('HomeCtrl', function($scope, $stateParams, SpringNews, $ionicSlideBoxDelegate,_function, $ionicModal,$ionicLoading,$cordovaSocialSharing,$ionicScrollDelegate, $ionicNavBarDelegate) { //admobSvc
+.controller('HomeCtrl', function($scope, $stateParams, SpringNews, $ionicSlideBoxDelegate,_function, $ionicModal,$ionicLoading,$cordovaSocialSharing,$ionicScrollDelegate, $ionicNavBarDelegate, $timeout) { //admobSvc
 
   $ionicLoading.show();
 
@@ -254,14 +254,16 @@ angular.module('starter.controllers', [])
   $scope.parts = [];
   $scope.thaigolds = [];
 
-  SpringNews._advertise($scope,'14'); 
-  SpringNews._newsupdate($scope,'908'); 
-  SpringNews._newshot($scope,'ประเด็นร้อน');
-  SpringNews._clips($scope,'30','4'); 
-  SpringNews._category($scope,'889');
-  SpringNews._oil($scope);
-  SpringNews._part($scope);
-  SpringNews._thaigold($scope);
+ $timeout(function(){
+    SpringNews._advertise($scope,'14'); 
+    SpringNews._newsupdate($scope,'908'); 
+    SpringNews._newshot($scope,'ประเด็นร้อน');
+    SpringNews._clips($scope,'30','4'); 
+    SpringNews._category($scope,'889');
+    SpringNews._oil($scope);
+    SpringNews._part($scope);
+    SpringNews._thaigold($scope);
+  },1500);
   
   //วันที่
   $scope.date = function(d){
@@ -477,9 +479,6 @@ angular.module('starter.controllers', [])
 
 // --------------------- INTRODUCE ------------------------
 .controller('IntroduceCtrl', function($scope,SpringNews) {
-    $scope.introduce = function(event) {
-      console.log(event)
-    }
     $scope.submitForm = function(){
        SpringNews._email(this.intro); 
        this.intro = null;
@@ -583,13 +582,16 @@ angular.module('starter.controllers', [])
 })
 
 // --------------------- CLIP ------------------------
-.controller('ClipCtrl', function($scope,_function,SpringNews,_function,$stateParams,$cordovaSocialSharing) {
+.controller('ClipCtrl', function($scope,_function,SpringNews,_function,$stateParams,$cordovaSocialSharing,$timeout,$ionicLoading) {
   $scope.clips = [];
   $scope.clips_loop = [];
   $scope.title = $stateParams.title;
-
-  SpringNews._advertise($scope,'14'); 
-  SpringNews._clips($scope,'30',''); 
+  $ionicLoading.show();
+  
+  $timeout(function(){
+    SpringNews._advertise($scope,'14'); 
+    SpringNews._clips($scope,'30',''); 
+  },1000);
   //วันที่
   $scope.date = function(d){
     if(d != undefined){
@@ -656,12 +658,13 @@ angular.module('starter.controllers', [])
 })
 
 // --------------------- Schedule ------------------------
-.controller('ScheduleCtrl', function($scope,SpringNews,$stateParams,$cordovaLocalNotification,$timeout) {
+.controller('ScheduleCtrl', function($scope,SpringNews,$stateParams,$cordovaLocalNotification,$timeout,$ionicLoading) {
   $scope.schedules = []; 
   $scope.schedulesActive = [];
   $scope.loading_schedule = true;
   SpringNews._schedules($scope,$stateParams.scheId); 
   $scope.schedulesActive = window.localStorage.getItem('Notification');
+  $ionicLoading.show();
   $scope.test = function(){
     $cordovaLocalNotification.getAllIds().then(function(result_){
       alert('Get all ids: ' + result_) //Returned 2nd: 'Get all ids: 1,0,4,5,3,2'
@@ -786,7 +789,7 @@ angular.module('starter.controllers', [])
 })
 
 // ---------------------- NEWS DETAIL ---------------------
-.controller('NewsCtrl', function($scope, $stateParams , SpringNews,$ionicLoading,$timeout,_function, $sce,$cordovaSocialSharing) {
+.controller('NewsCtrl', function($scope, $stateParams , SpringNews, $ionicLoading, $timeout,_function, $sce, $cordovaSocialSharing, $timeout) {
   
   $scope.newsDetail = [];
   $scope.newsConnected = [];
@@ -794,11 +797,15 @@ angular.module('starter.controllers', [])
   $scope.video = [];
   $scope.loading_newsdetail = true;
   $scope.adver = [];
+  $scope.newsShow = true;
+  $ionicLoading.show();
   
-
-  SpringNews._advertise($scope,'14');
-  SpringNews._newsdetail($scope,$stateParams.newsId);
-  SpringNews._newsconnected($scope,$stateParams.newsId,$stateParams.catId);
+  $timeout(function(){
+    SpringNews._advertise($scope,'14');
+    SpringNews._newsdetail($scope,$stateParams.newsId);
+    SpringNews._newsconnected($scope,$stateParams.newsId,$stateParams.catId);
+    $scope.newsShow = false
+  },2000);
 
   $scope.message = '';
   $scope.url = '';
@@ -849,13 +856,14 @@ angular.module('starter.controllers', [])
   $scope.video = [];
   $scope.loading_videosdetail = true;
   $scope.title = $stateParams.title;
+  $ionicLoading.show();
 
-  SpringNews._advertise($scope,'14');
-  SpringNews._videosdetail($scope,$stateParams.videosId);
-  SpringNews._newsconnected($scope,$stateParams.videosId,$stateParams.catId);
-
-
-
+  $timeout(function(){
+    SpringNews._advertise($scope,'14');
+    SpringNews._videosdetail($scope,$stateParams.videosId);
+    SpringNews._newsconnected($scope,$stateParams.videosId,$stateParams.catId);
+  },1000);
+  
   $scope.title_ = '';
   $scope.url = '';
 

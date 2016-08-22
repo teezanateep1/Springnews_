@@ -88,7 +88,7 @@ angular.module('starter', ['ionic', 'starter.controllers',"angular-md5",'service
     duration:1500  // กำหนดให้ซ่อนอัตโนมัติในกี่วินาที แบบไม่ต้องเรียก method hide() อีก  
 })  
 
-.directive('headerShrink', function($document) {
+.directive('headerHome', function($document,$timeout) {
   var fadeAmt;
 
   var shrink = function(header, content, amt, max) {
@@ -101,16 +101,14 @@ angular.module('starter', ['ionic', 'starter.controllers',"angular-md5",'service
       }
     });
   };
-
   var tab = function(header, content, amt, max) {
     amt = Math.min(54, amt);
     fadeAmt = 1 - amt / 54;
     ionic.requestAnimationFrame(function() {
       header.style[ionic.CSS.TRANSFORM] = 'translate3d(0, -' + amt + 'px, 0)';
-      header.style.marginTop = '15%';
+      header.style.marginTop = '56px';
     });
   };
-
   var slider = function(header, content, amt, max) {
     amt = Math.min(53, amt);
     fadeAmt = 1 - amt / 53;
@@ -122,43 +120,121 @@ angular.module('starter', ['ionic', 'starter.controllers',"angular-md5",'service
   return {
     restrict: 'A',
     link: function($scope, $element, $attr) {
-      var starty = orgStarty = $scope.$eval($attr.headerShrink) || 40;
-      var shrinkAmt;
-      
-      var header = $document[0].body.querySelector('[nav-bar="active"]');
-      var chil = header.querySelector('.bar-header');
-      var header1 = $document[0].body.querySelector('[nav-bar="cached"]');
-      var chil1 = header1.querySelector('.bar-header');
-
-      var header2 = $document[0].body.querySelector('.tsb-main');
-
-      var header3 = $document[0].body.querySelector('.slider');
-
-      var headerHeight = chil.offsetHeight;
-      
-      $element.bind('scroll', function(e) { 
-          shrinkAmt = headerHeight - (headerHeight - (e.detail.scrollTop - starty));
-
-          if (shrinkAmt >= headerHeight){
-            //header is totaly hidden - start moving startY downward so that when scrolling up the header starts showing
-            starty = (e.detail.scrollTop - headerHeight);
-            shrinkAmt = headerHeight;
-          } else if (shrinkAmt < 0){
-            //header is totaly displayed - start moving startY upwards so that when scrolling down the header starts shrinking
-            starty = Math.max(orgStarty, e.detail.scrollTop);
-            shrinkAmt = 0;
-          } 
-          
-          shrink(chil, $element[0], shrinkAmt, headerHeight); //do the shrinking   
-          shrink(chil1, $element[0], shrinkAmt, headerHeight); //do the shrinking   
-          tab(header2, $element[0], shrinkAmt, headerHeight); //do the shrinking   
-          slider(header3, $element[0], shrinkAmt, headerHeight); //do the shrinking   
+      $timeout(function(){  
+        var starty = orgStarty = $scope.$eval($attr.headerShrink) || 40;
+        var shrinkAmt;
         
-      });
+        var header = $document[0].body.querySelector('[nav-bar="active"]');
+        var chil = header.querySelector('.bar-header');
+        var header1 = $document[0].body.querySelector('[nav-bar="cached"]');
+        var chil1 = header1.querySelector('.bar-header');
 
-        $element.on('click', function(){
-          alert('clicked');
-        })
+        var header2 = $document[0].body.querySelector('.tsb-home');
+
+        var header3 = $document[0].body.querySelector('.slider');
+
+        var headerHeight = chil.offsetHeight;
+
+        $element.bind('scroll', function(e) { 
+            shrinkAmt = headerHeight - (headerHeight - (e.detail.scrollTop - starty));
+
+            if (shrinkAmt >= headerHeight){
+              //header is totaly hidden - start moving startY downward so that when scrolling up the header starts showing
+              starty = (e.detail.scrollTop - headerHeight);
+              shrinkAmt = headerHeight;
+            } else if (shrinkAmt < 0){
+              //header is totaly displayed - start moving startY upwards so that when scrolling down the header starts shrinking
+              starty = Math.max(orgStarty, e.detail.scrollTop);
+              shrinkAmt = 0;
+            } 
+            
+            shrink(chil, $element[0], shrinkAmt, headerHeight); //do the shrinking   
+            shrink(chil1, $element[0], shrinkAmt, headerHeight); //do the shrinking   
+            tab(header2, $element[0], shrinkAmt, headerHeight); //do the shrinking   
+            slider(header3, $element[0], shrinkAmt, headerHeight); //do the shrinking   
+          
+        });
+      },500);
+    }
+  }
+})
+
+.directive('headerProgram', function($document,$timeout) {
+  var fadeAmt;
+
+  var shrink = function(header, content, amt, max) {
+    amt = Math.min(54, amt);
+    fadeAmt = 1 - amt / 54;
+    ionic.requestAnimationFrame(function() {
+      header.style[ionic.CSS.TRANSFORM] = 'translate3d(0, -' + amt + 'px, 0)';
+      for(var i = 0, j = header.children.length; i < j; i++) {
+        header.children[i].style.opacity = fadeAmt;
+      }
+    });
+  };
+  var header_ = function(header, content, amt, max) {
+    amt = Math.min(54, amt);
+    fadeAmt = 1 - amt / 54;
+    ionic.requestAnimationFrame(function() {
+      header.style[ionic.CSS.TRANSFORM] = 'translate3d(0, -' + amt + 'px, 0)';
+      header.style.marginTop = '70px';
+    });
+  };
+  var tab = function(header, content, amt, max) {
+    amt = Math.min(54, amt);
+    fadeAmt = 1 - amt / 54;
+    ionic.requestAnimationFrame(function() {
+      header.style[ionic.CSS.TRANSFORM] = 'translate3d(0, -' + amt + 'px, 0)';
+    });
+  };
+  var slider = function(header, content, amt, max) {
+    amt = Math.min(53, amt);
+    fadeAmt = 1 - amt / 53;
+    ionic.requestAnimationFrame(function() {
+      header.style[ionic.CSS.TRANSFORM] = 'translate3d(0, -' + amt + 'px, 0)';
+    });
+  };
+
+  return {
+    restrict: 'A',
+    link: function($scope, $element, $attr) {
+      $timeout(function(){  
+        var starty = orgStarty = $scope.$eval($attr.headerShrink) || 40;
+        var shrinkAmt;
+        
+        var header = $document[0].body.querySelector('[nav-bar="active"]');
+        var chil = header.querySelector('.bar-header');
+        var header1 = $document[0].body.querySelector('[nav-bar="cached"]');
+        var chil1 = header1.querySelector('.bar-header');
+
+        var header2 = $document[0].body.querySelector('.hd-pro');
+        var header3 = $document[0].body.querySelector('.tsb-program');
+
+        var header4 = $document[0].body.querySelector('.slider');
+
+        var headerHeight = chil.offsetHeight;
+
+        $element.bind('scroll', function(e) { 
+            shrinkAmt = headerHeight - (headerHeight - (e.detail.scrollTop - starty));
+
+            if (shrinkAmt >= headerHeight){
+              //header is totaly hidden - start moving startY downward so that when scrolling up the header starts showing
+              starty = (e.detail.scrollTop - headerHeight);
+              shrinkAmt = headerHeight;
+            } else if (shrinkAmt < 0){
+              //header is totaly displayed - start moving startY upwards so that when scrolling down the header starts shrinking
+              starty = Math.max(orgStarty, e.detail.scrollTop);
+              shrinkAmt = 0;
+            } 
+            
+            shrink(chil, $element[0], shrinkAmt, headerHeight); //do the shrinking   
+            shrink(chil1, $element[0], shrinkAmt, headerHeight); //do the shrinking   
+            header_(header2, $element[0], shrinkAmt, headerHeight); //do the shrinking   
+            tab(header3, $element[0], shrinkAmt, headerHeight); //do the shrinking   
+            slider(header4, $element[0], shrinkAmt, headerHeight); //do the shrinking   
+          
+        });
+      },1000);
     }
   }
 })

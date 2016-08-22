@@ -1,14 +1,14 @@
 <ion-view  >
-    <ion-content scroll="false" class="tabs-main-color ">
+    <ion-content scroll="false" class="tabs-main-color " >
     	<!-- รายการ TV -->
-    	<div class="row" style="padding: 0px;margin-top: 5%;">
+    	<div class="row hd-pro" style="padding: 0px;margin-top: 15%;">
 			<div class="box-news-header col col-33">
 				รายการทีวี
 			</div>
 		</div>
-        <tab-slide-box tab="0">
-		    <div class="tsb-icons tsb-icons-pr tsb-main " style="background-color: #4c4c4c;">
-			    <div class="tsb-ic-wrp" style="margin: -2%;">
+        <tab-slide-box tab="0" >
+		    <div class="tsb-icons tsb-icons-pr tsb-main tsb-program" style="background-color: #4c4c4c;">
+			    <div class="tsb-ic-wrp" style="margin: -1%;">
 					<ion-scroll direction="x" class="tsb-hscroll" ng-style="{width:'100%'}">
 						<a href="javascript:;" ng-repeat="tab in tabs" on-finish-render="test">{{tab.name}}</a>
 					</ion-scroll>
@@ -17,7 +17,7 @@
         	<ion-slide-box show-pager="false" on-slide-changed="slideHasChanged($index)" ng-style="{width:'100%'}">
 	            <ion-slide ng-repeat="tab in tabs" >
 	            	<!-- HOME -->
-					<ion-content style="margin-top: 0px;">
+					<ion-content style="margin-top: 0px;" header-program>
 				    	<!-- รายการ TV -->
 				    	<ion-spinner class="spinner-calm" style="z-index:10;margin-top: 55%;" ng-show="loading_catnews" ></ion-spinner>
 						<div class="box-news">
@@ -57,6 +57,9 @@
 							
 						</div> 
 
+						<br/>
+						<br/>
+						<br/>
 						<br/>
 						<br/>
 						<br/>

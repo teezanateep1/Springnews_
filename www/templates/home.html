@@ -2,7 +2,7 @@
     <ion-content scroll="false" class="tabs-main-color ">
 
         <tab-slide-box tab="0">
-		    <div class="tsb-icons tsb-main">
+		    <div class="tsb-icons tsb-main tsb-home">
 			    <div class="tsb-ic-wrp">
 			    	<div class="main-menu-home">
 						<a href="javascript:;" style="width: 50px;margin-left: 0px;height: 41px;" on-finish-render="test()"><i class="icon nut-menu-home" ></i> </a>
@@ -18,7 +18,7 @@
         	<ion-slide-box show-pager="false" on-slide-changed="slideHasChanged($index)">
 	            <ion-slide>
 	            	<!-- HOME -->
-					<ion-content style="margin-top: 1px;" header-shrink >
+					<ion-content style="margin-top: 1px;" header-home >
 				    	<!-- <ion-refresher on-refresh="refresh()"></ion-refresher>   -->
 
 				    	<!-- ทันเหตุการณ์ -->
@@ -169,13 +169,16 @@
 					    	
 					    </div>
 					    <br/>
+					    <br/>
+					    <br/>
+					    <br/>
 					</ion-content>
 					<!-- ./HOME -->
 					
 	            </ion-slide>
 	            <ion-slide ng-repeat="tab in tabs" >
 	                <!-- OTHER -->
-	                <ion-content style="margin-top: 1px;" header-shrink >
+	                <ion-content style="margin-top: 1px;" header-home >
 				    	<!-- <ion-refresher on-refresh="refresh()"></ion-refresher>   -->
 				    	<!--  -->
 				    	<ion-spinner class="spinner-calm" style="z-index:10;margin-top: 45%;" ng-show="loading_catnews" ></ion-spinner>
@@ -279,9 +282,6 @@
 						<br/>
 						<br/>
 						<br/>
-						<br/>
-						<br/>
-						<br/>
 					    
 					</ion-content>
 
@@ -290,7 +290,7 @@
 
 	            <ion-slide>
 	                <!-- ข้อมูลเศรษฐกิจ -->
-					<ion-content style="margin-top: 1px;" header-shrink>
+					<ion-content style="margin-top: 1px;" header-home>
 				    	<ion-refresher on-refresh="refresh()"></ion-refresher>  
 
 				    	<!-- ราคาน้ำมัน -->
@@ -531,6 +531,9 @@
 							<br/>
 						</div>	
 					    <br/>
+						<br/>
+						<br/>
+						<br/>
 						<br/>
 					</ion-content>
 					<!-- ./ข้อมูลเศรษฐกิจ  -->
