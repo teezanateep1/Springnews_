@@ -1,6 +1,6 @@
 angular.module('starter.controllers', ['ngOpenFB'])
 
-.controller('AppCtrl', function($scope, $ionicModal, $timeout, $ionicPopup, $http ,$window, $location, md5,$localStorage,ngFB) {
+.controller('AppCtrl', function($scope, $ionicModal, $timeout, $ionicPopup, $http ,$window, $location, md5,$localStorage,ngFB,$cordovaOauth) {
 
   // With the new view caching in Ionic, Controllers are only called
   // when they are recreated or on app start, instead of every page change.
@@ -8,7 +8,6 @@ angular.module('starter.controllers', ['ngOpenFB'])
   // listen for the $ionicView.enter event:
   //$scope.$on('$ionicView.enter', function(e) {
   //});
-
  
   // Create the login modal that we will use later
   $ionicModal.fromTemplateUrl('templates/login.html', {
@@ -87,7 +86,6 @@ angular.module('starter.controllers', ['ngOpenFB'])
   $scope.user  = {};
   $scope.icon = "right";
 
-<<<<<<< HEAD
   if($localStorage.name != undefined){
      $scope.user.img = $localStorage.img;
      $scope.user.name = $localStorage.name;
@@ -101,21 +99,6 @@ angular.module('starter.controllers', ['ngOpenFB'])
      $scope.login_ = true;
      $scope.logout_ = false;
   }
-=======
-  // if($localStorage.name != undefined){
-  //    $scope.user.img = $localStorage.img;
-  //    $scope.user.name = $localStorage.name;
-  //    $scope.user.email = $localStorage.email;
-  //    // $scope.profile = true;
-  //    // $scope.login_ = false;
-  //    // $scope.logout_ = true;
-  // }else{
-  //    $scope.profile = true
-  //    // $scope.profile = false;
-  //    // $scope.login_ = true;
-  //    // $scope.logout_ = false;
-  // }
->>>>>>> origin/master
 
   // Triggered in the login modal to close it
   $scope.closeLogin = function() {
@@ -129,9 +112,9 @@ angular.module('starter.controllers', ['ngOpenFB'])
 
   //Open the logout 
   $scope.logout = function() {
-    // $localStorage.img = undefined;
-    // $localStorage.name = undefined;
-    // $localStorage.email = undefined;
+    $localStorage.img = undefined;
+    $localStorage.name = undefined;
+    $localStorage.email = undefined;
     $scope.profile = false;
     $scope.login_ = true;
     $scope.logout_ = false;
@@ -203,6 +186,11 @@ angular.module('starter.controllers', ['ngOpenFB'])
                         $localStorage.img = "https://graph.facebook.com/"+$scope.user.id+"/picture?width=400&height=400";
                         $localStorage.name = $scope.user.name;
                         // $localStorage.email = authData.facebook.email; 
+
+                        $scope.user.name = $localStorage.name
+                        $scope.user.email = $localStorage.email 
+                        $scope.user.img = $localStorage.img
+
                         $scope.profile = true;
                         $scope.login_ = false;
                         $scope.logout_ = true;
@@ -245,6 +233,35 @@ angular.module('starter.controllers', ['ngOpenFB'])
   //Login Google
   $scope.doLoginGoogle = function () {
 
+    $cordovaOauth.google("891740401184-i1ucjk82d2uh6pcs0qt82v7pcqnrb58o.apps.googleusercontent.com", ["email"]).then(function(result) {
+        console.log("Response Object -> " + JSON.stringify(result));
+        // alert("Response Object -> " + JSON.stringify(result));
+        var url="https://www.googleapis.com/oauth2/v1/userinfo?access_token="+result.access_token; 
+        $http.get(url).success(function(result2){ 
+            $scope.closeLogin();
+            if(result2 != ""){
+                $scope.user = result2;
+                $localStorage.img = result2.picture;
+                $localStorage.name = result2.name;
+                $localStorage.email = result2.email;
+
+                $scope.user.name = $localStorage.name
+                $scope.user.email = $localStorage.email 
+                $scope.user.img = $localStorage.img
+
+                $scope.profile = true;
+                $scope.login_ = false;
+                $scope.logout_ = true;
+            }
+            $scope.showloading=false; 
+        })  
+        .error(function(){  
+            $scope.showloading=false; 
+        });
+    }, function(error) {
+        console.log("Error -> " + error);
+        // alert("Error -> " + JSON.stringify(error));
+    });
     // _auth.authWithOAuthPopup("google", function(error, authData) {
     //   if (error) {
     //     var alertPopup = $ionicPopup.alert({
@@ -301,7 +318,7 @@ angular.module('starter.controllers', ['ngOpenFB'])
     SpringNews._newsupdate($scope,'908'); 
     SpringNews._newshot($scope,'ประเด็นร้อน');
     SpringNews._clips($scope,'30','4'); 
-    SpringNews._category($scope,'889');
+    // SpringNews._category($scope,'889');
     SpringNews._oil($scope);
     SpringNews._part($scope);
     SpringNews._thaigold($scope);
