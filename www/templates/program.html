@@ -1,7 +1,7 @@
 <ion-view  >
     <ion-content scroll="false" class="tabs-main-color " >
     	<!-- รายการ TV -->
-    	<div class="row hd-pro" style="padding: 0px;margin-top: 15%;">
+    	<div class="row hd-pro" style="padding: 0px;margin-top: 16%;">
 			<div class="box-news-header col col-33">
 				รายการทีวี
 			</div>
@@ -22,7 +22,7 @@
 				    	<ion-spinner class="spinner-calm" style="z-index:10;margin-top: 55%;" ng-show="loading_catnews" ></ion-spinner>
 						<div class="box-news">
 								<!-- Program Div -->
-								<div class="list" collection-repeat="item in newsCategory |filter: tab.name " collection-item-width="'100%'"  item-height="259px" ng-style="{width:'100%'}"   >
+								<div class="list" collection-repeat="item in newsCategory |filter: tab.name " collection-item-width="'100%'"  item-height="255px" ng-style="{width:'100%'}"   >
 									<a href="#/app/videos/{{item.ID}}/{{item.term_taxonomy_id}}/" style="text-decoration: none;">
 										<div class="item item-text-wrap" style="border-color: #31b5c2;height: 250px;padding: 0px;">
 											<img ng-src="{{item.guid != null ? item.guid:'img/default.jpg'}}" class="box-news-img" >
@@ -31,8 +31,8 @@
 										  	{{substring(item.post_title)}}	
 										</div>
 									</a>
-									<div style="margin-top: 5px;" ng-style="{width:'100%'}"></div>
-
+									<!-- <div style="margin-top: 5px;" ng-style="{width:'100%'}"></div>
+ -->
 									<!-- FOLLOW US -->
 									<div class="sp-follow-us" ng-show="$last">
 										<div class="sp-title">FOLLOW US</div>

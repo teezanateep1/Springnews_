@@ -70,15 +70,14 @@ angular.module('starter.controllers', ['ngOpenFB'])
   //---------------- Search ----------
   var timeoutID=null;  
   $scope.showMydict = function(keyword,event){  
-    $window.location.href = ('#/app/search/'+keyword);
-    // if(keyword.length>2 && event.keyCode!=8){ 
-    //     timeoutID=$timeout(function(){ 
-    //        $window.location.href = ('#/app/search/'+keyword);
-    //         if ($ionicSideMenuDelegate.isOpen()) {
-    //           $ionicSideMenuDelegate.toggleLeft(false); // close
-    //         }
-    //     },1500); // เริ่มทำงานน 2 วินาที // 1000 เท่ากับ 1 วินาที  
-    // }  
+    if(keyword.length>2 && event.keyCode!=8){ 
+        timeoutID=$timeout(function(){ 
+           $window.location.href = ('#/app/search/'+keyword);
+            if ($ionicSideMenuDelegate.isOpen()) {
+              $ionicSideMenuDelegate.toggleLeft(false); // close
+            }
+        },1500); // เริ่มทำงานน 2 วินาที // 1000 เท่ากับ 1 วินาที  
+    }  
   };  
   $scope.setkeyword = function(){  
       $timeout.cancel(timeoutID);
@@ -830,7 +829,7 @@ angular.module('starter.controllers', ['ngOpenFB'])
             $scope.showloading=true;  
             $scope.dict_result=[]; 
             SpringNews._search($scope,keyword);
-        },2000); // เริ่มทำงานน 2 วินาที // 1000 เท่ากับ 1 วินาที  
+        },1500); // เริ่มทำงานน 2 วินาที // 1000 เท่ากับ 1 วินาที  
       }  
     };  
     $scope.setkeyword = function(){  

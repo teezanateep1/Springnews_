@@ -188,7 +188,7 @@ angular.module('starter', ['ionic', 'starter.controllers',"angular-md5",'service
       header.style[ionic.CSS.TRANSFORM] = 'translate3d(0, -' + amt + 'px, 0)';
     });
   };
-  var slider = function(header, content, amt, max) {
+  var slider_ = function(header, content, amt, max) {
     amt = Math.min(53, amt);
     fadeAmt = 1 - amt / 53;
     ionic.requestAnimationFrame(function() {
@@ -212,7 +212,6 @@ angular.module('starter', ['ionic', 'starter.controllers',"angular-md5",'service
         var header3 = $document[0].body.querySelector('.tsb-program');
 
         var header4 = $document[0].body.querySelector('.slider');
-        console.log(header4)
 
         var headerHeight = chil.offsetHeight;
 
@@ -233,10 +232,10 @@ angular.module('starter', ['ionic', 'starter.controllers',"angular-md5",'service
             shrink(chil1, $element[0], shrinkAmt, headerHeight); //do the shrinking   
             header_(header2, $element[0], shrinkAmt, headerHeight); //do the shrinking   
             tab(header3, $element[0], shrinkAmt, headerHeight); //do the shrinking   
-            slider(header4, $element[0], shrinkAmt, headerHeight); //do the shrinking   
+            slider_(header4, $element[0], shrinkAmt, headerHeight); //do the shrinking   
           
         });
-      },1500);
+      },3000);
     }
   }
 })
