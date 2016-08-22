@@ -1,6 +1,6 @@
-angular.module('starter.controllers', [])
+angular.module('starter.controllers', ['ngOpenFB'])
 
-.controller('AppCtrl', function($scope, $ionicModal, $timeout, $ionicPopup, $http ,$window, $location, md5) {
+.controller('AppCtrl', function($scope, $ionicModal, $timeout, $ionicPopup, $http ,$window, $location, md5,$localStorage,ngFB) {
 
   // With the new view caching in Ionic, Controllers are only called
   // when they are recreated or on app start, instead of every page change.
@@ -87,19 +87,19 @@ angular.module('starter.controllers', [])
   $scope.user  = {};
   $scope.icon = "right";
 
-  // if($localStorage.name != undefined){
-  //    $scope.user.img = $localStorage.img;
-  //    $scope.user.name = $localStorage.name;
-  //    $scope.user.email = $localStorage.email;
-  //    // $scope.profile = true;
-  //    // $scope.login_ = false;
-  //    // $scope.logout_ = true;
-  // }else{
-  //    $scope.profile = true;
-  //    // $scope.profile = false;
-  //    // $scope.login_ = true;
-  //    // $scope.logout_ = false;
-  // }
+  if($localStorage.name != undefined){
+     $scope.user.img = $localStorage.img;
+     $scope.user.name = $localStorage.name;
+     $scope.user.email = $localStorage.email;
+     $scope.profile = true;
+     $scope.login_ = false;
+     $scope.logout_ = true;
+  }else{
+     // $scope.profile = true;
+     $scope.profile = false;
+     $scope.login_ = true;
+     $scope.logout_ = false;
+  }
 
   // Triggered in the login modal to close it
   $scope.closeLogin = function() {
@@ -172,7 +172,33 @@ angular.module('starter.controllers', [])
 
   //Login Facebook 
   $scope.doLoginFacebook = function () { 
-
+    ngFB.login({scope: 'email,publish_actions,user_friends'}).then(
+        function (response) {
+            if (response.status === 'connected') {
+                console.log(response)
+                console.log('Facebook login succeeded');
+                $scope.closeLogin();
+                ngFB.api({
+                    path: '/me',
+                    params: {fields: 'id,name'}
+                }).then(
+                    function (user) {
+                        $scope.user = user;
+                        $localStorage.img = "https://graph.facebook.com/"+$scope.user.id+"/picture?width=400&height=400";
+                        $localStorage.name = $scope.user.name;
+                        // $localStorage.email = authData.facebook.email; 
+                        $scope.profile = true;
+                        $scope.login_ = false;
+                        $scope.logout_ = true;
+                        console.log(user)
+                    },
+                    function (error) {
+                        alert('Facebook error: ' + error.error_description);
+                });
+            } else {
+                alert('Facebook login failed');
+            }
+    });
     // _auth.authWithOAuthPopup("facebook", function(error, authData) {
     //   if (error) {
     //     var alertPopup = $ionicPopup.alert({

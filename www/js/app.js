@@ -4,9 +4,10 @@
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'starter.controllers',"angular-md5",'services','tabSlideBox','ngStorage', 'ionic-cache-src','ngCordova.plugins.googleAds'])
+angular.module('starter', ['ionic', 'starter.controllers',"angular-md5",'services','ngOpenFB','tabSlideBox','ngStorage', 'ionic-cache-src','ngCordova.plugins.googleAds'])
 
-.run(function($ionicPlatform,$rootScope,$ionicPopup, $cordovaDialogs) { //admobSvc
+.run(function($ionicPlatform,$rootScope,$ionicPopup, $cordovaDialogs ,ngFB) { //admobSvc
+  ngFB.init({appId: '647791618729432'});
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
