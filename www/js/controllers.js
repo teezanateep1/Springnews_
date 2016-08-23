@@ -320,7 +320,7 @@ angular.module('starter.controllers', ['ngOpenFB'])
     SpringNews._newsupdate($scope,'908'); 
     SpringNews._newshot($scope,'ประเด็นร้อน');
     SpringNews._clips($scope,'30','4'); 
-    // SpringNews._category($scope,'889');
+    SpringNews._category($scope,'889');
     SpringNews._oil($scope);
     SpringNews._part($scope);
     SpringNews._thaigold($scope);

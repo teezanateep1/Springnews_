@@ -89,7 +89,7 @@ angular.module('starter', ['ionic', 'starter.controllers',"angular-md5",'service
     duration:1500  // กำหนดให้ซ่อนอัตโนมัติในกี่วินาที แบบไม่ต้องเรียก method hide() อีก  
 })  
 
-.directive('headerHome', function($document,$timeout) {
+.directive('headerHome', function($document,$timeout,$rootScope) {
   var fadeAmt;
 
   var shrink = function(header, content, amt, max) {
@@ -122,8 +122,8 @@ angular.module('starter', ['ionic', 'starter.controllers',"angular-md5",'service
     restrict: 'A',
     link: function($scope, $element, $attr) {
       $timeout(function(){  
-        var starty = orgStarty = $scope.$eval($attr.headerShrink) || 40;
-        var shrinkAmt;
+        var starty = orgStarty = $scope.$eval($attr.headerHome) || 40;
+        var shrinkAmt,timeoutID=null;
         
         var header = $document[0].body.querySelector('[nav-bar="active"]');
         var chil = header.querySelector('.bar-header');
@@ -143,11 +143,17 @@ angular.module('starter', ['ionic', 'starter.controllers',"angular-md5",'service
               //header is totaly hidden - start moving startY downward so that when scrolling up the header starts showing
               starty = (e.detail.scrollTop - headerHeight);
               shrinkAmt = headerHeight;
+              if(window.AdMob) AdMob.hideBanner();  
+              $timeout.cancel(timeoutID);
             } else if (shrinkAmt < 0){
               //header is totaly displayed - start moving startY upwards so that when scrolling down the header starts shrinking
               starty = Math.max(orgStarty, e.detail.scrollTop);
               shrinkAmt = 0;
+              if(window.AdMob) AdMob.hideBanner(); 
+              $timeout.cancel(timeoutID);
             } 
+            timeoutID=$timeout(function(){ if(window.AdMob) AdMob.showBanner(AdMob.AD_POSITION.BOTTOM_CENTER);  },3000); 
+            
             
             shrink(chil, $element[0], shrinkAmt, headerHeight); //do the shrinking   
             shrink(chil1, $element[0], shrinkAmt, headerHeight); //do the shrinking   
@@ -155,7 +161,7 @@ angular.module('starter', ['ionic', 'starter.controllers',"angular-md5",'service
             slider(header3, $element[0], shrinkAmt, headerHeight); //do the shrinking   
           
         });
-      },1500);
+      },3000);
     }
   }
 })
@@ -200,18 +206,18 @@ angular.module('starter', ['ionic', 'starter.controllers',"angular-md5",'service
     restrict: 'A',
     link: function($scope, $element, $attr) {
       $timeout(function(){  
-        var starty = orgStarty = $scope.$eval($attr.headerShrink) || 40;
-        var shrinkAmt;
+        var starty = orgStarty = $scope.$eval($attr.headerProgram) || 40;
+        var shrinkAmt,timeoutID=null;
         
         var header = $document[0].body.querySelector('[nav-bar="active"]');
         var chil = header.querySelector('.bar-header');
-        var header1 = $document[0].body.querySelector('[nav-bar="cached"]');
-        var chil1 = header1.querySelector('.bar-header');
+        // var header1 = $document[0].body.querySelector('[nav-bar="cached"]');
+        // var chil1 = header1.querySelector('.bar-header');
 
-        var header2 = $document[0].body.querySelector('.hd-pro');
-        var header3 = $document[0].body.querySelector('.tsb-program');
+        // var header2 = $document[0].body.querySelector('.hd-pro');
+        // var header3 = $document[0].body.querySelector('.tsb-program');
 
-        var header4 = $document[0].body.querySelector('.slider');
+        // var header4 = $document[0].body.querySelector('[on-slide-changed="slideHasChanged($index)"]');
 
         var headerHeight = chil.offsetHeight;
 
@@ -222,17 +228,22 @@ angular.module('starter', ['ionic', 'starter.controllers',"angular-md5",'service
               //header is totaly hidden - start moving startY downward so that when scrolling up the header starts showing
               starty = (e.detail.scrollTop - headerHeight);
               shrinkAmt = headerHeight;
+              if(window.AdMob) AdMob.hideBanner(); 
+              $timeout.cancel(timeoutID);
             } else if (shrinkAmt < 0){
               //header is totaly displayed - start moving startY upwards so that when scrolling down the header starts shrinking
               starty = Math.max(orgStarty, e.detail.scrollTop);
               shrinkAmt = 0;
+              if(window.AdMob) AdMob.hideBanner(); 
+              $timeout.cancel(timeoutID);
             } 
+            timeoutID=$timeout(function(){ if(window.AdMob) AdMob.showBanner(AdMob.AD_POSITION.BOTTOM_CENTER);  },3000); 
             
-            shrink(chil, $element[0], shrinkAmt, headerHeight); //do the shrinking   
-            shrink(chil1, $element[0], shrinkAmt, headerHeight); //do the shrinking   
-            header_(header2, $element[0], shrinkAmt, headerHeight); //do the shrinking   
-            tab(header3, $element[0], shrinkAmt, headerHeight); //do the shrinking   
-            slider_(header4, $element[0], shrinkAmt, headerHeight); //do the shrinking   
+            // shrink(chil, $element[0], shrinkAmt, headerHeight); //do the shrinking   
+            // shrink(chil1, $element[0], shrinkAmt, headerHeight); //do the shrinking   
+            // header_(header2, $element[0], shrinkAmt, headerHeight); //do the shrinking   
+            // tab(header3, $element[0], shrinkAmt, headerHeight); //do the shrinking   
+            // slider_(header4, $element[0], shrinkAmt, headerHeight); //do the shrinking   
           
         });
       },3000);

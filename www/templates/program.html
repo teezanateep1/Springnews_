@@ -1,7 +1,7 @@
 <ion-view  >
     <ion-content scroll="false" class="tabs-main-color " >
     	<!-- รายการ TV -->
-    	<div class="row hd-pro" style="padding: 0px;margin-top: 16%;">
+    	<div class="row hd-pro" style="padding: 0px;margin-top: 20%;">
 			<div class="box-news-header col col-33">
 				รายการทีวี
 			</div>
@@ -17,7 +17,7 @@
         	<ion-slide-box show-pager="false" on-slide-changed="slideHasChanged($index)" ng-style="{width:'100%'}">
 	            <ion-slide ng-repeat="tab in tabs" >
 	            	<!-- HOME -->
-					<ion-content style="margin-top: 0px;" header-program>
+					<ion-content header-program>
 				    	<!-- รายการ TV -->
 				    	<ion-spinner class="spinner-calm" style="z-index:10;margin-top: 55%;" ng-show="loading_catnews" ></ion-spinner>
 						<div class="box-news">
@@ -57,6 +57,9 @@
 							
 						</div> 
 
+						<br/>
+						<br/>
+						<br/>
 						<br/>
 						<br/>
 						<br/>
