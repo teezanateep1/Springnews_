@@ -1,3 +1,57 @@
+.app-icon {
+    margin-top: 30px;
+    background-color: #fff;
+    background: url('../img/icon.png') center;
+    background-size: cover;
+    border-radius: 50%;
+    height: 125px;
+    margin: 0 auto;
+    width: 125px;
+}
+
+.button.button-assertive .activated{
+    border-color: transparent;
+    background-color: #31b5c2; 
+    color: #fff;
+}
+
+.item-login {
+    background-color: rgba(255,255,255,0.5);
+    border-color: #808080;
+    border-right-color: #4C4C4C;
+    border-width: 1.9px;
+    font-family: 'Conv_SukhumvitReg','Conv_Frank-Regular';
+    margin: 0 5% 5% 5%;
+}
+
+body .button-bar > .button:first-child{
+  border-radius: 4px;
+  margin: 0 2.5% 0 5%;
+  background-color: #b71c1c;
+  color: #FFF;
+}
+
+body .button-bar > .button:last-child{
+  border-radius: 4px;
+  margin: 0 5% 0 2.5%;
+  background-color: #1a237e;
+  color: #FFF;
+}
+
+body .button.button-assertive{
+  background-color: #31b5c2;
+}
+
+body .button.button-assertive.activated{
+  background-color: #166971;
+}
+
+.padding {
+    padding: 0 5% 10px 5%;
+}
+
+/*/////////////////////*/
+
 .font-ship-261 {
       margin: 0 20px;
 }
