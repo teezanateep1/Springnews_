@@ -9,6 +9,14 @@ angular.module('starter.controllers', ['ngOpenFB'])
   //$scope.$on('$ionicView.enter', function(e) {
   //});
  
+ window.addEventListener('native.keyboardhide', keyboardHideHandler);
+
+  function keyboardHideHandler(e){
+    ionic.Platform.fullScreen(true,false);
+    if (window.StatusBar) {
+      StatusBar.hide();
+    }
+  }
   // Create the login modal that we will use later
   $ionicModal.fromTemplateUrl('templates/login.html', {
     scope: $scope
@@ -848,6 +856,14 @@ angular.module('starter.controllers', ['ngOpenFB'])
     }else{
       return str;
     } 
+  }
+  window.addEventListener('native.keyboardhide', keyboardHideHandler);
+
+  function keyboardHideHandler(e){
+    ionic.Platform.fullScreen(true,false);
+    if (window.StatusBar) {
+      StatusBar.hide();
+    }
   }
 
 

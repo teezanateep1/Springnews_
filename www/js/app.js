@@ -23,7 +23,6 @@ angular.module('starter', ['ionic', 'starter.controllers',"angular-md5",'service
         });
 
       }else{
-       // admobSvc.createBannerView();
       }
     }
 
@@ -60,13 +59,13 @@ angular.module('starter', ['ionic', 'starter.controllers',"angular-md5",'service
             };
         }
  
-      if(window.AdMob) AdMob.createBanner( {
-          adId:admobid.banner, 
-          position:AdMob.AD_POSITION.BOTTOM_CENTER, 
-          autoShow:true
-      });
- 
   //=======AdMob Code End=======
+        if(window.AdMob) 
+          AdMob.createBanner( {
+              adId:admobid.banner, 
+              position:AdMob.AD_POSITION.BOTTOM_CENTER, 
+              autoShow:true
+          });
 
  
   });
@@ -145,16 +144,16 @@ angular.module('starter', ['ionic', 'starter.controllers',"angular-md5",'service
               shrinkAmt = headerHeight;
               if(window.AdMob) AdMob.hideBanner();  
               $timeout.cancel(timeoutID);
+                timeoutID=$timeout(function(){ if(window.AdMob) AdMob.showBanner(AdMob.AD_POSITION.BOTTOM_CENTER);  },4000); 
             } else if (shrinkAmt < 0){
               //header is totaly displayed - start moving startY upwards so that when scrolling down the header starts shrinking
               starty = Math.max(orgStarty, e.detail.scrollTop);
               shrinkAmt = 0;
               if(window.AdMob) AdMob.hideBanner(); 
               $timeout.cancel(timeoutID);
+              timeoutID=$timeout(function(){ if(window.AdMob) AdMob.showBanner(AdMob.AD_POSITION.BOTTOM_CENTER);  },4000); 
             } 
-            timeoutID=$timeout(function(){ if(window.AdMob) AdMob.showBanner(AdMob.AD_POSITION.BOTTOM_CENTER);  },3000); 
-            
-            
+          
             shrink(chil, $element[0], shrinkAmt, headerHeight); //do the shrinking   
             shrink(chil1, $element[0], shrinkAmt, headerHeight); //do the shrinking   
             tab(header2, $element[0], shrinkAmt, headerHeight); //do the shrinking   
@@ -230,15 +229,15 @@ angular.module('starter', ['ionic', 'starter.controllers',"angular-md5",'service
               shrinkAmt = headerHeight;
               if(window.AdMob) AdMob.hideBanner(); 
               $timeout.cancel(timeoutID);
+              timeoutID=$timeout(function(){ if(window.AdMob) AdMob.showBanner(AdMob.AD_POSITION.BOTTOM_CENTER);  },3000); 
             } else if (shrinkAmt < 0){
               //header is totaly displayed - start moving startY upwards so that when scrolling down the header starts shrinking
               starty = Math.max(orgStarty, e.detail.scrollTop);
               shrinkAmt = 0;
               if(window.AdMob) AdMob.hideBanner(); 
               $timeout.cancel(timeoutID);
+              timeoutID=$timeout(function(){ if(window.AdMob) AdMob.showBanner(AdMob.AD_POSITION.BOTTOM_CENTER);  },3000); 
             } 
-            timeoutID=$timeout(function(){ if(window.AdMob) AdMob.showBanner(AdMob.AD_POSITION.BOTTOM_CENTER);  },3000); 
-            
             // shrink(chil, $element[0], shrinkAmt, headerHeight); //do the shrinking   
             // shrink(chil1, $element[0], shrinkAmt, headerHeight); //do the shrinking   
             // header_(header2, $element[0], shrinkAmt, headerHeight); //do the shrinking   
