@@ -2,6 +2,7 @@
 <ion-modal-view >
   <ion-view view-title="Login" align-title="left">
       <ion-content style="background: url(img/login.jpg) center; background-size: cover;">
+
           <div class="hero no-header flat">
               <div class="content" style="margin: 50px 0 50px; 0;">
                   <div class="app-icon"></div>
@@ -24,6 +25,16 @@
               <button class="button button-small button-border icon-left ion-social-google button-assertive-900" ng-click="doLoginGoogle()" >Google+</button>
               <button class="button button-small button-border icon-left ion-social-facebook button-positive-900"  ng-click="doLoginFacebook()" >Facebook</button>
           </div>
+          <div class="content has-header">
+
+            <div class="row">
+              <div class="col col-33 col-offset-33">
+                <div class="ion-close-circled" style="text-align: center;" ng-click="closeLogin()"> </div>
+              </div>
+            </div>
+
+          </div>
+          
       </ion-content>
   </ion-view>
 

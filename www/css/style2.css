@@ -50,6 +50,17 @@ body .button.button-assertive.activated{
     padding: 0 5% 10px 5%;
 }
 
+.ion-close-circled:before {
+    content: "";
+    border-radius: 50%;
+    border: #FFF solid 2px;
+    font-size: 30px;
+    width: 29px;
+    height: 29px;
+    line-height: 27px;
+    color: rgba(255,255,255,0.5);
+}
+
 /*/////////////////////*/
 
 .font-ship-261 {
