@@ -416,6 +416,17 @@ angular.module('starter', ['ionic', 'starter.controllers',"angular-md5",'service
         templateUrl: 'templates/setting.html'
       }
     }
+  })
+
+  // Uploadfile
+  .state('app.uploadfile', {
+    url: '/uploadfile',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/uploadfile.html',
+        controller: 'uploadfileCtrl'
+      }
+    }
   });
 
   // if none of the above states are matched, use this as the fallback
