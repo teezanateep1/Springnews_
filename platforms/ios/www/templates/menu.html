@@ -1,24 +1,25 @@
 <ion-side-menus enable-menu-with-back-views="false">
   <ion-side-menu-content>
-    <ion-nav-bar class="bar-stable mynavbar">
-      <ion-nav-back-button>
-      </ion-nav-back-button>
-     
-      <ion-nav-title class="logo title title-center header-item " >
-        <img  height="40" ng-src="img/logo.png"  >
-      </ion-nav-title>
+    
+      <ion-nav-bar class="bar-stable mynavbar">
+        <ion-nav-back-button>
+        </ion-nav-back-button>
+       
+        <ion-nav-title class="logo title title-center header-item " >
+          <img  height="40" ng-src="img/logo.png"  >
+        </ion-nav-title>
 
-      <ion-nav-buttons side="left">
-        <button class="button button-icon button-clear ion-navicon-round" menu-toggle="left">
-        </button>
-      </ion-nav-buttons>
+        <ion-nav-buttons side="left">
+          <button class="button button-icon button-clear ion-navicon-round" menu-toggle="left">
+          </button>
+        </ion-nav-buttons>
 
-      <ion-nav-buttons side="right">
-        <a menu-close href="#/app/liveradio" > <img ng-src="img/icon/Radio_button.png"></a>
-         <a menu-close href="#/app/livetv" ><img  ng-src="img/icon/Live_TV_button.png"></a>
-      </ion-nav-buttons>
+        <ion-nav-buttons side="right">
+          <a menu-close href="#/app/liveradio" > <img ng-src="img/icon/Radio_button.png"></a>
+           <a menu-close href="#/app/livetv" ><img  ng-src="img/icon/Live_TV_button.png"></a>
+        </ion-nav-buttons>
+      </ion-nav-bar>
 
-    </ion-nav-bar>
     <ion-nav-view name="menuContent"></ion-nav-view>
   </ion-side-menu-content>
 
@@ -30,9 +31,9 @@
     </ion-header-bar> -->
     <ion-header-bar class="bar-profile" ng-show="profile" >
         <div class="profile">
-            <img class="profile-picture" src="img/logo.png"  />
-            <!--  <img class="profile-picture" ng-src="{{ user.img }}"  /> -->
-            <h3 class="name" >{{user.name}} Spring News</h3>
+            <!-- <img class="profile-picture" src="img/logo.png"  /> -->
+             <img class="profile-picture" ng-src="{{ user.img }}"  />
+            <h3 class="name" >{{user.name}}</h3>
             <!-- <span class="lang-fr" ><a href="#">EN</a></span>
             <span class="lang-se" ><a href="#" class="active">TH</a></span> -->
             <h4 class="email" style="display: none;">{{user.email}}</h4>
@@ -41,10 +42,10 @@
     <ion-content style="background-color: #4c4c4c;">
       <ion-list>
 
-        <div class="list list-inset">
-          <label class="item item-input input-search">
+        <div class="list list-inset" >
+          <label class="item item-input input-search" >
             <input type="text" ng-model="keyword" ng-keydown="setkeyword()" ng-keyup="showMydict(keyword,event=$event)" placeholder="Search">
-            <i class="icon ion-search "></i>
+            <i class="icon ion-search " ></i>
           </label>
         </div>
        <!--  <div class="list ">
@@ -84,6 +85,11 @@
         <ion-item menu-close class="menu" href="#/app/activity" ng-click="cl_link('/app/activity')" >
           <i class="nut-menu-activity" ng-class="{'active':link == '/app/activity'}" ></i> 
           <span ng-class="{'active':link == '/app/activity'}" style="margin-left: 10px;"> กิจกรรม </span>
+        </ion-item>
+
+        <ion-item menu-close class="menu" href="#/app/uploadfile" ng-click="cl_link('/app/home')"  >
+          <i class="icon nut-menu-home"  ng-class="{'active':link == '/app/uploadfile'}" ></i> 
+           <span ng-class="{'active':link == '/app/uploadfile'}" style="margin-left: 10px;">พี่น้องร้องทุกข์</span>
         </ion-item>
 
         <ion-item class="menu" href=""  ng-click="toggleAboutUs(menu_toggle_)" style="cursor:pointer;">

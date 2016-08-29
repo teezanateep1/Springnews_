@@ -1,6 +1,46 @@
 cordova.define('cordova/plugin_list', function(require, exports, module) {
 module.exports = [
     {
+        "id": "cordova-plugin-admobpro.AdMob",
+        "file": "plugins/cordova-plugin-admobpro/www/AdMob.js",
+        "pluginId": "cordova-plugin-admobpro",
+        "clobbers": [
+            "window.AdMob"
+        ]
+    },
+    {
+        "id": "cordova-plugin-camera.Camera",
+        "file": "plugins/cordova-plugin-camera/www/CameraConstants.js",
+        "pluginId": "cordova-plugin-camera",
+        "clobbers": [
+            "Camera"
+        ]
+    },
+    {
+        "id": "cordova-plugin-camera.CameraPopoverOptions",
+        "file": "plugins/cordova-plugin-camera/www/CameraPopoverOptions.js",
+        "pluginId": "cordova-plugin-camera",
+        "clobbers": [
+            "CameraPopoverOptions"
+        ]
+    },
+    {
+        "id": "cordova-plugin-camera.camera",
+        "file": "plugins/cordova-plugin-camera/www/Camera.js",
+        "pluginId": "cordova-plugin-camera",
+        "clobbers": [
+            "navigator.camera"
+        ]
+    },
+    {
+        "id": "cordova-plugin-camera.CameraPopoverHandle",
+        "file": "plugins/cordova-plugin-camera/www/ios/CameraPopoverHandle.js",
+        "pluginId": "cordova-plugin-camera",
+        "clobbers": [
+            "CameraPopoverHandle"
+        ]
+    },
+    {
         "id": "cordova-plugin-console.console",
         "file": "plugins/cordova-plugin-console/www/console-via-logger.js",
         "pluginId": "cordova-plugin-console",
@@ -231,6 +271,78 @@ module.exports = [
         ]
     },
     {
+        "id": "cordova-plugin-media-capture.CaptureAudioOptions",
+        "file": "plugins/cordova-plugin-media-capture/www/CaptureAudioOptions.js",
+        "pluginId": "cordova-plugin-media-capture",
+        "clobbers": [
+            "CaptureAudioOptions"
+        ]
+    },
+    {
+        "id": "cordova-plugin-media-capture.CaptureImageOptions",
+        "file": "plugins/cordova-plugin-media-capture/www/CaptureImageOptions.js",
+        "pluginId": "cordova-plugin-media-capture",
+        "clobbers": [
+            "CaptureImageOptions"
+        ]
+    },
+    {
+        "id": "cordova-plugin-media-capture.CaptureVideoOptions",
+        "file": "plugins/cordova-plugin-media-capture/www/CaptureVideoOptions.js",
+        "pluginId": "cordova-plugin-media-capture",
+        "clobbers": [
+            "CaptureVideoOptions"
+        ]
+    },
+    {
+        "id": "cordova-plugin-media-capture.CaptureError",
+        "file": "plugins/cordova-plugin-media-capture/www/CaptureError.js",
+        "pluginId": "cordova-plugin-media-capture",
+        "clobbers": [
+            "CaptureError"
+        ]
+    },
+    {
+        "id": "cordova-plugin-media-capture.MediaFileData",
+        "file": "plugins/cordova-plugin-media-capture/www/MediaFileData.js",
+        "pluginId": "cordova-plugin-media-capture",
+        "clobbers": [
+            "MediaFileData"
+        ]
+    },
+    {
+        "id": "cordova-plugin-media-capture.MediaFile",
+        "file": "plugins/cordova-plugin-media-capture/www/MediaFile.js",
+        "pluginId": "cordova-plugin-media-capture",
+        "clobbers": [
+            "MediaFile"
+        ]
+    },
+    {
+        "id": "cordova-plugin-media-capture.capture",
+        "file": "plugins/cordova-plugin-media-capture/www/capture.js",
+        "pluginId": "cordova-plugin-media-capture",
+        "clobbers": [
+            "navigator.device.capture"
+        ]
+    },
+    {
+        "id": "cordova-plugin-screen-orientation.screenorientation",
+        "file": "plugins/cordova-plugin-screen-orientation/www/screenorientation.js",
+        "pluginId": "cordova-plugin-screen-orientation",
+        "clobbers": [
+            "cordova.plugins.screenorientation"
+        ]
+    },
+    {
+        "id": "cordova-plugin-screen-orientation.screenorientation.ios",
+        "file": "plugins/cordova-plugin-screen-orientation/www/screenorientation.ios.js",
+        "pluginId": "cordova-plugin-screen-orientation",
+        "merges": [
+            "cordova.plugins.screenorientation"
+        ]
+    },
+    {
         "id": "cordova-plugin-splashscreen.SplashScreen",
         "file": "plugins/cordova-plugin-splashscreen/www/splashscreen.js",
         "pluginId": "cordova-plugin-splashscreen",
@@ -244,6 +356,14 @@ module.exports = [
         "pluginId": "cordova-plugin-statusbar",
         "clobbers": [
             "window.StatusBar"
+        ]
+    },
+    {
+        "id": "cordova-plugin-x-socialsharing.SocialSharing",
+        "file": "plugins/cordova-plugin-x-socialsharing/www/SocialSharing.js",
+        "pluginId": "cordova-plugin-x-socialsharing",
+        "clobbers": [
+            "window.plugins.socialsharing"
         ]
     },
     {
@@ -298,61 +418,31 @@ module.exports = [
         "clobbers": [
             "Connection"
         ]
-    },
-    {
-        "id": "cordova-plugin-x-socialsharing.SocialSharing",
-        "file": "plugins/cordova-plugin-x-socialsharing/www/SocialSharing.js",
-        "pluginId": "cordova-plugin-x-socialsharing",
-        "clobbers": [
-            "window.plugins.socialsharing"
-        ]
-    },
-    {
-        "id": "cordova-plugin-admobpro.AdMob",
-        "file": "plugins/cordova-plugin-admobpro/www/AdMob.js",
-        "pluginId": "cordova-plugin-admobpro",
-        "clobbers": [
-            "window.AdMob"
-        ]
-    },
-    {
-        "id": "cordova-plugin-screen-orientation.screenorientation",
-        "file": "plugins/cordova-plugin-screen-orientation/www/screenorientation.js",
-        "pluginId": "cordova-plugin-screen-orientation",
-        "clobbers": [
-            "cordova.plugins.screenorientation"
-        ]
-    },
-    {
-        "id": "cordova-plugin-screen-orientation.screenorientation.ios",
-        "file": "plugins/cordova-plugin-screen-orientation/www/screenorientation.ios.js",
-        "pluginId": "cordova-plugin-screen-orientation",
-        "merges": [
-            "cordova.plugins.screenorientation"
-        ]
     }
 ];
 module.exports.metadata = 
 // TOP OF METADATA
 {
+    "cordova-plugin-admobpro": "2.19.1",
+    "cordova-plugin-camera": "2.2.0",
     "cordova-plugin-console": "1.0.3",
     "cordova-plugin-device": "1.1.2",
     "cordova-plugin-dialogs": "1.2.1",
     "cordova-plugin-file": "4.2.0",
     "cordova-plugin-file-transfer": "1.5.1",
     "cordova-plugin-inappbrowser": "1.4.0",
+    "cordova-plugin-media-capture": "1.3.0",
+    "cordova-plugin-screen-orientation": "1.4.2",
     "cordova-plugin-splashscreen": "3.2.2",
     "cordova-plugin-statusbar": "2.1.3",
     "cordova-plugin-whitelist": "1.2.2",
+    "cordova-plugin-x-socialsharing": "5.1.2",
     "de.appplant.cordova.plugin.local-notification": "0.8.4",
     "ionic-plugin-keyboard": "2.2.1",
+    "cordova-plugin-extension": "1.5.1",
     "cordova-plugin-app-event": "1.2.0",
     "cordova-plugin-compat": "1.0.0",
-    "cordova-plugin-network-information": "1.2.1",
-    "cordova-plugin-x-socialsharing": "5.1.2",
-    "cordova-plugin-extension": "1.5.1",
-    "cordova-plugin-admobpro": "2.19.1",
-    "cordova-plugin-screen-orientation": "1.4.2"
+    "cordova-plugin-network-information": "1.2.1"
 };
 // BOTTOM OF METADATA
 });

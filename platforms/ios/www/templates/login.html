@@ -1,12 +1,45 @@
-<ion-modal-view>
-  <ion-header-bar>
-    <h1 class="title">Login</h1>
-    <div class="buttons">
-      <button class="button button-clear" ng-click="closeLogin()">Close</button>
-    </div>
-  </ion-header-bar>
-  <ion-content><!-- 
-    <form ng-submit="doLogin()"> -->
+<!-- <ion-modal-view ng-click="closeLogin()"> -->
+<ion-modal-view >
+  <ion-view view-title="Login" align-title="left">
+      <ion-content style="background: url(img/login.jpg) center; background-size: cover;">
+
+          <div class="hero no-header flat">
+              <div class="content" style="margin: 50px 0 50px; 0;">
+                  <div class="app-icon"></div>
+              </div>
+          </div>
+          <div class="list">
+              <label class="item-login item-input" >
+                <span class="input-label">Username</span>
+                <input type="text" ng-model="loginData.username">
+              </label>
+              <label class="item-login item-input">
+                <span class="input-label">Password</span>
+                <input type="password" ng-model="loginData.password">
+              </label>
+          </div>
+          <div class="padding">
+              <button class="button button-full button-assertive ink" ng-click="doLogin()">Login</button>
+          </div>
+          <div class="button-bar ">
+              <button class="button button-small button-border icon-left ion-social-google button-assertive-900" ng-click="doLoginGoogle()" >Google+</button>
+              <button class="button button-small button-border icon-left ion-social-facebook button-positive-900"  ng-click="doLoginFacebook()" >Facebook</button>
+          </div>
+          <div class="content has-header">
+
+            <div class="row">
+              <div class="col col-33 col-offset-33">
+                <div class="ion-close-circled" style="text-align: center;" ng-click="closeLogin()"> </div>
+              </div>
+            </div>
+
+          </div>
+          
+      </ion-content>
+  </ion-view>
+
+  <!-- <ion-content>
+    <form ng-submit="doLogin()">
       <div class="list">
         <label class="item item-input">
           <span class="input-label">Username</span>
@@ -26,6 +59,6 @@
           <button class="button button-block button-positive" ng-click="doLoginGoogle()">Log in Google</button>
         </label>
       </div>
-    <!-- </form> -->
-  </ion-content>
+    </form>
+  </ion-content> -->
 </ion-modal-view>

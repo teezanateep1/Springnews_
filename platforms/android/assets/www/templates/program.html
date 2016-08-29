@@ -1,14 +1,14 @@
 <ion-view  >
-    <ion-content scroll="false" class="tabs-main-color ">
+    <ion-content scroll="false" class="tabs-main-color " >
     	<!-- รายการ TV -->
-    	<div class="row" style="padding: 0px;margin-top: 5%;">
+    	<div class="row hd-pro" style="padding: 0px;margin-top: 3%;">
 			<div class="box-news-header col col-33">
 				รายการทีวี
 			</div>
 		</div>
-        <tab-slide-box tab="0">
-		    <div class="tsb-icons tsb-icons-pr tsb-main " style="background-color: #4c4c4c;">
-			    <div class="tsb-ic-wrp" style="margin: -2%;">
+        <tab-slide-box tab="0" >
+		    <div class="tsb-icons tsb-icons-pr tsb-main tsb-program" style="background-color: #4c4c4c;">
+			    <div class="tsb-ic-wrp" style="margin: -1%;">
 					<ion-scroll direction="x" class="tsb-hscroll" ng-style="{width:'100%'}">
 						<a href="javascript:;" ng-repeat="tab in tabs" on-finish-render="test">{{tab.name}}</a>
 					</ion-scroll>
@@ -17,12 +17,12 @@
         	<ion-slide-box show-pager="false" on-slide-changed="slideHasChanged($index)" ng-style="{width:'100%'}">
 	            <ion-slide ng-repeat="tab in tabs" >
 	            	<!-- HOME -->
-					<ion-content style="margin-top: 0px;">
+					<ion-content header-program>
 				    	<!-- รายการ TV -->
 				    	<ion-spinner class="spinner-calm" style="z-index:10;margin-top: 55%;" ng-show="loading_catnews" ></ion-spinner>
 						<div class="box-news">
 								<!-- Program Div -->
-								<div class="list" collection-repeat="item in newsCategory |filter: tab.name " collection-item-width="'100%'"  item-height="259px" ng-style="{width:'100%'}"   >
+								<div class="list" collection-repeat="item in newsCategory |filter: tab.name " collection-item-width="'100%'"  item-height="255px" ng-style="{width:'100%'}"   >
 									<a href="#/app/videos/{{item.ID}}/{{item.term_taxonomy_id}}/" style="text-decoration: none;">
 										<div class="item item-text-wrap" style="border-color: #31b5c2;height: 250px;padding: 0px;">
 											<img ng-src="{{item.guid != null ? item.guid:'img/default.jpg'}}" class="box-news-img" >
@@ -31,8 +31,8 @@
 										  	{{substring(item.post_title)}}	
 										</div>
 									</a>
-									<div style="margin-top: 5px;" ng-style="{width:'100%'}"></div>
-
+									<!-- <div style="margin-top: 5px;" ng-style="{width:'100%'}"></div>
+ -->
 									<!-- FOLLOW US -->
 									<div class="sp-follow-us" ng-show="$last">
 										<div class="sp-title">FOLLOW US</div>
@@ -57,6 +57,12 @@
 							
 						</div> 
 
+						<br/>
+						<br/>
+						<br/>
+						<br/>
+						<br/>
+						<br/>
 						<br/>
 						<br/>
 						<br/>

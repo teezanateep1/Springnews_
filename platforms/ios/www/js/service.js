@@ -5,6 +5,24 @@ angular.module('services', [])
   return usersRef;
 })
 
+.factory('facebookService', function($q) {
+    return {
+        getMyLastName: function() {
+            var deferred = $q.defer();
+            FB.api('/me', {
+                fields: 'last_name'
+            }, function(response) {
+                if (!response || response.error) {
+                    deferred.reject('Error occured');
+                } else {
+                    deferred.resolve(response);
+                }
+            });
+            return deferred.promise;
+        }
+    }
+})
+
 .service("_function",["$http","$ionicSlideBoxDelegate","$ionicPopup",function($http,$ionicSlideBoxDelegate,$ionicPopup){  
     this._onError = function(onError){
         $ionicPopup.alert({  
@@ -165,7 +183,6 @@ angular.module('services', [])
     this._advertise = function($scope,id){
         var url=path+"Advertise/id?api-key="+key+"&adv_id="+id; 
         $http.get(url).success(function(result){ 
-            // $scope.adver = result[Math.floor(Math.random()*result.length)];
             $scope.adver = result;
             $ionicSlideBoxDelegate.update();
         })  
@@ -314,9 +331,6 @@ angular.module('services', [])
             if(result != ""){
                 $scope.schedules = result;
             }
-
-           
-
             $scope.loading_schedule = false;
         })  
         .error(function(){  
@@ -388,7 +402,6 @@ angular.module('services', [])
     // ----------- Feed น้ำมัน
     this._oil = function($scope){ 
         var url=path+"Feeds/ptt?api-key="+key; 
-        $ionicLoading.show();  
         $http.get(url).success(function(result){
             $scope.oils = result;
             $scope.$broadcast("scroll.refreshComplete"); 
@@ -422,6 +435,7 @@ angular.module('services', [])
     // ------------ Search ค้นหา
     this._search = function($scope,keyword){
         var url=path+"Posts/postSearch?api-key="+key+"&keyword="+keyword; 
+        $scope.showloading=true; 
         $http.get(url).success(function(result){ 
             if(result != ""){
                $scope.dict_result=result; 
@@ -430,6 +444,19 @@ angular.module('services', [])
         })  
         .error(function(){  
             $scope.showloading=false; 
+        });
+    }
+    // ------------ Email ค้นหา
+    this._email = function(value){
+        var url=path+"Email/send"; 
+        $http({
+            method  : 'POST',
+            url     :  url,
+            data    :  value,  // pass in data as strings
+            headers : {'api-key': key}  // set the headers so angular passing info as form data (not request payload)
+        })
+        .success(function(data) {
+            alert(data)
         });
     }
     

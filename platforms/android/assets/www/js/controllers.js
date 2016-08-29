@@ -1,6 +1,6 @@
-angular.module('starter.controllers', [])
+angular.module('starter.controllers', ['ngOpenFB'])
 
-.controller('AppCtrl', function($scope, $ionicModal, $timeout, $ionicPopup, $http ,$window, $location, md5) {
+.controller('AppCtrl', function($scope, $ionicModal, $timeout, $ionicPopup, $http ,$window, $location, md5,$localStorage,ngFB,$cordovaOauth,$ionicSideMenuDelegate) {
 
   // With the new view caching in Ionic, Controllers are only called
   // when they are recreated or on app start, instead of every page change.
@@ -8,8 +8,15 @@ angular.module('starter.controllers', [])
   // listen for the $ionicView.enter event:
   //$scope.$on('$ionicView.enter', function(e) {
   //});
-
  
+ window.addEventListener('native.keyboardhide', keyboardHideHandler);
+
+  function keyboardHideHandler(e){
+    ionic.Platform.fullScreen(true,false);
+    if (window.StatusBar) {
+      StatusBar.hide();
+    }
+  }
   // Create the login modal that we will use later
   $ionicModal.fromTemplateUrl('templates/login.html', {
     scope: $scope
@@ -74,8 +81,10 @@ angular.module('starter.controllers', [])
     if(keyword.length>2 && event.keyCode!=8){ 
         timeoutID=$timeout(function(){ 
            $window.location.href = ('#/app/search/'+keyword);
-           $ionicSideMenuDelegate.toggleLeft(false);
-        },2000); // เริ่มทำงานน 2 วินาที // 1000 เท่ากับ 1 วินาที  
+            if ($ionicSideMenuDelegate.isOpen()) {
+              $ionicSideMenuDelegate.toggleLeft(false); // close
+            }
+        },1500); // เริ่มทำงานน 2 วินาที // 1000 เท่ากับ 1 วินาที  
     }  
   };  
   $scope.setkeyword = function(){  
@@ -87,19 +96,19 @@ angular.module('starter.controllers', [])
   $scope.user  = {};
   $scope.icon = "right";
 
-  // if($localStorage.name != undefined){
-  //    $scope.user.img = $localStorage.img;
-  //    $scope.user.name = $localStorage.name;
-  //    $scope.user.email = $localStorage.email;
-  //    // $scope.profile = true;
-  //    // $scope.login_ = false;
-  //    // $scope.logout_ = true;
-  // }else{
-  //    $scope.profile = true;
-  //    // $scope.profile = false;
-  //    // $scope.login_ = true;
-  //    // $scope.logout_ = false;
-  // }
+  if($localStorage.name != undefined){
+     $scope.user.img = $localStorage.img;
+     $scope.user.name = $localStorage.name;
+     $scope.user.email = $localStorage.email;
+     $scope.profile = true;
+     $scope.login_ = false;
+     $scope.logout_ = true;
+  }else{
+     // $scope.profile = true;
+     $scope.profile = false;
+     $scope.login_ = true;
+     $scope.logout_ = false;
+  }
 
   // Triggered in the login modal to close it
   $scope.closeLogin = function() {
@@ -113,9 +122,9 @@ angular.module('starter.controllers', [])
 
   //Open the logout 
   $scope.logout = function() {
-    // $localStorage.img = undefined;
-    // $localStorage.name = undefined;
-    // $localStorage.email = undefined;
+    $localStorage.img = undefined;
+    $localStorage.name = undefined;
+    $localStorage.email = undefined;
     $scope.profile = false;
     $scope.login_ = true;
     $scope.logout_ = false;
@@ -172,7 +181,38 @@ angular.module('starter.controllers', [])
 
   //Login Facebook 
   $scope.doLoginFacebook = function () { 
+    ngFB.login({scope: 'email,publish_actions,user_friends'}).then(
+        function (response) {
+            if (response.status === 'connected') {
+                console.log(response)
+                console.log('Facebook login succeeded');
+                $scope.closeLogin();
+                ngFB.api({
+                    path: '/me',
+                    params: {fields: 'id,name'}
+                }).then(
+                    function (user) {
+                        $scope.user = user;
+                        $localStorage.img = "https://graph.facebook.com/"+$scope.user.id+"/picture?width=400&height=400";
+                        $localStorage.name = $scope.user.name;
+                        // $localStorage.email = authData.facebook.email; 
 
+                        $scope.user.name = $localStorage.name
+                        $scope.user.email = $localStorage.email 
+                        $scope.user.img = $localStorage.img
+
+                        $scope.profile = true;
+                        $scope.login_ = false;
+                        $scope.logout_ = true;
+                        console.log(user)
+                    },
+                    function (error) {
+                        alert('Facebook error: ' + error.error_description);
+                });
+            } else {
+                alert('Facebook login failed');
+            }
+    });
     // _auth.authWithOAuthPopup("facebook", function(error, authData) {
     //   if (error) {
     //     var alertPopup = $ionicPopup.alert({
@@ -203,6 +243,35 @@ angular.module('starter.controllers', [])
   //Login Google
   $scope.doLoginGoogle = function () {
 
+    $cordovaOauth.google("891740401184-i1ucjk82d2uh6pcs0qt82v7pcqnrb58o.apps.googleusercontent.com", ["email"]).then(function(result) {
+        console.log("Response Object -> " + JSON.stringify(result));
+        // alert("Response Object -> " + JSON.stringify(result));
+        var url="https://www.googleapis.com/oauth2/v1/userinfo?access_token="+result.access_token; 
+        $http.get(url).success(function(result2){ 
+            $scope.closeLogin();
+            if(result2 != ""){
+                $scope.user = result2;
+                $localStorage.img = result2.picture;
+                $localStorage.name = result2.name;
+                $localStorage.email = result2.email;
+
+                $scope.user.name = $localStorage.name
+                $scope.user.email = $localStorage.email 
+                $scope.user.img = $localStorage.img
+
+                $scope.profile = true;
+                $scope.login_ = false;
+                $scope.logout_ = true;
+            }
+            $scope.showloading=false; 
+        })  
+        .error(function(){  
+            $scope.showloading=false; 
+        });
+    }, function(error) {
+        console.log("Error -> " + error);
+        // alert("Error -> " + JSON.stringify(error));
+    });
     // _auth.authWithOAuthPopup("google", function(error, authData) {
     //   if (error) {
     //     var alertPopup = $ionicPopup.alert({
@@ -229,7 +298,7 @@ angular.module('starter.controllers', [])
 })
 
 // --------------------- HOME ------------------------
-.controller('HomeCtrl', function($scope, $stateParams, SpringNews, $ionicSlideBoxDelegate, $ionicSlideBoxDelegate,_function, $ionicModal,$ionicLoading,$cordovaSocialSharing) { //admobSvc
+.controller('HomeCtrl', function($scope, $stateParams, SpringNews, $ionicSlideBoxDelegate,_function, $ionicModal,$ionicLoading,$cordovaSocialSharing,$ionicScrollDelegate, $ionicNavBarDelegate, $timeout) { //admobSvc
 
   $ionicLoading.show();
 
@@ -254,15 +323,17 @@ angular.module('starter.controllers', [])
   $scope.parts = [];
   $scope.thaigolds = [];
 
-  SpringNews._advertise($scope,'14'); 
-  SpringNews._newsupdate($scope,'908'); 
-  SpringNews._newshot($scope,'ประเด็นร้อน');
-  SpringNews._clips($scope,'30','4'); 
-  // SpringNews._category($scope,'889');
-  SpringNews._oil($scope);
-  SpringNews._part($scope);
-  SpringNews._thaigold($scope);
-
+ $timeout(function(){
+    SpringNews._advertise($scope,'14'); 
+    SpringNews._newsupdate($scope,'908'); 
+    SpringNews._newshot($scope,'ประเด็นร้อน');
+    SpringNews._clips($scope,'30','4'); 
+    SpringNews._category($scope,'889');
+    SpringNews._oil($scope);
+    SpringNews._part($scope);
+    SpringNews._thaigold($scope);
+  },3000);
+  
   //วันที่
   $scope.date = function(d){
     if(d != undefined){
@@ -285,8 +356,8 @@ angular.module('starter.controllers', [])
   }
   //substring
   $scope.substring = function(str){
-    if(str.length > 65){
-      return str.substring(0, 65)+"...";
+    if(str.length > 50){
+      return str.substring(0, 50)+"...";
     }else{
       return str;
     } 
@@ -477,13 +548,14 @@ angular.module('starter.controllers', [])
 
 // --------------------- INTRODUCE ------------------------
 .controller('IntroduceCtrl', function($scope,SpringNews) {
-    // $scope.introduce = [];
-    // $scope.appeal = [];
-    // SpringNews._pages_introduce($scope); 
-    SpringNews._advertise($scope,'14'); 
-    // (adsbygoogle = window.adsbygoogle || []).push({});
-
-    
+    $scope.submitForm = function(){
+       SpringNews._email(this.intro); 
+       this.intro = null;
+    }
+    $scope.submitForm2 = function(){
+       SpringNews._email(this.user); 
+       this.user = null;
+    }  
 })
 
 // --------------------- LIVE TV ------------------------
@@ -494,15 +566,9 @@ angular.module('starter.controllers', [])
   $scope.loading_schedule = true;
   SpringNews._schedulesNow($scope); 
   _function._jwTV();
-  // admobSvc.destroyBannerView();
-  // $scope.$on('$ionicView.afterLeave', function(){
-  //   admobSvc.createBannerView();
-  // })
-
   $scope.$on('$ionicView.afterLeave', function(){
     screen.lockOrientation('portrait');
   });
-
   $scope.$on('$ionicParentView.beforeEnter', function(){
     screen.unlockOrientation();
   });
@@ -585,13 +651,16 @@ angular.module('starter.controllers', [])
 })
 
 // --------------------- CLIP ------------------------
-.controller('ClipCtrl', function($scope,_function,SpringNews,_function,$stateParams,$cordovaSocialSharing) {
+.controller('ClipCtrl', function($scope,_function,SpringNews,_function,$stateParams,$cordovaSocialSharing,$timeout,$ionicLoading) {
   $scope.clips = [];
   $scope.clips_loop = [];
   $scope.title = $stateParams.title;
-
-  SpringNews._advertise($scope,'14'); 
-  SpringNews._clips($scope,'30',''); 
+  $ionicLoading.show();
+  
+  $timeout(function(){
+    SpringNews._advertise($scope,'14'); 
+    SpringNews._clips($scope,'30',''); 
+  },1000);
   //วันที่
   $scope.date = function(d){
     if(d != undefined){
@@ -658,12 +727,14 @@ angular.module('starter.controllers', [])
 })
 
 // --------------------- Schedule ------------------------
-.controller('ScheduleCtrl', function($scope,SpringNews,$stateParams,$cordovaLocalNotification,$timeout) {
+.controller('ScheduleCtrl', function($scope,SpringNews,$stateParams,$cordovaLocalNotification,$timeout,$ionicLoading) {
   $scope.schedules = []; 
   $scope.schedulesActive = [];
   $scope.loading_schedule = true;
   SpringNews._schedules($scope,$stateParams.scheId); 
   $scope.schedulesActive = window.localStorage.getItem('Notification');
+  $ionicLoading.show();
+
   $scope.test = function(){
     $cordovaLocalNotification.getAllIds().then(function(result_){
       alert('Get all ids: ' + result_) //Returned 2nd: 'Get all ids: 1,0,4,5,3,2'
@@ -751,19 +822,22 @@ angular.module('starter.controllers', [])
 })
 
 // --------------------- Search ------------------------
-.controller('SearchCtrl', function($scope,$http,$timeout,$stateParams,_function,SpringNews) {
+.controller('SearchCtrl', function($scope,$http,$timeout,$stateParams,$ionicSideMenuDelegate,_function,SpringNews) {
    var timeoutID=null;  
     $scope.dict_result=[]; 
     $scope.showloading=false;  
     $scope.keyword = $stateParams.key;
     SpringNews._search($scope,$stateParams.key);
+    if ($ionicSideMenuDelegate.isOpen()) {
+      $ionicSideMenuDelegate.toggleLeft(false); // close
+    }
     $scope.showMydict = function(keyword,event){  
       if(keyword.length>2 && event.keyCode!=8){ 
         timeoutID=$timeout(function(){ 
             $scope.showloading=true;  
             $scope.dict_result=[]; 
             SpringNews._search($scope,keyword);
-        },2000); // เริ่มทำงานน 2 วินาที // 1000 เท่ากับ 1 วินาที  
+        },1500); // เริ่มทำงานน 2 วินาที // 1000 เท่ากับ 1 วินาที  
       }  
     };  
     $scope.setkeyword = function(){  
@@ -783,12 +857,20 @@ angular.module('starter.controllers', [])
       return str;
     } 
   }
+  window.addEventListener('native.keyboardhide', keyboardHideHandler);
+
+  function keyboardHideHandler(e){
+    ionic.Platform.fullScreen(true,false);
+    if (window.StatusBar) {
+      StatusBar.hide();
+    }
+  }
 
 
 })
 
 // ---------------------- NEWS DETAIL ---------------------
-.controller('NewsCtrl', function($scope, $stateParams , SpringNews,$ionicLoading,$timeout,_function, $sce,$cordovaSocialSharing) {
+.controller('NewsCtrl', function($scope, $stateParams , SpringNews, $ionicLoading, $timeout,_function, $sce, $cordovaSocialSharing, $timeout) {
   
   $scope.newsDetail = [];
   $scope.newsConnected = [];
@@ -796,11 +878,15 @@ angular.module('starter.controllers', [])
   $scope.video = [];
   $scope.loading_newsdetail = true;
   $scope.adver = [];
+  $scope.newsShow = true;
+  $ionicLoading.show();
   
-
-  SpringNews._advertise($scope,'14');
-  SpringNews._newsdetail($scope,$stateParams.newsId);
-  SpringNews._newsconnected($scope,$stateParams.newsId,$stateParams.catId);
+  $timeout(function(){
+    SpringNews._advertise($scope,'14');
+    SpringNews._newsdetail($scope,$stateParams.newsId);
+    SpringNews._newsconnected($scope,$stateParams.newsId,$stateParams.catId);
+    $scope.newsShow = false
+  },2000);
 
   $scope.message = '';
   $scope.url = '';
@@ -851,13 +937,14 @@ angular.module('starter.controllers', [])
   $scope.video = [];
   $scope.loading_videosdetail = true;
   $scope.title = $stateParams.title;
+  $ionicLoading.show();
 
-  SpringNews._advertise($scope,'14');
-  SpringNews._videosdetail($scope,$stateParams.videosId);
-  SpringNews._newsconnected($scope,$stateParams.videosId,$stateParams.catId);
-
-
-
+  $timeout(function(){
+    SpringNews._advertise($scope,'14');
+    SpringNews._videosdetail($scope,$stateParams.videosId);
+    SpringNews._newsconnected($scope,$stateParams.videosId,$stateParams.catId);
+  },1000);
+  
   $scope.title_ = '';
   $scope.url = '';
 
@@ -913,4 +1000,138 @@ angular.module('starter.controllers', [])
     return _function._date(d.substring(0, 10),d.substring(12, 16));
   }
 
+})
+
+.controller('uploadfileCtrl', function($scope, $cordovaCamera, $ionicLoading,$localStorage,$cordovaFileTransfer) {
+    $scope.data = { "ImageURI" :  "Select Image" };
+
+    $scope.takePicture = function() {
+    var options = {
+        quality: 50,
+        destinationType: Camera.DestinationType.FILE_URL,
+        sourceType: Camera.PictureSourceType.CAMERA
+      };
+    $cordovaCamera.getPicture(options).then(
+    function(imageData) {
+      $scope.picData = imageData;
+      $scope.ftLoad = true;
+      $localstorage.set('fotoUp', imageData);
+      $ionicLoading.show({template: 'Foto acquisita...', duration:500});
+    },
+    function(err){
+      $ionicLoading.show({template: 'Errore di caricamento...', duration:500});
+      })
+    }
+
+    $scope.selectPicture = function() { 
+    alert("11111");
+    var options = {
+        quality: 50,
+        destinationType: Camera.DestinationType.FILE_URI,
+        sourceType: Camera.PictureSourceType.SAVEDPHOTOALBUM,
+        targetWidth: 300,
+        targetHeight: 300
+    };
+     alert("aaaaaa");
+    $cordovaCamera.getPicture(options).then(
+    function(imageURI) {
+      window.resolveLocalFileSystemURI(imageURI, function(fileEntry) {
+        alert("bbbbb");
+        $scope.picData = fileEntry.nativeURL;
+        $scope.ftLoad = true;
+        var image = document.getElementById('myImage');
+        image.src = fileEntry.nativeURL;
+        });
+      $ionicLoading.show({template: 'Foto acquisita...', duration:500});
+    },
+    function(err){
+      $ionicLoading.show({template: 'Errore di caricamento...', duration:500});
+    })
+  };
+
+
+  $scope.upload = function() {
+        var date = new Date().getTime();
+        var filename = "image_upload"+date+".png";
+        $ionicLoading.show({template: 'กำลังอัพโหลดไฟล์...'});
+        var fileURL = $scope.picData;
+        var options = {
+            fileKey: "file",
+            fileName: filename,
+            chunkedMode: false,
+            mimeType: "image/jpg",
+            params : {'directory':'photo', 'fileName': filename}
+        };
+        $cordovaFileTransfer.upload("http://artbeat.mfec.co.th/mail/upload.php", fileURL, options).then(function(result) {
+            console.log("SUCCESS: " + JSON.stringify(result.response));
+            alert(("SUCCESS: " + JSON.stringify(result.response)));
+        }, function(err) {
+            console.log("ERROR: " + JSON.stringify(err));
+            alert("ERROR: " + JSON.stringify(err));
+        }, function (progress) {
+            // constant progress updates
+        });
+        $ionicLoading.hide();
+
+    }
+
+    // $scope.uploadPicture = function() {
+    // $ionicLoading.show({template: 'Sto inviando la foto...'});
+    // var fileURL = $scope.picData;
+    // var options = new FileUploadOptions();
+    // options.fileKey = "file";
+    // options.fileName = fileURL.substr(fileURL.lastIndexOf('/') + 1);
+    // options.mimeType = "image/jpeg";
+    // options.chunkedMode = true;
+
+    // var params = {};
+    // params.value1 = "someparams";
+    // params.value2 = "otherparams";
+
+    // options.params = params;
+
+    // var ft = new FileTransfer();
+    // ft.upload(fileURL, encodeURI("http://artbeat.mfec.co.th/mail/upload.php"), viewUploadedPictures, function(error) {
+    //   $ionicLoading.show({template: 'Errore di connessione...'});
+    // $ionicLoading.hide();}, options);
+
+  var viewUploadedPictures = function() {
+    $ionicLoading.show({template: 'Sto cercando le tue foto...'});
+        server = "http://artbeat.mfec.co.th/mail/upload.php";
+        if (server) {
+            var xmlhttp = new XMLHttpRequest();
+            xmlhttp.onreadystatechange=function(){
+            if(xmlhttp.readyState === 4){
+                    if (xmlhttp.status === 200) {          
+                document.getElementById('server_images').innerHTML = xmlhttp.responseText;
+                    }
+                    else { $ionicLoading.show({template: 'Errore durante il caricamento...', duration: 1000});
+          return false;
+                    }
+                }
+            };
+            xmlhttp.open("GET", server , true);
+            xmlhttp.send()} ;
+    $ionicLoading.hide();
+    }
+
+  $scope.viewPictures = function() {
+    $ionicLoading.show({template: 'Sto cercando le tue foto...'});
+        server = "http://artbeat.mfec.co.th/mail/upload.php";
+        if (server) {
+            var xmlhttp = new XMLHttpRequest();
+            xmlhttp.onreadystatechange=function(){
+            if(xmlhttp.readyState === 4){
+                    if (xmlhttp.status === 200) {          
+                document.getElementById('server_images').innerHTML = xmlhttp.responseText;
+                    }
+                    else { $ionicLoading.show({template: 'Errore durante il caricamento...', duration: 1000});
+          return false;
+                    }
+                }
+            };
+            xmlhttp.open("GET", server , true);
+            xmlhttp.send()} ;
+    $ionicLoading.hide();
+    }
 })

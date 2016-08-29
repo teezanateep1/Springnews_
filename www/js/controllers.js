@@ -1024,15 +1024,19 @@ angular.module('starter.controllers', ['ngOpenFB'])
     }
 
     $scope.selectPicture = function() { 
+    alert("11111");
     var options = {
-      quality: 50,
-      destinationType: Camera.DestinationType.FILE_URI,
-      sourceType: Camera.PictureSourceType.PHOTOLIBRARY
+        quality: 50,
+        destinationType: Camera.DestinationType.FILE_URI,
+        sourceType: Camera.PictureSourceType.SAVEDPHOTOALBUM,
+        targetWidth: 300,
+        targetHeight: 300
     };
-
+     alert("aaaaaa");
     $cordovaCamera.getPicture(options).then(
     function(imageURI) {
       window.resolveLocalFileSystemURI(imageURI, function(fileEntry) {
+        alert("bbbbb");
         $scope.picData = fileEntry.nativeURL;
         $scope.ftLoad = true;
         var image = document.getElementById('myImage');

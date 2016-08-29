@@ -4,9 +4,10 @@
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'starter.controllers',"angular-md5",'services','tabSlideBox','ngStorage', 'ionic-cache-src','ngCordova.plugins.googleAds'])
+angular.module('starter', ['ionic', 'starter.controllers',"angular-md5",'services','ngOpenFB','tabSlideBox','ngStorage', 'ionic-cache-src','ngCordova.plugins.googleAds','ngCordovaOauth'])
 
-.run(function($ionicPlatform,$rootScope,$ionicPopup, $cordovaDialogs) { //admobSvc
+.run(function($ionicPlatform,$rootScope,$ionicPopup, $cordovaDialogs ,ngFB) { //admobSvc
+  ngFB.init({appId: '647791618729432'});
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -22,7 +23,6 @@ angular.module('starter', ['ionic', 'starter.controllers',"angular-md5",'service
         });
 
       }else{
-       // admobSvc.createBannerView();
       }
     }
 
@@ -34,7 +34,7 @@ angular.module('starter', ['ionic', 'starter.controllers',"angular-md5",'service
       // org.apache.cordova.statusbar required
       StatusBar.styleDefault();
     }
-
+    ionic.Platform.fullScreen();
   //======admob code start=============
  
       var admobid = {};
@@ -59,15 +59,13 @@ angular.module('starter', ['ionic', 'starter.controllers',"angular-md5",'service
             };
         }
  
-      if(window.AdMob) AdMob.createBanner( {
-          adId:admobid.banner, 
-          position:AdMob.AD_POSITION.BOTTOM_CENTER, 
-          autoShow:true
-      });
- 
   //=======AdMob Code End=======
-
- 
+        if(window.AdMob) 
+          AdMob.createBanner( {
+              adId:admobid.banner, 
+              position:AdMob.AD_POSITION.BOTTOM_CENTER, 
+              autoShow:true
+          });
   });
 
 })
@@ -88,18 +86,168 @@ angular.module('starter', ['ionic', 'starter.controllers',"angular-md5",'service
     duration:1500  // กำหนดให้ซ่อนอัตโนมัติในกี่วินาที แบบไม่ต้องเรียก method hide() อีก  
 })  
 
+.directive('headerHome', function($document,$timeout,$rootScope) {
+  var fadeAmt;
+  var shrink = function(header, content, amt, max) {
+    amt = Math.min(54, amt);
+    fadeAmt = 1 - amt / 54;
+    ionic.requestAnimationFrame(function() {
+      header.style[ionic.CSS.TRANSFORM] = 'translate3d(0, -' + amt + 'px, 0)';
+      for(var i = 0, j = header.children.length; i < j; i++) {
+        header.children[i].style.opacity = fadeAmt;
+      }
+    });
+  };
+  var tab = function(header, content, amt, max) {
+    amt = Math.min(54, amt);
+    fadeAmt = 1 - amt / 54;
+    ionic.requestAnimationFrame(function() {
+      header.style[ionic.CSS.TRANSFORM] = 'translate3d(0, -' + amt + 'px, 0)';
+      header.style.marginTop = '56px';
+    });
+  };
+  var slider = function(header, content, amt, max) {
+    amt = Math.min(53, amt);
+    fadeAmt = 1 - amt / 53;
+    ionic.requestAnimationFrame(function() {
+      header.style[ionic.CSS.TRANSFORM] = 'translate3d(0, -' + amt + 'px, 0)';
+    });
+  };
+
+  return {
+    restrict: 'A',
+    link: function($scope, $element, $attr) {
+      $timeout(function(){  
+        var starty = orgStarty = $scope.$eval($attr.headerHome) || 40;
+        var shrinkAmt,timeoutID=null;
+        
+        var header = $document[0].body.querySelector('[nav-bar="active"]');
+        var chil = header.querySelector('.bar-header');
+        var header1 = $document[0].body.querySelector('[nav-bar="cached"]');
+        var chil1 = header1.querySelector('.bar-header');
+
+        var header2 = $document[0].body.querySelector('.tsb-home');
+
+        var header3 = $document[0].body.querySelector('.slider');
+
+        var headerHeight = chil.offsetHeight;
+
+        $element.bind('scroll', function(e) { 
+            shrinkAmt = headerHeight - (headerHeight - (e.detail.scrollTop - starty));
+
+            if (shrinkAmt >= headerHeight){
+              // //header is totaly hidden - start moving startY downward so that when scrolling up the header starts showing
+              // starty = (e.detail.scrollTop - headerHeight);
+              // shrinkAmt = headerHeight;
+              if(window.AdMob) AdMob.hideBanner();  
+              $timeout.cancel(timeoutID);
+              timeoutID=$timeout(function(){ if(window.AdMob) AdMob.showBanner(AdMob.AD_POSITION.BOTTOM_CENTER);  },4000); 
+            } else if (shrinkAmt < 0){
+              //header is totaly displayed - start moving startY upwards so that when scrolling down the header starts shrinking
+              starty = Math.max(orgStarty, e.detail.scrollTop);
+              shrinkAmt = 0;
+              if(window.AdMob) AdMob.hideBanner(); 
+              $timeout.cancel(timeoutID);
+              timeoutID=$timeout(function(){ if(window.AdMob) AdMob.showBanner(AdMob.AD_POSITION.BOTTOM_CENTER);  },4000); 
+            } 
+             
+            shrink(chil, $element[0], shrinkAmt, headerHeight); //do the shrinking   
+            shrink(chil1, $element[0], shrinkAmt, headerHeight); //do the shrinking   
+            tab(header2, $element[0], shrinkAmt, headerHeight); //do the shrinking   
+            slider(header3, $element[0], shrinkAmt, headerHeight); //do the shrinking   
+          
+        });
+      },3000);
+    }
+  }
+})
+
+.directive('headerProgram', function($document,$timeout) {
+  var fadeAmt;
+
+  var shrink = function(header, content, amt, max) {
+    amt = Math.min(54, amt);
+    fadeAmt = 1 - amt / 54;
+    ionic.requestAnimationFrame(function() {
+      header.style[ionic.CSS.TRANSFORM] = 'translate3d(0, -' + amt + 'px, 0)';
+      for(var i = 0, j = header.children.length; i < j; i++) {
+        header.children[i].style.opacity = fadeAmt;
+      }
+    });
+  };
+  var header_ = function(header, content, amt, max) {
+    amt = Math.min(54, amt);
+    fadeAmt = 1 - amt / 54;
+    ionic.requestAnimationFrame(function() {
+      header.style[ionic.CSS.TRANSFORM] = 'translate3d(0, -' + amt + 'px, 0)';
+      header.style.marginTop = '70px';
+    });
+  };
+  var tab = function(header, content, amt, max) {
+    amt = Math.min(54, amt);
+    fadeAmt = 1 - amt / 54;
+    ionic.requestAnimationFrame(function() {
+      header.style[ionic.CSS.TRANSFORM] = 'translate3d(0, -' + amt + 'px, 0)';
+    });
+  };
+  var slider_ = function(header, content, amt, max) {
+    amt = Math.min(53, amt);
+    fadeAmt = 1 - amt / 53;
+    ionic.requestAnimationFrame(function() {
+      header.style[ionic.CSS.TRANSFORM] = 'translate3d(0, -' + amt + 'px, 0)';
+    });
+  };
+
+  return {
+    restrict: 'A',
+    link: function($scope, $element, $attr) {
+      $timeout(function(){  
+        var starty = orgStarty = $scope.$eval($attr.headerProgram) || 40;
+        var shrinkAmt,timeoutID=null;
+        
+        var header = $document[0].body.querySelector('[nav-bar="active"]');
+        var chil = header.querySelector('.bar-header');
+        // var header1 = $document[0].body.querySelector('[nav-bar="cached"]');
+        // var chil1 = header1.querySelector('.bar-header');
+
+        // var header2 = $document[0].body.querySelector('.hd-pro');
+        // var header3 = $document[0].body.querySelector('.tsb-program');
+
+        // var header4 = $document[0].body.querySelector('[on-slide-changed="slideHasChanged($index)"]');
+
+        var headerHeight = chil.offsetHeight;
+
+        $element.bind('scroll', function(e) { 
+            shrinkAmt = headerHeight - (headerHeight - (e.detail.scrollTop - starty));
+
+            if (shrinkAmt >= headerHeight){
+              //header is totaly hidden - start moving startY downward so that when scrolling up the header starts showing
+              starty = (e.detail.scrollTop - headerHeight);
+              shrinkAmt = headerHeight;
+              if(window.AdMob) AdMob.hideBanner(); 
+              $timeout.cancel(timeoutID);
+              timeoutID=$timeout(function(){ if(window.AdMob) AdMob.showBanner(AdMob.AD_POSITION.BOTTOM_CENTER);  },3000); 
+            } else if (shrinkAmt < 0){
+              //header is totaly displayed - start moving startY upwards so that when scrolling down the header starts shrinking
+              starty = Math.max(orgStarty, e.detail.scrollTop);
+              shrinkAmt = 0;
+              if(window.AdMob) AdMob.hideBanner(); 
+              $timeout.cancel(timeoutID);
+              timeoutID=$timeout(function(){ if(window.AdMob) AdMob.showBanner(AdMob.AD_POSITION.BOTTOM_CENTER);  },3000); 
+            } 
+            // shrink(chil, $element[0], shrinkAmt, headerHeight); //do the shrinking   
+            // shrink(chil1, $element[0], shrinkAmt, headerHeight); //do the shrinking   
+            // header_(header2, $element[0], shrinkAmt, headerHeight); //do the shrinking   
+            // tab(header3, $element[0], shrinkAmt, headerHeight); //do the shrinking   
+            // slider_(header4, $element[0], shrinkAmt, headerHeight); //do the shrinking   
+          
+        });
+      },3000);
+    }
+  }
+})
+
 .config(function($stateProvider, $urlRouterProvider) {  //admobSvcProvider
-
-  // admobSvcProvider.setOptions({
-  //   publisherId :         "ca-app-pub-7291107843041210/9939517281" , 
-  //   interstitialAdId :    "ca-app-pub-7291107843041210/9939517281" , 
-  //   tappxIdiOs:           "",        // Optional
-  //   tappxIdAndroid:       "",        // Optional
-  //   tappxShare:           0.5        // Optional                                 
-  // });
-
-  // // Optionally configure the events prefix (by default set to 'admob:')
-  // admobSvcProvider.setPrefix('myTag~');
 
   $stateProvider
     .state('app', {
@@ -266,6 +414,17 @@ angular.module('starter', ['ionic', 'starter.controllers',"angular-md5",'service
     views: {
       'menuContent': {
         templateUrl: 'templates/setting.html'
+      }
+    }
+  })
+
+  // Uploadfile
+  .state('app.uploadfile', {
+    url: '/uploadfile',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/uploadfile.html',
+        controller: 'uploadfileCtrl'
       }
     }
   });

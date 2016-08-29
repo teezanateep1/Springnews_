@@ -7,60 +7,66 @@
         "files": {}
     },
     "installed_plugins": {
+        "cordova-plugin-admobpro": {
+            "PACKAGE_NAME": "com.sp.springnews"
+        },
+        "cordova-plugin-camera": {
+            "PACKAGE_NAME": "com.sp.springnews"
+        },
         "cordova-plugin-console": {
-            "PACKAGE_NAME": "com.ionicframework.springnews612047"
+            "PACKAGE_NAME": "com.sp.springnews"
         },
         "cordova-plugin-device": {
-            "PACKAGE_NAME": "com.ionicframework.springnews612047"
+            "PACKAGE_NAME": "com.sp.springnews"
         },
         "cordova-plugin-dialogs": {
-            "PACKAGE_NAME": "com.ionicframework.springnews612047"
+            "PACKAGE_NAME": "com.sp.springnews"
         },
         "cordova-plugin-file": {
-            "PACKAGE_NAME": "com.ionicframework.springnews612047"
+            "PACKAGE_NAME": "com.sp.springnews"
         },
         "cordova-plugin-file-transfer": {
-            "PACKAGE_NAME": "com.ionicframework.springnews612047"
+            "PACKAGE_NAME": "com.sp.springnews"
         },
         "cordova-plugin-inappbrowser": {
-            "PACKAGE_NAME": "com.ionicframework.springnews612047"
+            "PACKAGE_NAME": "com.sp.springnews"
         },
-        "cordova-plugin-splashscreen": {
-            "PACKAGE_NAME": "com.ionicframework.springnews612047"
-        },
-        "cordova-plugin-statusbar": {
-            "PACKAGE_NAME": "com.ionicframework.springnews612047"
-        },
-        "cordova-plugin-whitelist": {
-            "PACKAGE_NAME": "com.ionicframework.springnews612047"
-        },
-        "de.appplant.cordova.plugin.local-notification": {
-            "PACKAGE_NAME": "com.ionicframework.springnews612047"
-        },
-        "ionic-plugin-keyboard": {
-            "PACKAGE_NAME": "com.ionicframework.springnews612047"
-        },
-        "cordova-plugin-x-socialsharing": {
-            "PACKAGE_NAME": "com.ionicframework.springnews612047"
-        },
-        "cordova-plugin-admobpro": {
+        "cordova-plugin-media-capture": {
             "PACKAGE_NAME": "com.sp.springnews"
         },
         "cordova-plugin-screen-orientation": {
             "PACKAGE_NAME": "com.sp.springnews"
+        },
+        "cordova-plugin-splashscreen": {
+            "PACKAGE_NAME": "com.sp.springnews"
+        },
+        "cordova-plugin-statusbar": {
+            "PACKAGE_NAME": "com.sp.springnews"
+        },
+        "cordova-plugin-whitelist": {
+            "PACKAGE_NAME": "com.sp.springnews"
+        },
+        "cordova-plugin-x-socialsharing": {
+            "PACKAGE_NAME": "com.sp.springnews"
+        },
+        "de.appplant.cordova.plugin.local-notification": {
+            "PACKAGE_NAME": "com.sp.springnews"
+        },
+        "ionic-plugin-keyboard": {
+            "PACKAGE_NAME": "com.sp.springnews"
         }
     },
     "dependent_plugins": {
+        "cordova-plugin-extension": {
+            "PACKAGE_NAME": "com.sp.springnews"
+        },
         "cordova-plugin-app-event": {
-            "PACKAGE_NAME": "com.ionicframework.springnews612047"
+            "PACKAGE_NAME": "com.sp.springnews"
         },
         "cordova-plugin-compat": {
-            "PACKAGE_NAME": "com.ionicframework.springnews612047"
+            "PACKAGE_NAME": "com.sp.springnews"
         },
         "cordova-plugin-network-information": {
-            "PACKAGE_NAME": "com.ionicframework.springnews612047"
-        },
-        "cordova-plugin-extension": {
             "PACKAGE_NAME": "com.sp.springnews"
         }
     }
