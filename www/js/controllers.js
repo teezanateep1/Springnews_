@@ -356,8 +356,8 @@ angular.module('starter.controllers', ['ngOpenFB'])
   }
   //substring
   $scope.substring = function(str){
-    if(str.length > 65){
-      return str.substring(0, 65)+"...";
+    if(str.length > 50){
+      return str.substring(0, 50)+"...";
     }else{
       return str;
     } 
