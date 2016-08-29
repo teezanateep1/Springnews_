@@ -413,6 +413,7 @@ angular.module('starter.controllers', ['ngOpenFB'])
   //-----------\\ 
   // ------ loadMore Data -----
   $scope.loadMore = function(id,length){  
+    $ionicLoading.show();
     SpringNews._catNews($scope,id,length+1);
   };
   // ------------------------
