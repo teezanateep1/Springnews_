@@ -134,11 +134,6 @@ angular.module('starter', ['ionic', 'starter.controllers',"angular-md5",'service
 
         $element.bind('scroll', function(e) { 
             shrinkAmt = headerHeight - (headerHeight - (e.detail.scrollTop - starty));
-
-            // if(e.detail.scrollTop - shrinkAmt > headerHeight) {
-            //   console.log('sdfsf')
-            // }
-
             if (shrinkAmt >= headerHeight){
               // //header is totaly hidden - start moving startY downward so that when scrolling up the header starts showing
               // starty = (e.detail.scrollTop - headerHeight);
