@@ -255,7 +255,6 @@ angular.module('starter.controllers', ['ngOpenFB'])
 .controller('HomeCtrl', function($scope, $stateParams, SpringNews, $ionicSlideBoxDelegate,_function, $ionicModal,$ionicLoading,$cordovaSocialSharing,$ionicScrollDelegate, $ionicNavBarDelegate, $timeout) { //admobSvc
 
   $ionicLoading.show();
-
   $scope.adver = [];
 
   $scope.news = [];  
@@ -278,7 +277,8 @@ angular.module('starter.controllers', ['ngOpenFB'])
   $scope.thaigolds = [];
 
  $timeout(function(){
-    SpringNews._advertise($scope,'14'); 
+    SpringNews._advertise($scope,'14');
+    //SpringNews._newsupdate($scope,'ข่าวเด่น'); 
     SpringNews._newsupdate($scope,'908'); 
     SpringNews._newshot($scope,'ประเด็นร้อน');
     SpringNews._clips($scope,'30','4'); 
@@ -837,7 +837,7 @@ angular.module('starter.controllers', ['ngOpenFB'])
     SpringNews._newsdetail($scope,$stateParams.newsId);
     SpringNews._newsconnected($scope,$stateParams.newsId,$stateParams.catId);
     $scope.newsShow = false
-  },2000);
+  },2500);
 
   $scope.message = '';
   $scope.url = '';
@@ -856,7 +856,14 @@ angular.module('starter.controllers', ['ngOpenFB'])
          });
       });
     }
-
+ //substring
+  $scope.substring = function(str){
+    if(str.length > 50){
+      return str.substring(0, 50)+"...";
+    }else{
+      return str;
+    } 
+  }
   $scope.trustSrc = function(src) {
     if(src != ""){
       return $sce.trustAsResourceUrl(src);

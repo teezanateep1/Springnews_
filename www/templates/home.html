@@ -1,5 +1,5 @@
 <ion-view>
-    <ion-content scroll="false" class="tabs-main-color "  >
+    <ion-content scroll="false" class="tabs-main-color "  style="margin-top: 16%;" >
     	
         <tab-slide-box tab="0">
 		    <div class="tsb-icons tsb-main tsb-home">
@@ -41,6 +41,7 @@
 		        				auto-play="true" 
 		        				on-slide-changed="_slideHasChanged_newsupdate($index)"
 		        				active-slide="0"  
+		        				show-pager="false"
 		        				>
 							  <ion-slide ng-repeat="new in news | limitTo: 5">
 							  <a style="cursor:pointer;" ng-click="share(new.post_title,new.url)"> <i class="nut-menu-share float-right"></i></a>
@@ -76,6 +77,7 @@
 						    	does-continue="true"
 		        				auto-play="true" 
 		        				active-slide="0" 
+		        				show-pager="false"
 		        				on-slide-changed="_slideHasChanged_HotNews($index)">
 		        			
 							  <ion-slide ng-repeat="hot in hots | limitTo: 5">
@@ -205,7 +207,7 @@
  									slide-interval="3000"  
  									show-pager="false" >  
 							      <ion-slide ng-repeat="item in adver">  
-							      	<img cache-src="{{item.thumbnail.replace('$','http://artbeat.mfec.co.th/SpringNew/wp-content/')}}"></img> 
+							      	<img ng-src="{{item.thumbnail.replace('$','http://artbeat.mfec.co.th/SpringNew/wp-content/')}}"></img> 
 							      </ion-slide>  
 							    </ion-slide-box>  
 						</div>
@@ -217,7 +219,7 @@
  									slide-interval="3000"  
  									show-pager="false" >  
 							      	<ion-slide ng-repeat="item in adver">  
-							      		<img cache-src="{{item.thumbnail.replace('$','http://artbeat.mfec.co.th/SpringNew/wp-content/')}}"></img> 
+							      		<img ng-src="{{item.thumbnail.replace('$','http://artbeat.mfec.co.th/SpringNew/wp-content/')}}"></img> 
 							      	</ion-slide>  
 							    </ion-slide-box> 
             				</li>
@@ -226,7 +228,7 @@
 								    <a href="#/app/news/{{item.ID}}/{{item.term_taxonomy_id}}" >
 									    <div class="sp-list" >
 											<div class="col-40">
-											    <img id="img_{{item.ID}}" cache-src="{{item.guid != null ? item.guid:'img/default.jpg'}}">
+											    <img id="img_{{item.ID}}" cache-src="{{item.guid != null ? item.guid.replace('.jpg','-150x90.jpg').replace('.png','-150x90.png'):'img/default.jpg'}}">
 										    </div>
 											<div class="sp-list-detail ">
 											    <div class="sp-list-header">
@@ -269,8 +271,6 @@
 						<!-- </ion-list>  -->
 					    <!-- FOLLOW US -->
 					    <br/>
-						<br/>
-						<br/>
 						<br/>
 						<br/>
 						<br/>
@@ -374,7 +374,7 @@
 								slide-interval="3000"  
 								show-pager="false" >  
 					      		<ion-slide ng-repeat="item in adver">  
-					      			<img cache-src="{{item.thumbnail.replace('$','http://artbeat.mfec.co.th/SpringNew/wp-content/')}}"></img> 
+					      			<img ng-src="{{item.thumbnail.replace('$','http://artbeat.mfec.co.th/SpringNew/wp-content/')}}"></img> 
 					      		</ion-slide>  
 					    	</ion-slide-box> 
 						</div>
