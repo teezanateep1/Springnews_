@@ -213,30 +213,6 @@ angular.module('starter.controllers', ['ngOpenFB'])
                 alert('Facebook login failed');
             }
     });
-    // _auth.authWithOAuthPopup("facebook", function(error, authData) {
-    //   if (error) {
-    //     var alertPopup = $ionicPopup.alert({
-    //             title: 'Login failed!',
-    //             template: 'Please check your credentials!'
-    //     });
-
-    //   } else {
-    //     // the access token will allow us to make Open Graph API calls
-    //     $localStorage.img = "https://graph.facebook.com/"+authData.facebook.id+"/picture?width=400&height=400";
-    //     $localStorage.name = authData.facebook.displayName;
-    //     $localStorage.email = authData.facebook.email;
-    //     $scope.user.img = "https://graph.facebook.com/"+authData.facebook.id+"/picture?width=400&height=400";
-    //     $scope.user.name = authData.facebook.displayName;
-    //     $scope.user.email = authData.facebook.email;
-    //     $scope.closeLogin();
-    //     $scope.profile = true;
-    //     $scope.login_ = false;
-    //     $scope.logout_ = true;
-    //   }
-    // }, {
-    //   remember: "none",
-    //   scope: "email,user_likes" // the permissions requested
-    // })
 
   };
 
@@ -272,28 +248,6 @@ angular.module('starter.controllers', ['ngOpenFB'])
         console.log("Error -> " + error);
         // alert("Error -> " + JSON.stringify(error));
     });
-    // _auth.authWithOAuthPopup("google", function(error, authData) {
-    //   if (error) {
-    //     var alertPopup = $ionicPopup.alert({
-    //             title: 'Login failed!',
-    //             template: 'Please check your credentials!'
-    //     });
-    //   } else {
-    //     $localStorage.img = authData.google.profileImageURL;
-    //     $localStorage.name = authData.google.displayName;
-    //     $localStorage.email = authData.google.email;
-    //     $scope.user.img = authData.google.profileImageURL;
-    //     $scope.user.name = authData.google.displayName;
-    //     $scope.user.email = authData.google.email;
-    //     $scope.closeLogin();
-    //     $scope.profile = true;
-    //     $scope.login_ = false;
-    //     $scope.logout_ = true;
-    //   }
-    // }, {
-    //   remember: "none",
-    //   scope: "email" // the permissions requested
-    // })
   };
 })
 
@@ -328,7 +282,7 @@ angular.module('starter.controllers', ['ngOpenFB'])
     SpringNews._newsupdate($scope,'908'); 
     SpringNews._newshot($scope,'ประเด็นร้อน');
     SpringNews._clips($scope,'30','4'); 
-    // SpringNews._category($scope,'889');
+    SpringNews._category($scope,'889');
     SpringNews._oil($scope);
     SpringNews._part($scope);
     SpringNews._thaigold($scope);
@@ -339,10 +293,6 @@ angular.module('starter.controllers', ['ngOpenFB'])
     if(d != undefined){
       return _function._date(d.substring(0, 10),d.substring(12, 16));
     }else{ return ""; }
-  }
-  //โฆษาณา Random 
-  $scope.advertise = function(){
-    SpringNews._advertise($scope,'14'); 
   }
   //rendom
   $scope.random = function() {
