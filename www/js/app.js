@@ -134,7 +134,6 @@ angular.module('starter', ['ionic', 'starter.controllers',"angular-md5",'service
 
         $element.bind('scroll', function(e) { 
             shrinkAmt = headerHeight - (headerHeight - (e.detail.scrollTop - starty));
-
             if (shrinkAmt >= headerHeight){
               // //header is totaly hidden - start moving startY downward so that when scrolling up the header starts showing
               // starty = (e.detail.scrollTop - headerHeight);
@@ -180,7 +179,7 @@ angular.module('starter', ['ionic', 'starter.controllers',"angular-md5",'service
     fadeAmt = 1 - amt / 54;
     ionic.requestAnimationFrame(function() {
       header.style[ionic.CSS.TRANSFORM] = 'translate3d(0, -' + amt + 'px, 0)';
-      header.style.marginTop = '70px';
+      //header.style.marginTop = '70px';
     });
   };
   var tab = function(header, content, amt, max) {
@@ -195,6 +194,8 @@ angular.module('starter', ['ionic', 'starter.controllers',"angular-md5",'service
     fadeAmt = 1 - amt / 53;
     ionic.requestAnimationFrame(function() {
       header.style[ionic.CSS.TRANSFORM] = 'translate3d(0, -' + amt + 'px, 0)';
+      header.style.marginTop = '-'+amt+'px';
+      header.style.top = '-'+amt+'px';
     });
   };
 
@@ -207,13 +208,13 @@ angular.module('starter', ['ionic', 'starter.controllers',"angular-md5",'service
         
         var header = $document[0].body.querySelector('[nav-bar="active"]');
         var chil = header.querySelector('.bar-header');
-        // var header1 = $document[0].body.querySelector('[nav-bar="cached"]');
-        // var chil1 = header1.querySelector('.bar-header');
+        var header1 = $document[0].body.querySelector('[nav-bar="cached"]');
+        var chil1 = header1.querySelector('.bar-header');
 
         // var header2 = $document[0].body.querySelector('.hd-pro');
         // var header3 = $document[0].body.querySelector('.tsb-program');
 
-        // var header4 = $document[0].body.querySelector('[on-slide-changed="slideHasChanged($index)"]');
+        // var header4 = $document[0].body.querySelector('.slider');
 
         var headerHeight = chil.offsetHeight;
 
