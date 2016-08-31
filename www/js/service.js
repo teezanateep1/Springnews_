@@ -191,8 +191,9 @@ angular.module('services', [])
         });
     }
     // --------- ทันเหตุการณ์
-    this._newsupdate = function($scope,id){ 
-        var url=path+"Posts/categoryID?api-key="+key+"&cat_id="+id+"&limit=5&order=post_date&by=DESC"; 
+    this._newsupdate = function($scope,name){ 
+        // var url=path+"Posts/categoryID?api-key="+key+"&cat_id="+id+"&limit=5&order=post_date&by=DESC"; 
+        var url=path+"Hots/name?api-key="+key+"&tag_name="+name+"&limit=5"; 
         $http.get(url).success(function(result){ 
             if(result != ""){
                 $scope.news = result; 

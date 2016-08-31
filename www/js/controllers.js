@@ -278,8 +278,7 @@ angular.module('starter.controllers', ['ngOpenFB'])
 
  $timeout(function(){
     SpringNews._advertise($scope,'14');
-    //SpringNews._newsupdate($scope,'ข่าวเด่น'); 
-    SpringNews._newsupdate($scope,'908'); 
+    SpringNews._newsupdate($scope,'ข่าวเด่น'); 
     SpringNews._newshot($scope,'ประเด็นร้อน');
     SpringNews._clips($scope,'30','4'); 
     SpringNews._category($scope,'889');
