@@ -1,10 +1,5 @@
 angular.module('services', [])
 
-.factory("_auth", function($firebaseAuth) {
-  var usersRef = new Firebase("https//facebook-login-natsu.firebaseio.com/users");
-  return usersRef;
-})
-
 .factory('facebookService', function($q) {
     return {
         getMyLastName: function() {
@@ -21,6 +16,71 @@ angular.module('services', [])
             return deferred.promise;
         }
     }
+})
+
+.factory('ConnectivityMonitor', function($rootScope, $cordovaNetwork ,$ionicPopup ){
+ 
+  return {
+    isOnline: function(){
+      if(ionic.Platform.isWebView()){
+        return $cordovaNetwork.isOnline();    
+      } else {
+        return navigator.onLine;
+      }
+    },
+    isOffline: function(){
+      if(ionic.Platform.isWebView()){
+        return !$cordovaNetwork.isOnline();    
+      } else {
+        return !navigator.onLine;
+      }
+    },
+    startWatching: function(){
+        if(ionic.Platform.isWebView()){
+ 
+          $rootScope.$on('$cordovaNetwork:online', function(event, networkState){
+            window.location.reload(true)  
+          });
+ 
+          $rootScope.$on('$cordovaNetwork:offline', function(event, networkState){
+            $ionicPopup.alert({
+              title: 'No Internet Connection',
+              content: 'Sorry, no Internet connectivity detected. Please reconnect and try again.'
+            })
+            .then(function(result) {
+                if(typeof cordova.plugins.settings.openSetting != undefined){
+                    cordova.plugins.settings.openSetting("settings", function(){
+                    },
+                    function(){  
+                    });
+                }
+            });
+          });
+ 
+        }
+        else {
+ 
+          window.addEventListener("online", function(e) {
+            window.location.reload(true) 
+          }, false);    
+ 
+          window.addEventListener("offline", function(e) {
+            $ionicPopup.alert({
+              title: 'No Internet Connection',
+              content: 'Sorry, no Internet connectivity detected. Please reconnect and try again.'
+            })
+            .then(function(result) {
+                if(typeof cordova.plugins.settings.openSetting != undefined){
+                    cordova.plugins.settings.openSetting("settings", function(){
+                    },
+                    function(){
+                    });
+                }
+            });
+          }, false);  
+        }       
+    }
+  }
 })
 
 .service("_function",["$http","$ionicSlideBoxDelegate","$ionicPopup",function($http,$ionicSlideBoxDelegate,$ionicPopup){  

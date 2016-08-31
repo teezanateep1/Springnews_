@@ -54,6 +54,9 @@
         },
         "ionic-plugin-keyboard": {
             "PACKAGE_NAME": "com.sp.springnews"
+        },
+        "com.phonegap.plugins.nativesettingsopener": {
+            "PACKAGE_NAME": "com.sp.springnews"
         }
     },
     "dependent_plugins": {
