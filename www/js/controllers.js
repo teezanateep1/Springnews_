@@ -626,9 +626,11 @@ angular.module('starter.controllers', ['ngOpenFB'])
     } 
   }
 
-  $scope.share = function (){
+  $scope.share = function (title,url){
+      $scope.title_ = title
+      $scope.url = url
       $cordovaSocialSharing
-      .share("Live Radio",null,null,"http://artbeat.mfec.co.th/SpringNew/?page_id=1131&lang=th")
+      .share($scope.title_,null,null,$scope.url)
       .then(function(result) {
         // Success!
       }, function(err) {
@@ -637,7 +639,7 @@ angular.module('starter.controllers', ['ngOpenFB'])
            title: 'An error occurred.'
          });
       });
-    }
+  }
 
 })
 
