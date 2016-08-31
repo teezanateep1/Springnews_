@@ -76,7 +76,8 @@ angular.module('starter', ['ionic', 'starter.controllers',"angular-md5",'service
    $ionicConfigProvider.navBar.alignTitle('center');
    $ionicConfigProvider.scrolling.jsScrolling(true);
    $ionicConfigProvider.backButton.previousTitleText(false).text('');
-   $ionicConfigProvider.views.maxCache(5);
+   $ionicConfigProvider.views.maxCache(10);
+   $ionicConfigProvider.views.forwardCache(true)
 })
 
 .constant('$ionicLoadingConfig', {  
@@ -135,19 +136,19 @@ angular.module('starter', ['ionic', 'starter.controllers',"angular-md5",'service
 //         $element.bind('scroll', function(e) { 
 //             shrinkAmt = headerHeight - (headerHeight - (e.detail.scrollTop - starty));
 //             if (shrinkAmt >= headerHeight){
-//               // //header is totaly hidden - start moving startY downward so that when scrolling up the header starts showing
-//               // starty = (e.detail.scrollTop - headerHeight);
-//               // shrinkAmt = headerHeight;
-//               if(window.AdMob) AdMob.hideBanner();  
-//               $timeout.cancel(timeoutID);
-//               timeoutID=$timeout(function(){ if(window.AdMob) AdMob.showBanner(AdMob.AD_POSITION.BOTTOM_CENTER);  },4000); 
+//               //header is totaly hidden - start moving startY downward so that when scrolling up the header starts showing
+//               starty = (e.detail.scrollTop - headerHeight);
+//               shrinkAmt = headerHeight;
+//               //if(window.AdMob) AdMob.hideBanner();  
+//               //$timeout.cancel(timeoutID);
+//               //timeoutID=$timeout(function(){ if(window.AdMob) AdMob.showBanner(AdMob.AD_POSITION.BOTTOM_CENTER);  },4000); 
 //             } else if (shrinkAmt < 0){
 //               //header is totaly displayed - start moving startY upwards so that when scrolling down the header starts shrinking
 //               starty = Math.max(orgStarty, e.detail.scrollTop);
 //               shrinkAmt = 0;
-//               if(window.AdMob) AdMob.hideBanner(); 
-//               $timeout.cancel(timeoutID);
-//               timeoutID=$timeout(function(){ if(window.AdMob) AdMob.showBanner(AdMob.AD_POSITION.BOTTOM_CENTER);  },4000); 
+//               //if(window.AdMob) AdMob.hideBanner(); 
+//               //$timeout.cancel(timeoutID);
+//               //timeoutID=$timeout(function(){ if(window.AdMob) AdMob.showBanner(AdMob.AD_POSITION.BOTTOM_CENTER);  },4000); 
 //             } 
              
 //             shrink(chil, $element[0], shrinkAmt, headerHeight); //do the shrinking   

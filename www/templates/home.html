@@ -1,5 +1,5 @@
 <ion-view>
-    <ion-content scroll="false" class="tabs-main-color "  style="margin-top: 16%;" >
+    <ion-content scroll="false" class="tabs-main-color " style="margin-top: 16%;" >
     	
         <tab-slide-box tab="0">
 		    <div class="tsb-icons tsb-main tsb-home">
@@ -219,7 +219,7 @@
  									slide-interval="3000"  
  									show-pager="false" >  
 							      	<ion-slide ng-repeat="item in adver">  
-							      		<img ng-src="{{item.thumbnail.replace('$','http://artbeat.mfec.co.th/SpringNew/wp-content/')}}"></img> 
+							      		<img cache-src="{{item.thumbnail.replace('$','http://artbeat.mfec.co.th/SpringNew/wp-content/')}}"></img> 
 							      	</ion-slide>  
 							    </ion-slide-box> 
             				</li>
@@ -530,9 +530,6 @@
 							<br/>
 						</div>	
 					    <br/>
-						<br/>
-						<br/>
-						<br/>
 						<br/>
 					</ion-content>
 					<!-- ./ข้อมูลเศรษฐกิจ  -->
