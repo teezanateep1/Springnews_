@@ -1040,3 +1040,29 @@ angular.module('starter.controllers', ['ngOpenFB'])
     $ionicLoading.hide();
     }
 })
+
+// --------------------- AllNews ------------------------
+.controller('allnewsCtrl', function($scope,$http,$timeout,$stateParams,$ionicSideMenuDelegate,_function,SpringNews) {
+    $scope.name = $stateParams.catname;
+    $scope.allnewsCategory = [];
+    
+    SpringNews._catallNews($scope,$stateParams.key);
+    
+    //วันที่
+  $scope.date = function(d){
+    if(d != undefined){
+      return _function._date(d.substring(0, 10),d.substring(12, 16));
+    }else{ return ""; }
+  }
+  //substring
+  $scope.substring = function(str){
+    if(str.length > 65){
+      return str.substring(0, 65)+"...";
+    }else{
+      return str;
+    } 
+  }
+ 
+
+
+})

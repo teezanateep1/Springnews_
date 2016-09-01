@@ -430,6 +430,17 @@ angular.module('starter', ['ionic', 'starter.controllers',"angular-md5",'service
         controller: 'uploadfileCtrl'
       }
     }
+  })
+
+   // allnews
+  .state('app.allnews', {
+    url: '/allnews/:key/:catname',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/allnews.html',
+        controller: 'allnewsCtrl'
+      }
+    }
   });
 
   // if none of the above states are matched, use this as the fallback

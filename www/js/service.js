@@ -201,6 +201,20 @@ angular.module('services', [])
             $scope.loading_catnews = false;
         });
     }
+
+    // --------- ข่าว ทั้งหมด ใน หมวด
+    this._catallNews = function($scope,id){
+        var url_=path+"Posts/categoryAll?api-key="+key+"&cat_id="+id+"&order=post_date&by=DESC"; 
+        $http.get(url_).success(function(result_){ 
+            if(result_ != ""){
+                   $scope.allnewsCategory = result_ ;
+            }
+            $scope.loading_catnews = false;
+        })  
+        .error(function(){  
+            $scope.loading_catnews = false;
+        });
+    }
     // --------- หมวดหมู่รายการ
     this._categoryProgram = function($scope,id){ 
         var url=path+"Categories/parent?api-key="+key+"&id="+id; 
