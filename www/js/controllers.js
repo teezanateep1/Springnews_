@@ -637,13 +637,7 @@ angular.module('starter.controllers', ['ngOpenFB'])
   SpringNews._schedules($scope,$stateParams.scheId); 
   $scope.schedulesActive = window.localStorage.getItem('Notification');
   $ionicLoading.show();
-
-  $scope.test = function(){
-    $cordovaLocalNotification.getAllIds().then(function(result_){
-      alert('Get all ids: ' + result_) //Returned 2nd: 'Get all ids: 1,0,4,5,3,2'
-    });
-  }
-
+  
   $scope.LocalNotification = function(id,title,hour,min,event){
     var days = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
     var today = new Date();
@@ -784,10 +778,14 @@ angular.module('starter.controllers', ['ngOpenFB'])
   $scope.newsShow = true;
   $ionicLoading.show();
   
+  $timeout(function(){ 
     SpringNews._advertise($scope,'14');
     SpringNews._newsdetail($scope,$stateParams.newsId);
     SpringNews._newsconnected($scope,$stateParams.newsId,$stateParams.catId);
-    $scope.newsShow = false
+    $timeout(function(){ 
+     $scope.newsShow = false
+    },100);
+  },2000);
 
   $scope.message = '';
   $scope.url = '';

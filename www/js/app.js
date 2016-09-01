@@ -62,12 +62,12 @@ angular.module('starter', ['ionic', 'starter.controllers',"angular-md5",'service
         }
  
   //=======AdMob Code End=======
-        // if(window.AdMob) 
-        //   AdMob.createBanner( {
-        //       adId:admobid.banner, 
-        //       position:AdMob.AD_POSITION.BOTTOM_CENTER, 
-        //       autoShow:true
-        //   });
+        if(window.AdMob) 
+          AdMob.createBanner( {
+              adId:admobid.banner, 
+              position:AdMob.AD_POSITION.BOTTOM_CENTER, 
+              autoShow:true
+          });
   });
 
 })
