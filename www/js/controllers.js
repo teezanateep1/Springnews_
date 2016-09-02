@@ -1045,7 +1045,7 @@ angular.module('starter.controllers', ['ngOpenFB'])
 .controller('allnewsCtrl', function($scope,$http,$timeout,$stateParams,$ionicSideMenuDelegate,_function,SpringNews) {
     $scope.name = $stateParams.catname;
     $scope.allnewsCategory = [];
-    
+    SpringNews._advertise($scope,'14');
     SpringNews._catallNews($scope,$stateParams.key);
     
     //วันที่

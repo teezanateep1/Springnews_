@@ -201,7 +201,7 @@
 							<a style="cursor:pointer;top: 30px;right: 0px;position: absolute;" ng-click="share(item.post_title,item.url)"> <i class="nut-menu-share float-right"></i></a>
 						</div>
 						<!-- ./ -->
-						<div class="advertise" >
+						<!-- <div class="advertise" >
 							     <ion-slide-box does-continue="true"  
  									auto-play="true"  
  									slide-interval="3000"  
@@ -210,7 +210,7 @@
 							      	<img ng-src="{{item.thumbnail.replace('$','http://artbeat.mfec.co.th/SpringNew/wp-content/')}}"></img> 
 							      </ion-slide>  
 							    </ion-slide-box>  
-						</div>
+						</div> -->
 
 						<ul collection-item-width="'100%'" ng-style="{width:'100%'}"  item-height="99px" >
 							<li ng-repeat="item in newsCategory |filter: tab.term_id " style="margin-top: 3px; "   item-height="99px"  id="newsList_{{tab.term_id}}" >	
@@ -233,16 +233,15 @@
 									</a>
 									<div style="width: 100px;height: 0.5px;" ng-style="{width:'100%'}"></div>
 								</div> 
-								<a href="#/app/allnews/{{tab.term_id}}/{{tab.name}}">
-									<div style="cursor:pointer;"  class="sp-readmore" ng-show="$last">
-							    	<i class="nut-menu-seemore but-seemore"></i>ข่าวในหัวข้อนี้ทั้งหมด</div>
-						    	</a>
+								
 						    	
 							</li>
-							
+						
 						</ul>
-						<br/>
-						<br/>
+						<a href="#/app/allnews/{{tab.term_id}}/{{tab.name}}">
+							<div style="cursor:pointer;"  class="sp-readmore" >
+					    	<i class="nut-menu-seemore but-seemore"></i>ข่าวในหัวข้อนี้ทั้งหมด</div>
+				    	</a>	
 						<br/>
 						<br/>
 						
@@ -264,7 +263,6 @@
 									</div>
 								</div>	
 						 <br/>
-						<br/>
 						<br/>
 						<br/>
 						<!-- <ul collection-repeat="item in newsCategory |filter: tab.term_id " collection-item-width="'100%'" item-height="($index+1)%5 == 0 ? 175 : 99">
