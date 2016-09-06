@@ -6,7 +6,12 @@
    		<i class="nut-menu-share float-right" ng-click="share(newsDetail[0].post_title,newsDetail[0].url)"></i> 
   	</ion-nav-buttons>
   	<!-- NEWS DETAIL -->
+  	
   	<ion-content >
+	  	<div style="margin-top: 20px;text-align: center;" ng-show="loading_catnews">
+			<ion-spinner class="spinner-calm" style="display: inline-block;"></ion-spinner>
+		</div>	
+  		
   		<!-- <ul collection-repeat="item in allnewsCategory |filter: tab.term_id " collection-item-width="'100%'" item-height="($index+1)%5 == 0 ? 175 : 99">
 
 			<li ng-if="($index+1)%5 == 0" class="advertise" >
@@ -43,8 +48,8 @@
 			</li>
 			
 		</ul> -->
-		<ul  ng-show="!showloading" style="margin-top: 10px; " collection-repeat="item in allnewsCategory" collection-item-width="'100%'"  item-height="99px"  ng-style="{width:'100%'}"   >
-			<li >
+		<ul  ng-show="!showloading" style="margin-top: 18px; " >
+			<li ng-repeat="item in allnewsCategory" collection-item-width="'100%'"  item-height="99px"  ng-style="{width:'100%'};" style="margin-bottom: 5px;">
 				<div style="background-color: #fff;" ng-style="{width:'100%'}" >    
 					<a href="#/app/news/{{item.ID}}/{{item.term_taxonomy_id}}" >
 						<div class="sp-list" >

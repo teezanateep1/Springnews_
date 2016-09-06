@@ -78,8 +78,8 @@ angular.module('starter', ['ionic', 'starter.controllers',"angular-md5",'service
    $ionicConfigProvider.navBar.alignTitle('center');
    $ionicConfigProvider.scrolling.jsScrolling(true);
    $ionicConfigProvider.backButton.previousTitleText(false).text('');
-   $ionicConfigProvider.views.maxCache(10);
-   $ionicConfigProvider.views.forwardCache(true)
+   $ionicConfigProvider.views.maxCache(5);
+   $ionicConfigProvider.views.forwardCache(false)
 })
 
 .constant('$ionicLoadingConfig', {  

@@ -189,13 +189,13 @@ angular.module('starter.controllers', ['ngOpenFB'])
                 $scope.closeLogin();
                 ngFB.api({
                     path: '/me',
-                    params: {fields: 'id,name'}
+                    params: {fields: 'id,name,email'}
                 }).then(
                     function (user) {
                         $scope.user = user;
                         $localStorage.img = "https://graph.facebook.com/"+$scope.user.id+"/picture?width=400&height=400";
                         $localStorage.name = $scope.user.name;
-                        // $localStorage.email = authData.facebook.email; 
+                        $localStorage.email = $scope.user.email; 
 
                         $scope.user.name = $localStorage.name
                         $scope.user.email = $localStorage.email 
@@ -1042,12 +1042,13 @@ angular.module('starter.controllers', ['ngOpenFB'])
 })
 
 // --------------------- AllNews ------------------------
-.controller('allnewsCtrl', function($scope,$http,$timeout,$stateParams,$ionicSideMenuDelegate,_function,SpringNews) {
-    $scope.name = $stateParams.catname;
-    $scope.allnewsCategory = [];
-    SpringNews._advertise($scope,'14');
-    SpringNews._catallNews($scope,$stateParams.key);
-    
+.controller('allnewsCtrl', function($scope,$stateParams,_function,SpringNews) {
+  $scope.name = $stateParams.catname;
+  $scope.allnewsCategory = [];
+  $scope.loading_catnews = true;
+  SpringNews._advertise($scope,'14');
+  SpringNews._catallNews($scope,$stateParams.key);
+  // $ionicLoading.show(); 
     //วันที่
   $scope.date = function(d){
     if(d != undefined){

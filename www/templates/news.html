@@ -20,7 +20,7 @@
 		<!--  BOX -->
 		<div class="box-news" ng-hide="newsShow">
 			<div class="item item-text-wrap" style="border-color: #31b5c2;height: 250px;padding: 0px;margin: 0px;">
-			 <img a.renderedlt="Company Logo" cache-src="{{newsDetail[0].guid}}" class="box-news-img"> 
+			 <img a.renderedlt="Company Logo" ng-src="{{newsDetail[0].guid}}" class="box-news-img"> 
 			</div>
 			<div class="box-item-clip" >
 				{{newsDetail[0].post_title}}
@@ -51,7 +51,7 @@
 						    <a  href="#/app/news/{{_newsConnected.ID}}/{{_newsConnected.term_taxonomy_id}}" class=" ">
 							    <div class="sp-list-news" >
 									<div class="col-40">
-									    <img cache-src="{{_newsConnected.guid}}" style="margin: 1px;">
+									    <img ng-src="{{_newsConnected.guid}}" style="margin: 1px;">
 									</div>
 									<div class="sp-list-detail-news ">
 									    <div class="sp-list-header">

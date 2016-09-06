@@ -15,7 +15,7 @@
 				slide-interval="3000"  
 				show-pager="false" >  
 	      		<ion-slide ng-repeat="item in adver">  
-	      			<img cache-src="{{item.thumbnail.replace('$','http://artbeat.mfec.co.th/SpringNew/wp-content/')}}"></img> 
+	      			<img ng-src="{{item.thumbnail.replace('$','http://artbeat.mfec.co.th/SpringNew/wp-content/')}}"></img> 
 	      		</ion-slide>  
 	    	</ion-slide-box> 
 		</div>
@@ -23,7 +23,7 @@
 		<div class="box-news">
 			<div ng-click="playVideo()" class="item item-text-wrap" style="border-color: #31b5c2;height: 250px;padding: 0px;margin: 0px;">
 			    <img  ng-src="{{video.slides[0].image != null ? 'img/play_button.png':''}}"  class="but-play" > 
-			    <img  cache-src="{{videosDetail[0].guid != null ? videosDetail[0].guid:'img/default.jpg'}}"  class="box-news-img"> 
+			    <img  ng-src="{{videosDetail[0].guid != null ? videosDetail[0].guid:'img/default.jpg'}}"  class="box-news-img"> 
 
 			</div>
 			<div class="box-item-clip" >
@@ -49,7 +49,7 @@
 						    <a  href="#/app/videos/{{_newsConnected.ID}}/{{_newsConnected.term_taxonomy_id}}/{{title}}" class=" ">
 							    <div class="sp-list-news" >
 									<div class="col-40">
-									    <img cache-src="{{_newsConnected.guid != null ? _newsConnected.guid:'img/default.jpg'}}" style="margin: 1px;">
+									    <img ng-src="{{_newsConnected.guid != null ? _newsConnected.guid:'img/default.jpg'}}" style="margin: 1px;">
 									</div>
 									<div class="sp-list-detail-news ">
 									    <div class="sp-list-header">

@@ -25,7 +25,7 @@
 								<div class="list" collection-repeat="item in newsCategory |filter: tab.name " collection-item-width="'100%'"  item-height="255px"    >
 									<a href="#/app/videos/{{item.ID}}/{{item.term_taxonomy_id}}/" style="text-decoration: none;">
 										<div class="item item-text-wrap" style="border-color: #31b5c2;height: 250px;padding: 0px;">
-											<img cache-src="{{item.guid != null ? item.guid:'img/default.jpg'}}" class="box-news-img" >
+											<img ng-src="{{item.guid != null ? item.guid:'img/default.jpg'}}" class="box-news-img" >
 										</div>
 										<div class="box-item-new box-news-footer" style="line-height: 29px; padding: 0 10px; margin-bottom: 4px;">
 										  	{{substring(item.post_title)}}	
