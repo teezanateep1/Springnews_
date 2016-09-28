@@ -17,12 +17,12 @@ angular.module('starter.controllers', ['ngOpenFB'])
       StatusBar.hide();
     }
   }
-  // Create the login modal that we will use later
-  $ionicModal.fromTemplateUrl('templates/login.html', {
-    scope: $scope
-  }).then(function(modal) {
-    $scope.modal = modal;
-  });
+  // // Create the login modal that we will use later
+  // $ionicModal.fromTemplateUrl('templates/login.html', {
+  //   scope: $scope
+  // }).then(function(modal) {
+  //   $scope.modal = modal;
+  // });
 
  // -------------- MEnu // SubMEnu ---
  $scope.menu_toggle = true;
@@ -110,15 +110,15 @@ angular.module('starter.controllers', ['ngOpenFB'])
      $scope.logout_ = false;
   }
 
-  // Triggered in the login modal to close it
-  $scope.closeLogin = function() {
-    $scope.modal.hide();
-  };
+  // // Triggered in the login modal to close it
+  // $scope.closeLogin = function() {
+  //   $scope.modal.hide();
+  // };
 
-  // Open the login modal
-  $scope.login = function() {
-    $scope.modal.show();
-  };
+  // // Open the login modal
+  // $scope.login = function() {
+  //   $scope.modal.show();
+  // };
 
   //Open the logout 
   $scope.logout = function() {
@@ -130,129 +130,130 @@ angular.module('starter.controllers', ['ngOpenFB'])
     $scope.logout_ = false;
   }
 
-  //Alert Fail Login
-  $scope.showAlertFail = function() {
-     var alertPopup = $ionicPopup.alert({
-     title: 'Login Fail!',
-     template: 'Invalid Username and Password '
-     });
-  };
   
-  //Alert Success Login
-  $scope.showAlertSuccess = function() {
-     var alertPopup = $ionicPopup.alert({
-     title: 'Login Success!',
-     template: 'Welcome Back: "'+ $scope.loginData.username +'"'
-     });
-     $scope.modal.hide();
-  };
-
-  // Perform the login action when the user submits the login form
-  $scope.doLogin = function() {
-    console.log('Doing login', $scope.loginData);
-
-    var request = $http({
-                        method: "post",
-                        url: "http://daydev.com/demo/login.php",
-                        data: {
-                            username: $scope.loginData.username,
-                            password: $scope.loginData.password
-                        },
-                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-                  });
-
-        request.success(function (data) {
-          $scope.message = "Console : "+data;
-            if(data=="false"){
-              $scope.showAlertFail(); 
-            }else{
-              $scope.showAlertSuccess();
-              $scope.profile = true;
-              $scope.login_ = false;
-              $scope.logout_ = true;
-            }
-        });
-    // Simulate a login delay. Remove this and replace with your login
-    // code if using a login system
-    // $timeout(function() {
-    //   $scope.closeLogin();
-    // }, 1000);
-  };
-
-  //Login Facebook 
-  $scope.doLoginFacebook = function () { 
-    ngFB.login({scope: 'email,publish_actions,user_friends'}).then(
-        function (response) {
-            if (response.status === 'connected') {
-                console.log(response)
-                console.log('Facebook login succeeded');
-                $scope.closeLogin();
-                ngFB.api({
-                    path: '/me',
-                    params: {fields: 'id,name,email'}
-                }).then(
-                    function (user) {
-                        $scope.user = user;
-                        $localStorage.img = "https://graph.facebook.com/"+$scope.user.id+"/picture?width=400&height=400";
-                        $localStorage.name = $scope.user.name;
-                        $localStorage.email = $scope.user.email; 
-
-                        $scope.user.name = $localStorage.name
-                        $scope.user.email = $localStorage.email 
-                        $scope.user.img = $localStorage.img
-
-                        $scope.profile = true;
-                        $scope.login_ = false;
-                        $scope.logout_ = true;
-                        console.log(user)
-                    },
-                    function (error) {
-                        alert('Facebook error: ' + error.error_description);
-                });
-            } else {
-                alert('Facebook login failed');
-            }
-    });
-
-  };
-
-  //Login Google
-  $scope.doLoginGoogle = function () {
-
-    $cordovaOauth.google("891740401184-i1ucjk82d2uh6pcs0qt82v7pcqnrb58o.apps.googleusercontent.com", ["email"]).then(function(result) {
-        console.log("Response Object -> " + JSON.stringify(result));
-        // alert("Response Object -> " + JSON.stringify(result));
-        var url="https://www.googleapis.com/oauth2/v1/userinfo?access_token="+result.access_token; 
-        $http.get(url).success(function(result2){ 
-            $scope.closeLogin();
-            if(result2 != ""){
-                $scope.user = result2;
-                $localStorage.img = result2.picture;
-                $localStorage.name = result2.name;
-                $localStorage.email = result2.email;
-
-                $scope.user.name = $localStorage.name
-                $scope.user.email = $localStorage.email 
-                $scope.user.img = $localStorage.img
-
-                $scope.profile = true;
-                $scope.login_ = false;
-                $scope.logout_ = true;
-            }
-            $scope.showloading=false; 
-        })  
-        .error(function(){  
-            $scope.showloading=false; 
-        });
-    }, function(error) {
-        console.log("Error -> " + error);
-        // alert("Error -> " + JSON.stringify(error));
-    });
-  };
 })
 
 // --------------------- HOME ------------------------
 .controller('HomeCtrl', function($scope, $stateParams, SpringNews, $ionicSlideBoxDelegate,_function, $ionicModal,$ionicLoading,$cordovaSocialSharing,$ionicScrollDelegate, $ionicNavBarDelegate, $timeout, ConnectivityMonitor) { //admobSvc
+
+ 
+  $ionicLoading.show();
+  $scope.adver = [];
+
+  $scope.news = [];  
+  $scope.newsupdate = []; //title & date
+  $scope.loading_newsupdate = true;
+
+  $scope.hots = [];
+  $scope.newshot = [];
+  $scope.loading_newshot = true;
+
+  $scope.clips = [];
+  $scope.loading_clip = true;
+
+  $scope.newsCategory = [];
+  $scope.loading_catnews = true;
+
+  $scope.tabs = [];
+  $scope.oils = [];
+  $scope.parts = [];
+  $scope.thaigolds = [];
+
+ // $timeout(function(){
+    SpringNews._advertise($scope,'14');
+    SpringNews._newsupdate($scope,'ข่าวเด่น'); 
+    SpringNews._newshot($scope,'ประเด็นร้อน');
+    SpringNews._clips($scope,'30','4'); 
+    SpringNews._category($scope,'889');
+    SpringNews._oil($scope);
+    SpringNews._part($scope);
+    SpringNews._thaigold($scope);
+  // },3000);
+  
+  //วันที่
+  $scope.date = function(d){
+    if(d != undefined){
+      return _function._date(d.substring(0, 10),d.substring(12, 16));
+    }else{ return ""; }
+  }
+  //rendom
+  $scope.random = function() {
+    return 0.5 - Math.random();
+  }
+  //replace
+  $scope.replace = function (str) {
+    if(str != undefined){
+      return str.replace(/(<([^>]+)>)/ig,"");
+    }else{ return ""; }
+  }
+  //substring
+  $scope.substring = function(str){
+    if(str.length > 50){
+      return str.substring(0, 50)+"...";
+    }else{
+      return str;
+    } 
+  }
+  //refresh
+  $scope.refresh = function(){    
+    SpringNews._oil($scope);
+    SpringNews._part($scope);
+    SpringNews._thaigold($scope);
+  }
+  //Show Silde News
+  $scope._slideHasChanged_newsupdate = function($index) {
+    $scope.newsupdate.title = $scope.news[$index].post_title;
+    $scope.newsupdate.date = _function._date($scope.news[$index].post_date.substring(0, 10),$scope.news[$index].post_date.substring(12, 16));
+    $ionicSlideBoxDelegate.update();
+    $ionicSlideBoxDelegate.loop(true); 
+  }
+  $scope._slideHasChanged_HotNews = function ($index) {
+    $scope.newshot.title = $scope.hots[$index].post_title;
+    $scope.newshot.date = _function._date($scope.hots[$index].post_date.substring(0, 10),$scope.hots[$index].post_date.substring(12, 16));
+    $ionicSlideBoxDelegate.update();
+    $ionicSlideBoxDelegate.loop(true); 
+  }
+  //------------\\
+  //------------ Silde Tab
+  var arr = [];
+  $scope.onSlideMove = function(data){
+    if(data.index != '0' && data.index != $scope.tabs.length+1 ){ 
+      if(arr.indexOf(data.index-1) == "-1"){
+        arr.push(data.index-1);
+        $scope.loading_catnews = true;
+        SpringNews._catNews($scope,$scope.tabs[data.index-1].term_id,0);
+      }
+    }
+  }
+  
+   //------ Popup Social
+  $scope.message = '';
+  $scope.img = '';
+  $scope.url = '';
+
+  $scope.share = function(title,url){
+    $scope.title_ = title
+    $scope.url = url
+    $cordovaSocialSharing
+    .share($scope.title_, null,null, $scope.url) // Share via native share sheet
+    .then(function(result) {
+      // Success!
+    }, function(err) {
+      alert("Error");
+    });
+  };
+  //-----------\\ 
+  // ------ loadMore Data -----
+  $scope.loadMore = function(id,length){  
+    $ionicLoading.show();
+    SpringNews._catNews($scope,id,length+1);
+  };
+  // ------------------------
+})
+
+
+// --------------------- HOMETEST ------------------------
+.controller('HometestCtrl', function($scope, $stateParams, SpringNews, $ionicSlideBoxDelegate,_function, $ionicModal,$ionicLoading,$cordovaSocialSharing,$ionicScrollDelegate, $ionicNavBarDelegate, $timeout, ConnectivityMonitor) { //admobSvc
 
  
   $ionicLoading.show();
@@ -682,7 +683,7 @@ angular.module('starter.controllers', ['ngOpenFB'])
        $cordovaLocalNotification.add({
           id: id,
           at: alarmTime,
-          message: "แต่เพื่อดูข้อมูล",
+          message: "แตะเพื่อดูข้อมูล",
           title: title,
           autoCancel: true
         }).then(function () {
@@ -776,6 +777,7 @@ angular.module('starter.controllers', ['ngOpenFB'])
   $scope.loading_newsdetail = true;
   $scope.adver = [];
   $scope.newsShow = true;
+  $scope.like = "ถูกใจ"
   $ionicLoading.show();
   
   $timeout(function(){ 
@@ -829,6 +831,10 @@ angular.module('starter.controllers', ['ngOpenFB'])
   //วันที่
   $scope.date_ = function(d){
     return _function._date(d.substring(0, 10),d.substring(12, 16));
+  }
+
+  $scope.kodlike =function(){
+    $scope.like = "ถูกใจแล้ว";
   }
 
   // console.log($stateParams)
@@ -908,6 +914,7 @@ angular.module('starter.controllers', ['ngOpenFB'])
 })
 
 .controller('uploadfileCtrl', function($scope, $cordovaCamera, $ionicLoading,$localStorage,$cordovaFileTransfer) {
+   
     $scope.data = { "ImageURI" :  "Select Image" };
 
     $scope.takePicture = function() {
@@ -933,7 +940,7 @@ angular.module('starter.controllers', ['ngOpenFB'])
     var options = {
         quality: 50,
         destinationType: Camera.DestinationType.FILE_URI,
-        sourceType: Camera.PictureSourceType.SAVEDPHOTOALBUM,
+        sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
         targetWidth: 300,
         targetHeight: 300
     };
@@ -954,17 +961,72 @@ angular.module('starter.controllers', ['ngOpenFB'])
     })
   };
 
+  $scope.captureVideo = function() {
+    alert("aaaaaaa")
+    var options = {   quality: 50,
+                      destinationType: Camera.DestinationType.FILE_URL,
+                      sourceType: Camera.PictureSourceType.CAMERA
+                      };
+    
+    $cordovaCapture.captureVideo(options).then(function(videoData) {
+    alert("bbbbbb")
+    $scope.clip = videoData[0].fullPath;
+    $scope.file=videoData[0].name;
+    var first=$scope.clip.substr(0,$scope.clip.lastIndexOf('/')+1);
+
+    $cordovaFile.readAsDataURL(first,$scope.file)
+    .then(function (success) {
+      alert("cccccccc")
+
+      var bucket = new AWS.S3({params: { Bucket: 'jbf-dev-bucket' }});
+
+      var params = {
+        Key: videoData[0].name, 
+        ContentEncoding: 'base64', 
+        ContentType: 'video/mp4', 
+        Body: success
+      };
+
+      bucket.upload(params).on("http://artbeat.mfec.co.th/mail/upload.php" , function(evt) {
+        alert("ddddddd")
+        $scope.uploading = true;
+        $scope.progress = parseInt((evt.loaded * 100) / evt.total)+'%';
+        console.log("Uploaded :: " + $scope.progress );         
+        $scope.$apply();
+      }).send(function(err, data) {
+        alert("eeeeeee")
+        $scope.uploading = false;
+        /*$scope.images.push(data.Location);*/
+
+        /*console.log(data.Location);*/
+        $scope.$apply();
+      });
+    
+      $scope.i++;
+
+      }, function (error) { 
+        console.log("==========error==========");
+        console.log(error);
+      })
+    })
+        
+      
+  }
+
 
   $scope.upload = function() {
+
         var date = new Date().getTime();
-        var filename = "image_upload"+date+".png";
+        var filename = "img_upload"+date+".png";
         $ionicLoading.show({template: 'กำลังอัพโหลดไฟล์...'});
+        var fileURL = videodata;
         var fileURL = $scope.picData;
+
         var options = {
             fileKey: "file",
             fileName: filename,
             chunkedMode: false,
-            mimeType: "image/jpg",
+            mimeType: "video/mp4",
             params : {'directory':'photo', 'fileName': filename}
         };
         $cordovaFileTransfer.upload("http://artbeat.mfec.co.th/mail/upload.php", fileURL, options).then(function(result) {
@@ -977,8 +1039,7 @@ angular.module('starter.controllers', ['ngOpenFB'])
             // constant progress updates
         });
         $ionicLoading.hide();
-
-    }
+  }
 
     // $scope.uploadPicture = function() {
     // $ionicLoading.show({template: 'Sto inviando la foto...'});
@@ -1063,7 +1124,161 @@ angular.module('starter.controllers', ['ngOpenFB'])
       return str;
     } 
   }
- 
+})
+
+
+// --------------------- Register ------------------------
+.controller('registerCtrl', function($scope,$stateParams,_function,SpringNews) {
+  $scope.user_info_return = []
+  $scope.submitForm = function(){
+    console.log(this.regis);
+
+    var user_info = { 
+      _email: this.regis.email ,
+      _pass: this.regis.pass ,
+      _name: this.regis.fname ,
+      _lastname: this.regis.lname ,
+      _address: this.regis.address ,
+      _phone: this.regis.tel ,
+      _type: "user"
+
+    }
+
+    SpringNews._register($scope,user_info);
+
+    $scope.user_info_return
+
+  }
+
+
+
+
+})
+
+// --------------------- login ------------------------
+.controller('loginCtrl', function($scope,$stateParams,$localStorage,ngFB,$cordovaOauth,_function,SpringNews) {
+  
+  //Alert Fail Login
+  $scope.showAlertFail = function() {
+     var alertPopup = $ionicPopup.alert({
+     title: 'Login Fail!',
+     template: 'Invalid Username and Password '
+     });
+  };
+  
+  //Alert Success Login
+  $scope.showAlertSuccess = function() {
+     var alertPopup = $ionicPopup.alert({
+     title: 'Login Success!',
+     template: 'Welcome Back: "'+ $scope.loginData.username +'"'
+     });
+     $scope.modal.hide();
+  };
+
+  
+
+  // Perform the login action when the user submits the login form
+  $scope.doLogin = function() {
+    console.log('Doing login', $scope.loginData);
+
+    var request = $http({
+                        method: "post",
+                        url: "http://daydev.com/demo/login.php",
+                        data: {
+                            username: $scope.loginData.username,
+                            password: $scope.loginData.password
+                        },
+                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+                  });
+
+        request.success(function (data) {
+          $scope.message = "Console : "+data;
+            if(data=="false"){
+              $scope.showAlertFail(); 
+            }else{
+              $scope.showAlertSuccess();
+              $scope.profile = true;
+              $scope.login_ = false;
+              $scope.logout_ = true;
+            }
+        });
+    // Simulate a login delay. Remove this and replace with your login
+    // code if using a login system
+    // $timeout(function() {
+    //   $scope.closeLogin();
+    // }, 1000);
+  };
+
+  //Login Facebook 
+  $scope.doLoginFacebook = function () { 
+    ngFB.login({scope: 'email,publish_actions,user_friends'}).then(
+        function (response) {
+            if (response.status === 'connected') {
+                console.log(response)
+                console.log('Facebook login succeeded');
+                $scope.closeLogin();
+                ngFB.api({
+                    path: '/me',
+                    params: {fields: 'id,name,email'}
+                }).then(
+                    function (user) {
+                        $scope.user = user;
+                        $localStorage.img = "https://graph.facebook.com/"+$scope.user.id+"/picture?width=400&height=400";
+                        $localStorage.name = $scope.user.name;
+                        $localStorage.email = $scope.user.email; 
+
+                        $scope.user.name = $localStorage.name
+                        $scope.user.email = $localStorage.email 
+                        $scope.user.img = $localStorage.img
+
+                        $scope.profile = true;
+                        $scope.login_ = false;
+                        $scope.logout_ = true;
+                        console.log(user)
+                    },
+                    function (error) {
+                        alert('Facebook error: ' + error.error_description);
+                });
+            } else {
+                alert('Facebook login failed');
+            }
+    });
+
+  };
+
+  //Login Google
+  $scope.doLoginGoogle = function () {
+
+    $cordovaOauth.google("891740401184-i1ucjk82d2uh6pcs0qt82v7pcqnrb58o.apps.googleusercontent.com", ["email"]).then(function(result) {
+        console.log("Response Object -> " + JSON.stringify(result));
+        // alert("Response Object -> " + JSON.stringify(result));
+        var url="https://www.googleapis.com/oauth2/v1/userinfo?access_token="+result.access_token; 
+        $http.get(url).success(function(result2){ 
+            $scope.closeLogin();
+            if(result2 != ""){
+                $scope.user = result2;
+                $localStorage.img = result2.picture;
+                $localStorage.name = result2.name;
+                $localStorage.email = result2.email;
+
+                $scope.user.name = $localStorage.name
+                $scope.user.email = $localStorage.email 
+                $scope.user.img = $localStorage.img
+
+                $scope.profile = true;
+                $scope.login_ = false;
+                $scope.logout_ = true;
+            }
+            $scope.showloading=false; 
+        })  
+        .error(function(){  
+            $scope.showloading=false; 
+        });
+    }, function(error) {
+        console.log("Error -> " + error);
+        // alert("Error -> " + JSON.stringify(error));
+    });
+  };
 
 
 })

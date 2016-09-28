@@ -5,7 +5,7 @@
 		    <div class="tsb-icons tsb-main tsb-home">
 			    <div class="tsb-ic-wrp">
 			    	<div class="main-menu-home">
-						<a href="javascript:;" style="width: 50px;margin-left: 0px;height: 45px;" on-finish-render="test()"><i class="icon nut-menu-home" ></i> </a>
+						<a href="javascript:;" style="width: 50px;margin-left: 0px;" on-finish-render="test()"><i class="icon nut-menu-home" ></i> </a>
 					</div>
 					<ion-scroll direction="x" class="tsb-hscroll" ng-style="{width:'100%'}">
 						<div style="margin-left: 45px;">
@@ -32,7 +32,7 @@
 							    	{{newsupdate.date}}
 							    </div>
 					    	</div>
-						  <div class="item item-text-wrap" style="border-color: #31b5c2;height: 250px;padding: 0px;margin: 0px;">
+						  <div class="item item-text-wrap item-respon" >
 					  	<div style="margin-top: 20px;text-align: center;" ng-show="loading_newsupdate">
 							<ion-spinner class="spinner-calm" style="display: inline-block;"></ion-spinner>
 						</div>	
@@ -47,9 +47,8 @@
 		        				>
 							  <ion-slide ng-repeat="new in news | limitTo: 5">
 							  <a style="cursor:pointer;" ng-click="share(new.post_title,new.url)"> <i class="nut-menu-share float-right"></i></a>
-							  	<a href="#/app/news/{{new.ID}}/{{new.term_taxonomy_id}}" >
-								  	<img  ng-src="{{new.guid != null ? new.guid:'img/default.jpg'}}" class="box-news-img">
-							  	</a>
+							  <img  ng-src="{{new.guid != null ? new.guid:'img/default.jpg'}}" class="box-news-img">
+							  <a href="#/app/news/{{new.ID}}/{{new.term_taxonomy_id}}" class="a-link" ></a>
 							  </ion-slide>
 							</ion-slide-box>
 
@@ -71,7 +70,7 @@
 						    	{{newshot.date}}
 						    </div>
 				    	  </div>
-						  <div class="item item-text-wrap" style="border-color: #31b5c2;height: 250px;padding: 0px;margin: 0px;">
+						  <div class="item item-text-wrap item-respon" >
 						  	<div style="margin-top: 20px;text-align: center;" ng-show="loading_newshot">
 								<ion-spinner class="spinner-calm" style="display: inline-block;"></ion-spinner>
 							</div>	
@@ -86,11 +85,11 @@
 		        			
 							  <ion-slide ng-repeat="hot in hots | limitTo: 5">
 							    <a style="cursor:pointer;" ng-click="share(hot.post_title,hot.url)"> 
-							    	<i class="nut-menu-share float-right"></i
+							    	<i class="nut-menu-share float-right"></i>
 							    </a>
-							  	<a href="#/app/news/{{hot.ID}}/{{hot.term_taxonomy_id}}">
+							  	
 								  	<img  ng-src="{{hot.guid != null ? hot.guid:'img/default.jpg'}}" class="box-news-img"> 
-							  	</a>
+							  	<a href="#/app/news/{{hot.ID}}/{{hot.term_taxonomy_id}}" class="a-link"></a>
 							  </ion-slide>
 							</ion-slide-box>
 
@@ -113,7 +112,7 @@
 						    </div>
 				    	  </div>
 				    	  <a href="#/app/clips/{{title}}" style="text-decoration: none;">
-							  <div class="item item-text-wrap" style="border-color: #31b5c2;height: 250px;padding: 0px;margin: 0px;">
+							  <div class="item item-text-wrap item-respon">
 							  		<img  ng-src="{{clips[0].guid != null ? clips[0].guid:'img/default.jpg'}}" class="box-news-img"> 
 							  </div>
 						  </a>
@@ -130,7 +129,7 @@
 
 						<ion-list > 
 						  <ul >
-						    <li class="list" style="margin-top: 10px; " collection-repeat="_clips in clips_loop " collection-item-width="'100%'">
+						    <li class="list list-ipad" style="margin-top: 10px;" collection-repeat="_clips in clips_loop ">
 						    	<div style="background-color: #fff;" ng-style="{width:'100%'}" >    
 						            <a href="#/app/clips/{{title}}" >
 							            <div class="sp-list" >
@@ -195,13 +194,13 @@
 				    	<div class="box-news" ng-repeat="item in newsCategory |filter: tab.term_id " ng-if="$index == 0 ">
 				    	  	<a href="#/app/news/{{item.ID}}/{{item.term_taxonomy_id}}" style="text-decoration: none;">
 
-					    	  <div class="row" style="padding: 0px;">
-							    <div class="col box-news-date">
+					    	  <div class="row " style="padding: 0px;">
+							    <div class="col box-news-date ">
 							    <i class="icon ion-ios-calendar-outline box-news-icon"></i>	
 							    {{date(item.post_date)}}
 							    </div>
 					    	  </div>
-							  <div class="item item-text-wrap" style="border-color: #31b5c2;height: 250px;padding: 0px;margin: 0px;">
+							  <div class="item item-text-wrap ohters-ipad" style="border-color: #31b5c2;padding: 0px;margin: 0px;">
 							    <img  ng-src="{{item.guid != null ? item.guid:'img/default.jpg'}}" class="box-news-img"> 
 
 							  </div>
@@ -223,8 +222,8 @@
 							    </ion-slide-box>  
 						</div> -->
 
-						<ul collection-item-width="'100%'" ng-style="{width:'100%'}"  item-height="99px" >
-							<li ng-repeat="item in newsCategory |filter: tab.term_id " style="margin-top: 3px; "   item-height="99px"  id="newsList_{{tab.term_id}}" >	
+						<ul ng-style="{width:'100%'}"  item-height="99px" >
+							<li ng-repeat="item in newsCategory |filter: tab.term_id " style="    margin-bottom: 5px;"   item-height="99px"  id="newsList_{{tab.term_id}}" >	
 								<div style="background-color: #fff;" ng-style="{width:'100%'}" >    
 								    <a href="#/app/news/{{item.ID}}/{{item.term_taxonomy_id}}" >
 									    <div class="sp-list" >

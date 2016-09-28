@@ -102,26 +102,26 @@ angular.module('services', [])
 
     this._jwTV = function($scope){ 
 
-       jwplayer('broadcast').setup({
+        jwplayer('broadcast').setup({
           playlist: [{
                  /*image: "http://www.springnewstv.tv/themes/spring/images/logo-spring-static.png",*/
-            sources: [{
-            file: "http://1457077260.cat-cdn.i-iptv.com/1457077260/smil:livestream.smil/playlist.m3u8?DVR",
+                 sources: [{
+            file: "http://1457077260.cat-cdn.i-iptv.com/T1457077260/ngrp:livestream_all/playlist.m3u8?DVR",
             type: "hls"
            },{
-                file: "http://1457077260.cat-cdn.i-iptv.com/1457077260/smil:mobile.smil/playlist.m3u8",
+                file: "http://1457077260.cat-cdn.i-iptv.com/T1457077260/ngrp:livestream_mobile/playlist.m3u8",
             type: "html5"
            }]
              }],
-          skin: 'vapor',
+                        skin: 'vapor',
           title: 'SPRING NEWS',
                 width: '100%',
                 aspectratio: '16:9',
                 autostart: 'true',
                 androidhls: 'true',
           hlslabels:{
-             "3906":"1080p",
-             "1953":"720p",
+                   "3906":"1080p",
+                   "1953":"720p",
              "1000":"480p",
              "684":"360p",
              "391":"240p"
@@ -130,7 +130,7 @@ angular.module('services', [])
            { type: 'html5' },
            { type: 'flash', src: 'http://uat.springnews.co.th/wp-content/themes/mh-magazine-lite/plus/player/jwplayer.flash.swf' },
           ]
-            });
+        });
 
         jwplayer().onPlay(function() { 
             jwplayer().setCurrentQuality(3);
@@ -141,29 +141,29 @@ angular.module('services', [])
     this._jwRadio = function(){ 
 
         jwplayer('springradio').setup({
-            playlist: [{
-                sources: [{
-                    file: "rtmp://1457072400.cat-cdn.i-iptv.com:1935/1457072400/springradio",
-                    type: "rtmp"
-                },{
-                    file: "http://1457072400.cat-cdn.i-iptv.com/1457072400/springradio/playlist.m3u8",
-                    type: "hls"
-                }]
-                
-            }],
-            title: 'Spring Radio FM 98.5 MHz',
-            skin: 'vapor',
-            controls: 'true', 
-            width: '0%',
-            aspectratio: '9:16',
-            enableFullscreen: 'false',
-            autostart: 'false',
-            androidhls: 'true',
-            stretching: 'exactfit',
-            modes: [
-                { type: 'hls' },
-                { type: 'flash', src: '../lib/jwplayer-mirror/jwplayer.flash.swf' },
-            ]
+          playlist: [{
+                 sources: [{
+            file: "rtmp://1457072400.cat-cdn.i-iptv.com:1935/1457072400/springradio",
+            type: "rtmp"
+           },{
+            file: "http://1457072400.cat-cdn.i-iptv.com/1457072400/springradio/playlist.m3u8",
+            type: "hls"
+           }]
+           
+             }],
+                title: 'Spring Radio FM 98.5 MHz',
+          skin: 'vapor',
+          controls: 'true', 
+                width: '100%',
+                aspectratio: '9:16',
+          enableFullscreen: 'false',
+                autostart: 'true',
+                androidhls: 'true',
+                stretching: 'exactfit',
+                modes: [
+           { type: 'hls' },
+           { type: 'flash', src: 'http://www.springnews.co.th/wp-content/themes/springnews/plus/player/jwplayer.flash.swf' },
+          ]
         });
         jwplayer().setVolume(80);
     }
@@ -172,15 +172,16 @@ angular.module('services', [])
 }])  
 
 .service("SpringNews",["$http","$ionicSlideBoxDelegate","_function","$ionicLoading","$cordovaLocalNotification",function($http,$ionicSlideBoxDelegate,_function,$ionicLoading,$cordovaLocalNotification){
-    var path = "http://artbeat.mfec.co.th/SpringNews_mb/api/wp/";
+    var path = "http://artbeat.mfec.co.th/SpringNews_mb/api/";
     var key = "EAACEdEose0cBAP3LZAULs0sfBDrAFiY0xzMTJHPdzlxArcn4kw";
 
     // --------- หมวดหมู่
     this._category = function($scope,id){ 
-        var url=path+"Categories/parent?api-key="+key+"&id="+id; 
+        var url=path+"wp/Categories/parent?api-key="+key+"&id="+id; 
         $http.get(url).success(function(result){ 
             $scope.tabs = result;
             $ionicSlideBoxDelegate.update();
+            console.log(result)
         })  
         .error(function(){  
             $ionicSlideBoxDelegate.update();
@@ -188,7 +189,7 @@ angular.module('services', [])
     } 
     // --------- ข่าว คอมลัม
     this._catNews = function($scope,id,offset){
-        var url_=path+"Posts/categoryID?api-key="+key+"&cat_id="+id+"&offset="+offset+"&limit=10&order=post_date&by=DESC"; 
+        var url_=path+"wp/Posts/categoryID?api-key="+key+"&cat_id="+id+"&offset="+offset+"&limit=10&order=post_date&by=DESC"; 
         $http.get(url_).success(function(result_){ 
             if(result_ != ""){
                 for (var i = 0 ;i < result_.length ; i++) {
@@ -204,7 +205,7 @@ angular.module('services', [])
 
     // --------- ข่าว ทั้งหมด ใน หมวด
     this._catallNews = function($scope,id){
-        var url_=path+"Posts/categoryAll?api-key="+key+"&cat_id="+id+"&order=post_date&by=DESC"; 
+        var url_=path+"wp/Posts/categoryAll?api-key="+key+"&cat_id="+id+"&order=post_date&by=DESC"; 
         $http.get(url_).success(function(result_){ 
             if(result_ != ""){
                    $scope.allnewsCategory = result_ ;
@@ -217,10 +218,10 @@ angular.module('services', [])
     }
     // --------- หมวดหมู่รายการ
     this._categoryProgram = function($scope,id){ 
-        var url=path+"Categories/parent?api-key="+key+"&id="+id; 
+        var url=path+"wp/Categories/parent?api-key="+key+"&id="+id; 
         $http.get(url).success(function(result){ 
             $scope.tabs = result;
-            var url_=path+"Posts/categoryID?api-key="+key+"&cat_id="+$scope.tabs[0].term_id+"&order=post_date&by=DESC"; 
+            var url_=path+"wp/Posts/categoryID?api-key="+key+"&cat_id="+$scope.tabs[0].term_id+"&order=post_date&by=DESC"; 
             $http.get(url_).success(function(result_){ 
                 if(result_ != ""){
                     for (var i = 0 ;i < result_.length ; i++) {
@@ -240,7 +241,7 @@ angular.module('services', [])
     } 
     // --------- รายการข่าว
     this._programNews = function($scope,id){
-        var url_=path+"Posts/categoryID?api-key="+key+"&cat_id="+id+"&order=post_date&by=DESC"; 
+        var url_=path+"wp/Posts/categoryID?api-key="+key+"&cat_id="+id+"&order=post_date&by=DESC"; 
         $http.get(url_).success(function(result_){ 
             if(result_ != ""){
                 for (var i = 0 ;i < result_.length ; i++) {
@@ -255,7 +256,7 @@ angular.module('services', [])
     }
     // --------- โฆษาณา
     this._advertise = function($scope,id){
-        var url=path+"Advertise/id?api-key="+key+"&adv_id="+id; 
+        var url=path+"wp/Advertise/id?api-key="+key+"&adv_id="+id; 
         $http.get(url).success(function(result){ 
             $scope.adver = result;
             $ionicSlideBoxDelegate.update();
@@ -266,8 +267,8 @@ angular.module('services', [])
     }
     // --------- ทันเหตุการณ์
     this._newsupdate = function($scope,name){ 
-        // var url=path+"Posts/categoryID?api-key="+key+"&cat_id="+id+"&limit=5&order=post_date&by=DESC"; 
-        var url=path+"Hots/name?api-key="+key+"&tag_name="+name+"&limit=5"; 
+        // var url=path+"wp/Posts/categoryID?api-key="+key+"&cat_id="+id+"&limit=5&order=post_date&by=DESC"; 
+        var url=path+"wp/Hots/name?api-key="+key+"&tag_name="+name+"&limit=5"; 
         $http.get(url).success(function(result){ 
             if(result != ""){
                 $scope.news = result; 
@@ -286,7 +287,7 @@ angular.module('services', [])
     }  
     // --------- ประเด็นร้อน
     this._newshot = function($scope,name){ 
-        var url=path+"Hots/name?api-key="+key+"&tag_name="+name+"&limit=5"; 
+        var url=path+"wp/Hots/name?api-key="+key+"&tag_name="+name+"&limit=5"; 
         $http.get(url).success(function(result){ 
             if(result != ""){
                 $scope.hots = result; 
@@ -311,7 +312,7 @@ angular.module('services', [])
         }else{
             strLimit = '';
         }
-        var url=path+"Posts/categoryID?api-key="+key+"&cat_id="+id+strLimit+"&order=post_date&by=DESC"; 
+        var url=path+"wp/Posts/categoryID?api-key="+key+"&cat_id="+id+strLimit+"&order=post_date&by=DESC"; 
         $http.get(url).success(function(result){ 
             if(result != ""){
                 $scope.clips = result; 
@@ -329,7 +330,7 @@ angular.module('services', [])
     }  
     //---------- รายละเอียดข่าว
     this._newsdetail = function($scope,id){ 
-        var url=path+"Posts/postID?api-key="+key+"&post_id="+id;
+        var url=path+"wp/Posts/postID?api-key="+key+"&post_id="+id;
         var regex = /http[^]+/g;
         var video_id = []; 
         $http.get(url).success(function(result){ 
@@ -353,7 +354,7 @@ angular.module('services', [])
     } 
     //---------- รายละเอียดข่าว ที่เกี่ยวข้อง
     this._newsconnected = function($scope,id,catId){ 
-        var url=path+"Posts/categoryID?api-key="+key+"&cat_id="+catId+"&limit=2&order=RAND()"; 
+        var url=path+"wp/Posts/categoryID?api-key="+key+"&cat_id="+catId+"&limit=2&order=RAND()"; 
         $http.get(url).success(function(result){ 
             if(result != ""){
                 $scope.newsConnected = result; 
@@ -364,7 +365,7 @@ angular.module('services', [])
     } 
     //---------- รายละเอียด เนื้อหารายการ
     this._videosdetail = function($scope,id){ 
-        var url=path+"Posts/postID?api-key="+key+"&post_id="+id;
+        var url=path+"wp/Posts/postID?api-key="+key+"&post_id="+id;
         var regex = /id="([^"]+)"/g; 
         var video_id = [];
         $http.get(url).success(function(result){ 
@@ -373,7 +374,7 @@ angular.module('services', [])
                 $scope.date = _function._date($scope.videosDetail[0].post_date.substring(0, 10),$scope.videosDetail[0].post_date.substring(12, 16));
                 video_id = regex.exec(result[0].post_content);
                 if(video_id != null){
-                    var url_=path+"Pages/videoID?api-key="+key+"&video_id="+video_id[1]; 
+                    var url_=path+"wp/Pages/videoID?api-key="+key+"&video_id="+video_id[1]; 
                     $http.get(url_).success(function(result){ 
                         if(result != ""){
                             $scope.video = JSON.parse(result[0].data); 
@@ -398,9 +399,9 @@ angular.module('services', [])
     // --------- ผังรายการ
     this._schedules = function($scope,scheID){ 
         if(scheID == 0){
-           var url=path+"Schedules/schedulesID?api-key="+key+"&weekday='"+scheID+"'"; 
+           var url=path+"wp/Schedules/schedulesID?api-key="+key+"&weekday='"+scheID+"'"; 
         }else{
-           var url=path+"Schedules/schedulesID?api-key="+key+"&weekday="+scheID+""; 
+           var url=path+"wp/Schedules/schedulesID?api-key="+key+"&weekday="+scheID+""; 
         }
         $http.get(url).success(function(result){ 
             if(result != ""){
@@ -414,7 +415,7 @@ angular.module('services', [])
     } 
     // --------- ผังรายการปัจจุบัน
     this._schedulesNow = function($scope,scheID){ 
-        var url=path+"Schedules/?api-key="+key+""; 
+        var url=path+"wp/Schedules/?api-key="+key+""; 
         $http.get(url).success(function(result){ 
             if(result != ""){
                 $scope.schedules = result;
@@ -427,7 +428,7 @@ angular.module('services', [])
     } 
     // --------- ประวัติ
     this._pages_history = function($scope){ 
-        var url=path+"Pages/pagesID?api-key="+key+"&page_id=433"; 
+        var url=path+"wp/Pages/pagesID?api-key="+key+"&page_id=433"; 
         $ionicLoading.show();  
         $http.get(url).success(function(result){ 
             $scope.history = result[0].post_content; 
@@ -439,7 +440,7 @@ angular.module('services', [])
     } 
     // --------- วิสัยทัศ์ / ภารกิจ
     this._pages_vision = function($scope){ 
-        var url=path+"Pages/pagesID?api-key="+key+"&page_id=481"; 
+        var url=path+"wp/Pages/pagesID?api-key="+key+"&page_id=481"; 
         $ionicLoading.show();  
         $http.get(url).success(function(result){
             $scope.vision = result[0].post_content;
@@ -451,7 +452,7 @@ angular.module('services', [])
     } 
     // --------- ติดต่อเรา
     this._pages_contact = function($scope){ 
-        var url=path+"Pages/pagesID?api-key="+key+"&page_id=493"; 
+        var url=path+"wp/Pages/pagesID?api-key="+key+"&page_id=493"; 
         $ionicLoading.show();   
         $http.get(url).success(function(result){ 
             $scope.contactImg = result[0].guid;
@@ -464,7 +465,7 @@ angular.module('services', [])
     } 
      // --------- กิจกรรม
     this._pages_activity = function($scope){ 
-        var url=path+"Pages/pagesID?api-key="+key+"&page_id=4138"; 
+        var url=path+"wp/Pages/pagesID?api-key="+key+"&page_id=4138"; 
         $ionicLoading.show();   
         $http.get(url).success(function(result){ 
             $scope.activity = result[0].post_content;
@@ -476,7 +477,7 @@ angular.module('services', [])
     } 
     // ----------- Feed น้ำมัน
     this._oil = function($scope){ 
-        var url=path+"Feeds/ptt?api-key="+key; 
+        var url=path+"wp/Feeds/ptt?api-key="+key; 
         $http.get(url).success(function(result){
             $scope.oils = result;
             $scope.$broadcast("scroll.refreshComplete"); 
@@ -487,7 +488,7 @@ angular.module('services', [])
     } 
     // ----------- Feed ทอง
     this._thaigold = function($scope){ 
-        var url=path+"Feeds/thaigold?api-key="+key; 
+        var url=path+"wp/Feeds/thaigold?api-key="+key; 
         $http.get(url).success(function(result){
            $scope.thaigolds = result;
            $scope.$broadcast("scroll.refreshComplete"); 
@@ -498,7 +499,7 @@ angular.module('services', [])
     } 
     // ----------- Feed หุ้น
     this._part = function($scope){ 
-        var url=path+"Feeds/setshare?api-key="+key; 
+        var url=path+"wp/Feeds/setshare?api-key="+key; 
         $http.get(url).success(function(result){
            $scope.parts = result;
            $scope.$broadcast("scroll.refreshComplete"); 
@@ -509,7 +510,7 @@ angular.module('services', [])
     } 
     // ------------ Search ค้นหา
     this._search = function($scope,keyword){
-        var url=path+"Posts/postSearch?api-key="+key+"&keyword="+keyword; 
+        var url=path+"wp/Posts/postSearch?api-key="+key+"&keyword="+keyword; 
         $scope.showloading=true; 
         $http.get(url).success(function(result){ 
             if(result != ""){
@@ -523,7 +524,7 @@ angular.module('services', [])
     }
     // ------------ Email ค้นหา
     this._email = function(value){
-        var url=path+"Email/send"; 
+        var url=path+"wp/Email/send"; 
         $http({
             method  : 'POST',
             url     :  url,
@@ -534,6 +535,39 @@ angular.module('services', [])
             alert(data)
         });
     }
+
+    // --------- สมัครสมาชิก
+    this._register = function($scope,user_info){ 
+        console.log(user_info)
+        var url=path+"be/Users/insert"; 
+        $http({
+            method  : 'POST',
+            url     :  url,
+            data    :  user_info,  // pass in data as strings
+            headers : {'api-key': key}  // set the headers so angular passing info as form data (not request payload)
+        })
+        .success(function(data) {
+
+            console.log("register_success");
+            console.log(data);
+            alert("register_success");
+            var url=path+"be/Users/getID?api-key="+key+"&id="+data.ID; 
+            $http.get(url).success(function(result){
+                console.log(result);
+                $scope.user_info_return = result
+            })  
+            .error(function(){  
+                console.log(result);
+            });
+        }).error(function(){  
+            console.log("register_error");
+            console.log(data);
+            alert("register_error");
+        });
+        
+
+        
+    }  
     
    
 

@@ -270,6 +270,18 @@ angular.module('starter', ['ionic', 'starter.controllers',"angular-md5",'service
       }
     }
   })
+
+  // HOMETEST
+  .state('app.hometest', {
+    url: '/hometest',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/hometest.html',
+        controller: 'HometestCtrl'
+      }
+    }
+  })
+
   // LIVE TV
   .state('app.livetv', {
     url: '/livetv',
@@ -432,7 +444,7 @@ angular.module('starter', ['ionic', 'starter.controllers',"angular-md5",'service
     }
   })
 
-   // allnews
+  // allnews
   .state('app.allnews', {
     url: '/allnews/:key/:catname',
     views: {
@@ -441,9 +453,31 @@ angular.module('starter', ['ionic', 'starter.controllers',"angular-md5",'service
         controller: 'allnewsCtrl'
       }
     }
+  })
+
+   // Login
+  .state('app.login', {
+    url: '/login',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/login.html',
+        controller: 'loginCtrl'
+      }
+    }
+  })
+
+  // Register
+  .state('app.register', {
+    url: '/register',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/register.html',
+        controller: 'registerCtrl'
+      }
+    }
   });
 
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/app/home'); 
+  $urlRouterProvider.otherwise('/app/hometest'); 
   //$urlRouterProvider.otherwise('/app/program');
 });

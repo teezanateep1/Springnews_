@@ -55,10 +55,16 @@
           </label>
         </div> -->
 
-        <ion-item menu-close class="menu" href="#/app/home" ng-click="cl_link('/app/home')"  style="border: none;" >
+      <!--   <ion-item menu-close class="menu" href="#/app/home" ng-click="cl_link('/app/home')"  style="border: none;" >
           <i class="icon nut-menu-home"  ng-class="{'active':link == '/app/home'}" ></i> 
            <span ng-class="{'active':link == '/app/home'}" style="margin-left: 10px;">หน้าหลัก</span>
+        </ion-item> -->
+
+        <ion-item menu-close class="menu" href="#/app/hometest" ng-click="cl_link('/app/hometest')"  style="border: none;" >
+          <i class="icon nut-menu-home"  ng-class="{'active':link == '/app/hometest'}" ></i> 
+           <span ng-class="{'active':link == '/app/hometest'}" style="margin-left: 10px;">หน้าหลัก</span>
         </ion-item>
+
         <ion-item menu-close class="menu" ng-click="cl_link('/app/program')" href="#/app/program">
           <i class="icon nut-menu-livetv"   ng-class="{'active':link == '/app/program'}" ></i> 
           <span ng-class="{'active':link == '/app/program'}" style="margin-left: 10px;">รายการทีวี </span>
@@ -121,7 +127,7 @@
            <ion-item menu-close href="#/app/pick"> 360 And Pick Item </ion-item>
         </ion-item> -->
 
-      <!--   <ion-item menu-close class="menu" ng-click="login()" href="#" ng-show="login_">
+        <ion-item menu-close class="menu" href="#app/login" href="#" ng-show="login_">
           <i class="nut-menu-logout"></i> 
           <span style="margin-left: 10px;"> เข้าสู่ระบบ </span>
         </ion-item>
@@ -129,7 +135,7 @@
         <ion-item menu-close class="menu" ng-click="logout()" href="#" ng-show="logout_" >
           <i class="nut-menu-logout"></i> 
           <span style="margin-left: 10px;"> ออกจากระบบ </span>
-        </ion-item> -->
+        </ion-item>
 
       </ion-list>
     </ion-content>

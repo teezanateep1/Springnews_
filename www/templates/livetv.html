@@ -25,11 +25,11 @@
 				</div>
 			</div>			  
 		</div>
-		<ion-scroll style="height:240px;"> 
+		<ion-scroll style="height:500px;"> 
 		<div class="box-schedule">
 			<ion-spinner class="spinner-calm" style="z-index:10;margin: 45%;" ng-show="loading_schedule"></ion-spinner>
-				<ul class="accordion css-accordion" ng-repeat="schedule in schedules" ng-if"$index != 0">
-	  				<li class="accordion-item" ng-if="$index != 0">
+				<ul class="accordion css-accordion" >
+	  				<li class="accordion-item" ng-repeat="schedule in schedules" ng-if"$index != 0">
 					<input class="accordion-item-input" type="checkbox" name="accordion" id="{{$index}}" />
 					
 					<div class="acdropdown" style="display: -webkit-box;" >
