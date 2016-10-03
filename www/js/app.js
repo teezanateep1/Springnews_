@@ -4,9 +4,10 @@
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
 // 'starter.controllers' is found in controllers.js
+var db = null;
 angular.module('starter', ['ionic', 'starter.controllers',"angular-md5",'services','ngOpenFB','tabSlideBox','ngStorage', 'ionic-cache-src','ngCordova.plugins.googleAds','ngCordovaOauth','ionic-cache-src'])
 
-.run(function($ionicPlatform,$rootScope,$ionicPopup, $cordovaDialogs ,ngFB, ConnectivityMonitor) { //admobSvc
+.run(function($ionicPlatform,$rootScope,$ionicPopup, $cordovaDialogs ,$cordovaSQLite,ngFB, ConnectivityMonitor) { //admobSvc
   ngFB.init({appId: '647791618729432'});
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
@@ -68,7 +69,12 @@ angular.module('starter', ['ionic', 'starter.controllers',"angular-md5",'service
               position:AdMob.AD_POSITION.BOTTOM_CENTER, 
               autoShow:true
           });
-  });
+
+        // db = $cordovaSQLite.openDB("springnew.db");
+        db = window.sqlitePlugin.openDatabase( {name: "springnew.db", createFromLocation: 1} );
+        $cordovaSQLite.execute(db, "CREATE TABLE IF NOT EXISTS user(id integer primary key,user_id integer, ,name text )");
+        $cordovaSQLite.execute(db, "CREATE TABLE IF NOT EXISTS action(id integer primary key, user_id integer,news_id integer)");
+        });
 
 })
 

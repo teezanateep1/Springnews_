@@ -57,6 +57,9 @@
         },
         "com.phonegap.plugins.nativesettingsopener": {
             "PACKAGE_NAME": "com.sp.springnews"
+        },
+        "cordova-sqlite-storage": {
+            "PACKAGE_NAME": "com.sp.springnews"
         }
     },
     "dependent_plugins": {

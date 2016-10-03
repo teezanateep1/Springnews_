@@ -1,5 +1,46 @@
 angular.module('services', [])
 
+.factory('SpringUser', function($cordovaSQLite) {
+ 
+    var users = [];
+    var actions =[];
+     
+    return {
+        getuser: function() {
+        $cordovaSQLite.execute(db, "SELECT * FROM user").then(function(res){
+            for(var i = 0; i < res.rows.length; i++){
+                users.push(res.rows.item(i));
+            }
+        },
+            function(err){ 
+                console.log("Error");
+            })
+         
+            return users;
+        },
+        getaction: function() {
+        $cordovaSQLite.execute(db, "SELECT * FROM action").then(function(res){
+            for(var i = 0; i < res.rows.length; i++){
+                actions.push(res.rows.item(i));
+            }
+        },
+            function(err){ 
+                console.log("Error");
+            })
+         
+            return actions;
+        },
+        remove: function(userId) {
+            $cordovaSQLite.execute(db, "DELETE FROM user WHERE id=?", [userId]).then(function(res){
+                console.log("Deleted");
+            },
+            function(err){ 
+                console.log("Error");
+            })
+        }
+    };
+})
+
 .factory('facebookService', function($q) {
     return {
         getMyLastName: function() {
@@ -549,12 +590,20 @@ angular.module('services', [])
         .success(function(data) {
 
             console.log("register_success");
-            console.log(data);
             alert("register_success");
             var url=path+"be/Users/getID?api-key="+key+"&id="+data.ID; 
             $http.get(url).success(function(result){
                 console.log(result);
-                $scope.user_info_return = result
+                // $scope.user_info_return = result
+                console.log(result[0].ID+result[0].name+result[0].lastname);
+                var user_id = result[0].ID;
+                var fullname = result[0].name+result[0].lastname;
+                var query = "INSERT INTO user (user_id, name) VALUES (?,?)";
+                $cordovaSQLite.execute(db, query, [user_id, fullname]).then(function(res) {
+                    console.log("INSERT ID -> " + res.insertId);
+                }, function (err) {
+                    console.error(err);
+                });
             })  
             .error(function(){  
                 console.log(result);

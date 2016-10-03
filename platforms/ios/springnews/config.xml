@@ -153,4 +153,7 @@
     <preference name="xwalkMultipleApk" value="true" />
     <preference name="Orientation" value="portrait" />
     <preference name="iosPersistentFileLocation" value="Compatibility" />
+    <feature name="SQLitePlugin">
+        <param name="ios-package" value="SQLitePlugin" />
+    </feature>
 </widget>

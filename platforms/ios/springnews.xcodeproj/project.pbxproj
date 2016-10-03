@@ -73,6 +73,8 @@
 		373738D5B9434DE8AF1066DE /* CDVPlugin+APPAppEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = 47611195BD504E558672D320 /* CDVPlugin+APPAppEvent.m */; };
 		388DCE927642438EA83A9220 /* CDVConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 1ABCBF48A1F34302B31688EB /* CDVConnection.m */; };
 		A05273596FE8400281564300 /* CDVReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 8704DFB32EC042D2B30EB083 /* CDVReachability.m */; };
+		B4418C9074474DFFBBE02AC7 /* SQLitePlugin.m in Sources */ = {isa = PBXBuildFile; fileRef = 05DD0C11974342548ECEAA3F /* SQLitePlugin.m */; };
+		10553B6345624631BDCB0CD0 /* sqlite3.c in Resources */ = {isa = PBXBuildFile; fileRef = 6DC938BF747A453D864E2E66 /* sqlite3.c */; settings = {COMPILER_FLAGS = "-DSQLITE_TEMP_STORE=2 -DSQLITE_THREADSAFE=2 -DSQLITE_ENABLE_FTS3 -DSQLITE_ENABLE_FTS3_PARENTHESIS -DSQLITE_ENABLE_FTS4 -DSQLITE_ENABLE_COLUMN_METADATA -DSQLITE_ENABLE_RTREE -DSQLITE_LOCKING_STYLE=1 -DSQLITE_OMIT_BUILTIN_TEST -DSQLITE_OMIT_LOAD_EXTENSION"; }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -205,6 +207,10 @@
 		8704DFB32EC042D2B30EB083 /* CDVReachability.m */ = {isa = PBXFileReference; name = "CDVReachability.m"; path = "cordova-plugin-network-information/CDVReachability.m"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; explicitFileType = undefined; includeInIndex = 0; };
 		070A41B33AF844E2810DC42D /* CDVConnection.h */ = {isa = PBXFileReference; name = "CDVConnection.h"; path = "cordova-plugin-network-information/CDVConnection.h"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; explicitFileType = undefined; includeInIndex = 0; };
 		48805313A2874341A9060822 /* CDVReachability.h */ = {isa = PBXFileReference; name = "CDVReachability.h"; path = "cordova-plugin-network-information/CDVReachability.h"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; explicitFileType = undefined; includeInIndex = 0; };
+		05DD0C11974342548ECEAA3F /* SQLitePlugin.m */ = {isa = PBXFileReference; name = "SQLitePlugin.m"; path = "cordova-sqlite-storage/SQLitePlugin.m"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; explicitFileType = undefined; includeInIndex = 0; };
+		6DC938BF747A453D864E2E66 /* sqlite3.c */ = {isa = PBXFileReference; name = "sqlite3.c"; path = "cordova-sqlite-storage/sqlite3.c"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		4BDFE2BF3DCB4C8F89A90AAE /* SQLitePlugin.h */ = {isa = PBXFileReference; name = "SQLitePlugin.h"; path = "cordova-sqlite-storage/SQLitePlugin.h"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; explicitFileType = undefined; includeInIndex = 0; };
+		C87ADC713C2148658DE6DE3C /* sqlite3.h */ = {isa = PBXFileReference; name = "sqlite3.h"; path = "cordova-sqlite-storage/sqlite3.h"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -425,6 +431,10 @@
 				8704DFB32EC042D2B30EB083 /* CDVReachability.m */,
 				070A41B33AF844E2810DC42D /* CDVConnection.h */,
 				48805313A2874341A9060822 /* CDVReachability.h */,
+				05DD0C11974342548ECEAA3F /* SQLitePlugin.m */,
+				6DC938BF747A453D864E2E66 /* sqlite3.c */,
+				4BDFE2BF3DCB4C8F89A90AAE /* SQLitePlugin.h */,
+				C87ADC713C2148658DE6DE3C /* sqlite3.h */,
 			);
 			name = Plugins;
 			path = "springnews/Plugins";
@@ -569,6 +579,8 @@
 				373738D5B9434DE8AF1066DE /* CDVPlugin+APPAppEvent.m in Sources */,
 				388DCE927642438EA83A9220 /* CDVConnection.m in Sources */,
 				A05273596FE8400281564300 /* CDVReachability.m in Sources */,
+				B4418C9074474DFFBBE02AC7 /* SQLitePlugin.m in Sources */,
+				10553B6345624631BDCB0CD0 /* sqlite3.c in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
