@@ -33,12 +33,24 @@ angular.module('starter.controllers', ['ngOpenFB'])
       $scope.sublink_schedule = argument;
       $scope.sublink_aboutUs = false;
       $scope.submenu_aboutUs = false;
+      $scope.sublink_activity = false;
+      $scope.submenu_activity = false;
     }
     else if(argument == "vision" || argument == "history" || argument == "contact" || argument == "introduce"){
       $scope.link = '/app/contact_';
       $scope.sublink_aboutUs = argument;
+      $scope.sublink_schedule = false;
       $scope.submenu_schedule = false;
+      $scope.sublink_activity = false;
+      $scope.submenu_activity = false;
+    }
+    else if(argument == "activity" || argument == "shake" || argument == "360" ){
+      $scope.link = '/app/activity_';
+      $scope.sublink_activity = argument;
+      $scope.sublink_schedule = false;
       $scope.submenu_schedule = false;
+      $scope.sublink_aboutUs = false;
+      $scope.submenu_aboutUs = false;
     }else{
       $scope.link = argument;
       $scope.sublink_schedule = argument;
@@ -72,6 +84,18 @@ angular.module('starter.controllers', ['ngOpenFB'])
     }else{
       $scope.menu_toggle_ = true;
       $scope.submenu_aboutUs = false;
+    }
+  }
+  $scope.menu_toggle_act = true;
+  $scope.submenu_activity = false;
+  $scope.toggleActivity = function (x) {
+    if(x == true){
+      $scope.menu_toggle_act = false;
+      $scope.submenu_activity = true;
+      $scope.menu_toggle = true;
+    }else{
+      $scope.menu_toggle_act = true;
+      $scope.submenu_activity = false;
     }
   }
 
@@ -716,8 +740,16 @@ angular.module('starter.controllers', ['ngOpenFB'])
 .controller('ActivityCtrl', function($scope,_function,SpringNews) {
   $scope.activity = [];
   SpringNews._pages_activity($scope); 
-
 })
+.controller('ShakeCtrl', function($scope) {
+  var game = new Phaser.Game(window.screen.availWidth * window.devicePixelRatio, window.screen.availHeight * window.devicePixelRatio, Phaser.AUTO, 'game');
+      game.state.add('Boot', Shake.Boot);
+      game.state.add('Preloader', Shake.Preloader);
+      game.state.add('Menu',Shake.Menu);
+      game.state.add('Game', Shake.Game);
+      game.state.start('Boot');
+})
+
 
 // --------------------- Search ------------------------
 .controller('SearchCtrl', function($scope,$http,$timeout,$stateParams,$ionicSideMenuDelegate,_function,SpringNews) {

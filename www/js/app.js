@@ -12,21 +12,7 @@ angular.module('starter', ['ionic', 'starter.controllers',"angular-md5",'service
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
-    // Check for network connection
-    // if(window.Connection) {
-    //   if(navigator.connection.type == Connection.NONE) {
-    //     $ionicPopup.alert({
-    //       title: 'No Internet Connection',
-    //       content: 'Sorry, no Internet connectivity detected. Please reconnect and try again.'
-    //     })
-    //     .then(function(result) {
-    //         ionic.Platform.exitApp();
-    //     });
-        
 
-    //   }else{
-    //   }
-    // }
     ConnectivityMonitor.startWatching()
 
     if (window.cordova && window.cordova.plugins.Keyboard) {
@@ -136,6 +122,7 @@ angular.module('starter', ['ionic', 'starter.controllers',"angular-md5",'service
         var chil1 = header1.querySelector('.bar-header');
 
         var header2 = $document[0].body.querySelector('.tsb-home');
+        header2.style.marginTop = '56px';
 
         var header3 = $document[0].body.querySelector('.slider');
 
@@ -354,6 +341,15 @@ angular.module('starter', ['ionic', 'starter.controllers',"angular-md5",'service
       'menuContent': {
         templateUrl: 'templates/activity.html',
         controller: 'ActivityCtrl'
+      }
+    }
+  })
+  .state('app.shake', {
+    url: '/shake',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/shake.html',
+        controller: 'ShakeCtrl'
       }
     }
   })
