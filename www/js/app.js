@@ -4,7 +4,7 @@
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
 // 'starter.controllers' is found in controllers.js
-var db = null;
+var db;
 angular.module('starter', ['ionic', 'starter.controllers',"angular-md5",'services','ngOpenFB','tabSlideBox','ngStorage', 'ionic-cache-src','ngCordova.plugins.googleAds','ngCordovaOauth','ionic-cache-src'])
 
 .run(function($ionicPlatform,$rootScope,$ionicPopup, $cordovaDialogs ,$cordovaSQLite,ngFB, ConnectivityMonitor) { //admobSvc
@@ -55,11 +55,18 @@ angular.module('starter', ['ionic', 'starter.controllers',"angular-md5",'service
               position:AdMob.AD_POSITION.BOTTOM_CENTER, 
               autoShow:true
           });
+          // db = $cordovaSQLite.openDB("springnew.db");
+          try{
 
-        // db = $cordovaSQLite.openDB("springnew.db");
-        db = window.sqlitePlugin.openDatabase( {name: "springnew.db", createFromLocation: 1} );
-        $cordovaSQLite.execute(db, "CREATE TABLE IF NOT EXISTS user(id integer primary key,user_id integer, ,name text )");
-        $cordovaSQLite.execute(db, "CREATE TABLE IF NOT EXISTS action(id integer primary key, user_id integer,news_id integer)");
+          db = $cordovaSQLite.openDB({name:"springnew.db",location:'default'});
+          console.log(db);
+          // db = window.sqlitePlugin.openDatabase( {name: "springnew.db", createFromLocation: 1} );
+          $cordovaSQLite.execute(db, "CREATE TABLE IF NOT EXISTS user(id integer primary key,user_id integer,name text ,mycode text ,status integer)");
+          $cordovaSQLite.execute(db, "CREATE TABLE IF NOT EXISTS action(id integer primary key, user_id integer,news_id integer)");
+          }
+          catch(error){
+            alert(error);
+          }
         });
 
 })

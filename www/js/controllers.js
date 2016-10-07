@@ -1,6 +1,6 @@
 angular.module('starter.controllers', ['ngOpenFB'])
 
-.controller('AppCtrl', function($scope, $ionicModal, $timeout, $ionicPopup, $http ,$window, $location, md5,$localStorage,ngFB,$cordovaOauth,$ionicSideMenuDelegate) {
+.controller('AppCtrl', function($scope,$rootScope, $ionicModal, $timeout, $ionicPopup, $http ,$window, $location, md5,$localStorage,ngFB,$cordovaOauth,$ionicSideMenuDelegate) {
 
   // With the new view caching in Ionic, Controllers are only called
   // when they are recreated or on app start, instead of every page change.
@@ -116,22 +116,20 @@ angular.module('starter.controllers', ['ngOpenFB'])
   };  
 
   // Form data for the login modal
-  $scope.loginData = {};
-  $scope.user  = {};
-  $scope.icon = "right";
+  $rootScope.loginData = {};
+  $rootScope.user  = {};
+  $rootScope.icon = "right";
 
-  if($localStorage.name != undefined){
-     $scope.user.img = $localStorage.img;
-     $scope.user.name = $localStorage.name;
-     $scope.user.email = $localStorage.email;
-     $scope.profile = true;
-     $scope.login_ = false;
-     $scope.logout_ = true;
+  if($localStorage.img != undefined){
+     $rootScope.user.img = $localStorage.img;
+     $rootScope.profile = true;
+     $rootScope.login_ = false;
+     $rootScope.logout_ = true;
   }else{
      // $scope.profile = true;
-     $scope.profile = false;
-     $scope.login_ = true;
-     $scope.logout_ = false;
+     $rootScope.profile = false;
+     $rootScope.login_ = true;
+     $rootScope.logout_ = false;
   }
 
   // // Triggered in the login modal to close it
@@ -147,11 +145,9 @@ angular.module('starter.controllers', ['ngOpenFB'])
   //Open the logout 
   $scope.logout = function() {
     $localStorage.img = undefined;
-    $localStorage.name = undefined;
-    $localStorage.email = undefined;
-    $scope.profile = false;
-    $scope.login_ = true;
-    $scope.logout_ = false;
+    $rootScope.profile = false;
+    $rootScope.login_ = true;
+    $rootScope.logout_ = false;
   }
 
   
@@ -800,7 +796,7 @@ angular.module('starter.controllers', ['ngOpenFB'])
 })
 
 // ---------------------- NEWS DETAIL ---------------------
-.controller('NewsCtrl', function($scope, $stateParams , SpringNews, $ionicLoading, $timeout,_function, $sce, $cordovaSocialSharing, $timeout) {
+.controller('NewsCtrl', function($scope, $stateParams ,Actions,SQLite, SpringNews, $ionicLoading, $timeout,_function, $sce, $cordovaSocialSharing, $timeout) {
   
   $scope.newsDetail = [];
   $scope.newsConnected = [];
@@ -824,6 +820,18 @@ angular.module('starter.controllers', ['ngOpenFB'])
   $scope.message = '';
   $scope.url = '';
 
+  // console.log($stateParams);
+  SQLite._getuser();
+
+  
+
+  var new_info = { 
+      _postID: $stateParams.newsId,
+      _userID: ""
+  }
+
+  Actions._read($scope,new_info);
+
   $scope.share = function (title,url){
       $scope.title_ = title
       $scope.url = url
@@ -831,6 +839,7 @@ angular.module('starter.controllers', ['ngOpenFB'])
       .share($scope.title_,null,null,$scope.url)
       .then(function(result) {
         // Success!
+        Actions._share($scope,new_info);
       }, function(err) {
         // An error occurred. Show a message to the user
         $ionicPopup.alert({
@@ -1160,8 +1169,8 @@ angular.module('starter.controllers', ['ngOpenFB'])
 
 
 // --------------------- Register ------------------------
-.controller('registerCtrl', function($scope,$stateParams,_function,SpringNews) {
-  $scope.user_info_return = []
+.controller('registerCtrl', function($scope,$stateParams,_function,SQLite) {
+
   $scope.submitForm = function(){
     console.log(this.regis);
 
@@ -1170,50 +1179,22 @@ angular.module('starter.controllers', ['ngOpenFB'])
       _pass: this.regis.pass ,
       _name: this.regis.fname ,
       _lastname: this.regis.lname ,
+      _display: this.regis.fname,
       _address: this.regis.address ,
       _phone: this.regis.tel ,
       _type: "user"
 
     }
 
-    SpringNews._register($scope,user_info);
-
-    var user_id = $scope.user_info_return.ID;
-    var name = $scope.user_info_return.name;
-
-
-    $scope.insert();
- 
-    // $scope.select = function(lastname) {
-    //     var query = "SELECT firstname, lastname FROM people WHERE lastname = ?";
-    //     $cordovaSQLite.execute(db, query, [lastname]).then(function(res) {
-    //         if(res.rows.length > 0) {
-    //             console.log("SELECTED -> " + res.rows.item(0).firstname + " " + res.rows.item(0).lastname);
-    //         } else {
-    //             console.log("No results found");
-    //         }
-    //     }, function (err) {
-    //         console.error(err);
-    //     });
-    // }
+    SQLite._register($scope,user_info);
 
   }
-    $scope.insert = function(user_id, name) {
-        alert("aaaaaa");
-        var query = "INSERT INTO user (user_id, name) VALUES (?,?)";
-        $cordovaSQLite.execute(db, query, [user_id, name]).then(function(res) {
-            console.log("INSERT ID -> " + res.insertId);
-        }, function (err) {
-            console.error(err);
-        });
-    }
-
 
 
 })
 
 // --------------------- login ------------------------
-.controller('loginCtrl', function($scope,$stateParams,$localStorage,ngFB,$cordovaOauth,_function,SpringNews) {
+.controller('loginCtrl', function($scope,$rootScope,$http,$stateParams,$localStorage,ngFB,$cordovaOauth,_function,SpringNews,SQLite) {
   
   //Alert Fail Login
   $scope.showAlertFail = function() {
@@ -1236,34 +1217,16 @@ angular.module('starter.controllers', ['ngOpenFB'])
 
   // Perform the login action when the user submits the login form
   $scope.doLogin = function() {
-    console.log('Doing login', $scope.loginData);
 
-    var request = $http({
-                        method: "post",
-                        url: "http://daydev.com/demo/login.php",
-                        data: {
-                            username: $scope.loginData.username,
-                            password: $scope.loginData.password
-                        },
-                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-                  });
+    SQLite._login($scope);
+    if(status_login == true){
+      $localStorage.img = "./img/default_user.png";
+      $rootScope.user.img = $localStorage.img;
+      $rootScope.profile = true;
+      $rootScope.login_ = false;
+      $rootScope.logout_ = true;
+    }
 
-        request.success(function (data) {
-          $scope.message = "Console : "+data;
-            if(data=="false"){
-              $scope.showAlertFail(); 
-            }else{
-              $scope.showAlertSuccess();
-              $scope.profile = true;
-              $scope.login_ = false;
-              $scope.logout_ = true;
-            }
-        });
-    // Simulate a login delay. Remove this and replace with your login
-    // code if using a login system
-    // $timeout(function() {
-    //   $scope.closeLogin();
-    // }, 1000);
   };
 
   //Login Facebook 
@@ -1273,25 +1236,38 @@ angular.module('starter.controllers', ['ngOpenFB'])
             if (response.status === 'connected') {
                 console.log(response)
                 console.log('Facebook login succeeded');
-                $scope.closeLogin();
+                // $scope.closeLogin();
                 ngFB.api({
                     path: '/me',
                     params: {fields: 'id,name,email'}
                 }).then(
                     function (user) {
+
                         $scope.user = user;
                         $localStorage.img = "https://graph.facebook.com/"+$scope.user.id+"/picture?width=400&height=400";
-                        $localStorage.name = $scope.user.name;
-                        $localStorage.email = $scope.user.email; 
 
-                        $scope.user.name = $localStorage.name
-                        $scope.user.email = $localStorage.email 
-                        $scope.user.img = $localStorage.img
 
-                        $scope.profile = true;
-                        $scope.login_ = false;
-                        $scope.logout_ = true;
+                        // $scope.user.name = $localStorage.name
+                        // $scope.user.email = $localStorage.email 
+                        $rootScope.user.img = $localStorage.img
+
+                        $rootScope.profile = true;
+                        $rootScope.login_ = false;
+                        $rootScope.logout_ = true;
                         console.log(user)
+
+                        var user_info = { 
+                          _email: $scope.user.email,
+                          _pass: $scope.user.id ,
+                          _name: $scope.user.name ,
+                          _display: $scope.user.name,
+                          _lastname: '' ,
+                          _address: '' ,
+                          _phone: '' ,
+                          _type: "facebook"
+
+                        }
+                        SQLite._register($scope,user_info);
                     },
                     function (error) {
                         alert('Facebook error: ' + error.error_description);
@@ -1299,6 +1275,7 @@ angular.module('starter.controllers', ['ngOpenFB'])
             } else {
                 alert('Facebook login failed');
             }
+
     });
 
   };
@@ -1311,26 +1288,46 @@ angular.module('starter.controllers', ['ngOpenFB'])
         // alert("Response Object -> " + JSON.stringify(result));
         var url="https://www.googleapis.com/oauth2/v1/userinfo?access_token="+result.access_token; 
         $http.get(url).success(function(result2){ 
-            $scope.closeLogin();
             if(result2 != ""){
+
+                console.log("aaaaaaaaaaaaaaa"+result2);
                 $scope.user = result2;
+                console.log("scope_USER"+$scope.user );
                 $localStorage.img = result2.picture;
-                $localStorage.name = result2.name;
-                $localStorage.email = result2.email;
+                // $localStorage.name = result2.name;
+                // $localStorage.email = result2.email;
 
-                $scope.user.name = $localStorage.name
-                $scope.user.email = $localStorage.email 
-                $scope.user.img = $localStorage.img
+                // $scope.user.name = $localStorage.name
+                // $scope.user.email = $localStorage.email 
+                $rootScope.user.img = $localStorage.img
+                var user_info = { 
+                  _email: $scope.user.email,
+                  _pass: $scope.user.id ,
+                  _name: $scope.user.given_name ,
+                  _lastname: $scope.user.family_name ,
+                  _address: '' ,
+                  _display: $scope.user.name,
+                  _phone: '',
+                  _type: "google+"
 
-                $scope.profile = true;
-                $scope.login_ = false;
-                $scope.logout_ = true;
+                } 
+                SQLite._register($scope,user_info);
+
+
+                $rootScope.profile = true;
+                $rootScope.login_ = false;
+                $rootScope.logout_ = true;
             }
+            $scope.closeLogin();
+
+
             $scope.showloading=false; 
         })  
         .error(function(){  
             $scope.showloading=false; 
         });
+        
+
     }, function(error) {
         console.log("Error -> " + error);
         // alert("Error -> " + JSON.stringify(error));

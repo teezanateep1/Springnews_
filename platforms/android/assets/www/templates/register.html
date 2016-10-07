@@ -1,0 +1,86 @@
+<ion-view view-title="Register" align-title="left" style="background: url(img/login.jpg) center; background-size: cover;">
+  	<ion-content>
+    <div class="ipad-width-login">
+      <div class="hero no-header flat">
+        <div class="content" style="margin: 50px 0 50px; 0;">
+          <div class="app-icon"></div>
+        </div>
+      </div>
+      <div class="list">
+        <form name="registerForm" ng-submit="submitForm()" novalidate>
+              <div class="register_form form-group">
+                <div >
+                  <label class="item-login item-input" >
+                      <span class="input-label">Email</span>
+                      <input type="email" name="email" class="form-control" ng-model="regis.email" required>
+                  </label>
+                  <p ng-show="registerForm.email.$invalid && !registerForm.email.$pristine" class="help-block">*กรุณากรอกอีเมล</p>
+                </div>
+              
+                <div>
+                  <label class="item-login item-input">
+                    <span class="input-label">Password</span>
+                    <input type="password" name="pass" class="form-control" ng-model="regis.pass" required >
+                  </label>
+                  <p ng-show="registerForm.pass.$invalid && !registerForm.pass.$pristine" class="help-block">*กรุณากรอกรหัสผ่าน</p>
+                </div>
+
+                <div>
+                  <label class="item-login item-input">
+                    <span class="input-label">First Name</span>
+                    <input type="text" name="fname" class="form-control" ng-model="regis.fname" required >
+                  </label>
+                  <p ng-show="registerForm.fname.$invalid && !registerForm.fname.$pristine" class="help-block">*กรุณากรอกชื่อ</p>
+                </div>
+
+                <div>
+                  <label class="item-login item-input">
+                    <span class="input-label">Last Name</span>
+                    <input type="text" name="lname" class="form-control" ng-model="regis.lname" required >
+                  </label>
+                  <p ng-show="registerForm.lname.$invalid && !registerForm.lname.$pristine" class="help-block">*กรุณากรอกนามสกุล</p>
+                </div>
+
+                <!-- <div>
+                  <label class="item-login item-input">
+                    <span class="input-label">Profile Image</span>
+                    <input type="text" name="pimg" class="form-control" ng-model="regis.pimg" required >
+                  </label>
+                  <p ng-show="registerForm.pimg.$invalid && !registerForm.pimg.$pristine" class="help-block">*กรุณากรอกรหัสผ่าน</p>
+                </div> -->
+
+                <div>
+                  <label class="item-login item-input">
+                    <span class="input-label">Address</span>
+                    <textarea rows="5" name="address" class="form-control" ng-model="regis.address" required >
+                    </textarea>
+                  </label>
+                  <p ng-show="registerForm.address.$invalid && !registerForm.address.$pristine" class="help-block">*กรุณากรอกที่อยู่</p>
+                </div>
+
+                <div>
+                  <label class="item-login item-input">
+                    <span class="input-label">Tel</span>
+                    <input type="number" name="tel" class="form-control" ng-model="regis.tel" required >
+                  </label>
+                  <p ng-show="registerForm.tel.$invalid && !registerForm.tel.$pristine" class="help-block">*กรุณากรอกเบอร์โทร</p>
+                </div>
+
+                </br>
+                <div style="text-align: center;height: 30px;">
+                  <button type="submit" class="button button-sp" ng-disabled="registerForm.$invalid">
+                    Submit
+                  </button>
+                </div>
+                </br>
+              </div>
+
+          </form>
+        </div>
+      </div>
+      </br>
+      </br>
+      </br>
+
+  	</ion-content>
+</ion-view>

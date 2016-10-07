@@ -26,19 +26,21 @@
 
 
   <ion-side-menu side="left">
+  <!-- Profile -->
     <!-- <ion-header-bar class="bar-stable">
       <h1 class="title">Left</h1>
     </ion-header-bar> -->
     <ion-header-bar class="bar-profile" ng-show="profile" >
         <div class="profile">
             <!-- <img class="profile-picture" src="img/logo.png"  /> -->
-             <img class="profile-picture" ng-src="{{ user.img }}"  />
+            <img class="profile-picture" ng-src="{{ user.img }}"  />
             <h3 class="name" >{{user.name}}</h3>
             <!-- <span class="lang-fr" ><a href="#">EN</a></span>
             <span class="lang-se" ><a href="#" class="active">TH</a></span> -->
             <h4 class="email" style="display: none;">{{user.email}}</h4>
        </div>
     </ion-header-bar>
+    <!-- ///////// -->
     <ion-content style="background-color: #4c4c4c;">
       <ion-list>
 
@@ -55,10 +57,16 @@
           </label>
         </div> -->
 
-        <ion-item menu-close class="menu" href="#/app/home" ng-click="cl_link('/app/home')"  style="border: none;" >
+      <!--   <ion-item menu-close class="menu" href="#/app/home" ng-click="cl_link('/app/home')"  style="border: none;" >
           <i class="icon nut-menu-home"  ng-class="{'active':link == '/app/home'}" ></i> 
            <span ng-class="{'active':link == '/app/home'}" style="margin-left: 10px;">หน้าหลัก</span>
+        </ion-item> -->
+
+        <ion-item menu-close class="menu" href="#/app/hometest" ng-click="cl_link('/app/hometest')"  style="border: none;" >
+          <i class="icon nut-menu-home"  ng-class="{'active':link == '/app/hometest'}" ></i> 
+           <span ng-class="{'active':link == '/app/hometest'}" style="margin-left: 10px;">หน้าหลัก</span>
         </ion-item>
+
         <ion-item menu-close class="menu" ng-click="cl_link('/app/program')" href="#/app/program">
           <i class="icon nut-menu-livetv"   ng-class="{'active':link == '/app/program'}" ></i> 
           <span ng-class="{'active':link == '/app/program'}" style="margin-left: 10px;">รายการทีวี </span>
@@ -87,10 +95,10 @@
           <span ng-class="{'active':link == '/app/activity'}" style="margin-left: 10px;"> กิจกรรม </span>
         </ion-item>
 
-        <ion-item menu-close class="menu" href="#/app/uploadfile" ng-click="cl_link('/app/home')"  >
+        <!-- <ion-item menu-close class="menu" href="#/app/uploadfile" ng-click="cl_link('/app/home')"  >
           <i class="icon nut-menu-home"  ng-class="{'active':link == '/app/uploadfile'}" ></i> 
            <span ng-class="{'active':link == '/app/uploadfile'}" style="margin-left: 10px;">พี่น้องร้องทุกข์</span>
-        </ion-item>
+        </ion-item> -->
 
         <ion-item class="menu" href=""  ng-click="toggleAboutUs(menu_toggle_)" style="cursor:pointer;">
           <i class="nut-menu-contact"  ng-class="{'active':link == '/app/contact_'}" ></i> 
@@ -101,7 +109,7 @@
              <ion-item menu-close class="sub-menu" ng-click="cl_link('vision')" href="#/app/vision"><span ng-class="{'active':sublink_aboutUs == 'vision'}">วิสัยทัศ์ / ภารกิจ </span></ion-item>
              <ion-item menu-close class="sub-menu" ng-click="cl_link('history')" href="#/app/history"><span ng-class="{'active':sublink_aboutUs == 'history'}"> ประวัติ </span></ion-item>
              <ion-item menu-close class="sub-menu" ng-click="cl_link('contact')" href="#/app/contact"><span ng-class="{'active':sublink_aboutUs == 'contact'}">ติดต่อเรา </span></ion-item>
-             <ion-item menu-close class="sub-menu" ng-click="cl_link('introduce')" href="#/app/introduce"><span ng-class="{'active':sublink_aboutUs == 'introduce'}"> แนะนำติชม / ร้องเรียน </span></ion-item>
+            <!--  <ion-item menu-close class="sub-menu" ng-click="cl_link('introduce')" href="#/app/introduce"><span ng-class="{'active':sublink_aboutUs == 'introduce'}"> แนะนำติชม / ร้องเรียน </span></ion-item> -->
         </div>
 
 
@@ -121,7 +129,7 @@
            <ion-item menu-close href="#/app/pick"> 360 And Pick Item </ion-item>
         </ion-item> -->
 
-        <ion-item menu-close class="menu" ng-click="login()" href="#" ng-show="login_">
+      <!--   <ion-item menu-close class="menu" href="#app/login" href="#" ng-show="login_">
           <i class="nut-menu-logout"></i> 
           <span style="margin-left: 10px;"> เข้าสู่ระบบ </span>
         </ion-item>
@@ -129,7 +137,7 @@
         <ion-item menu-close class="menu" ng-click="logout()" href="#" ng-show="logout_" >
           <i class="nut-menu-logout"></i> 
           <span style="margin-left: 10px;"> ออกจากระบบ </span>
-        </ion-item>
+        </ion-item> -->
 
       </ion-list>
     </ion-content>

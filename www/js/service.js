@@ -1,46 +1,5 @@
 angular.module('services', [])
 
-.factory('SpringUser', function($cordovaSQLite) {
- 
-    var users = [];
-    var actions =[];
-     
-    return {
-        getuser: function() {
-        $cordovaSQLite.execute(db, "SELECT * FROM user").then(function(res){
-            for(var i = 0; i < res.rows.length; i++){
-                users.push(res.rows.item(i));
-            }
-        },
-            function(err){ 
-                console.log("Error");
-            })
-         
-            return users;
-        },
-        getaction: function() {
-        $cordovaSQLite.execute(db, "SELECT * FROM action").then(function(res){
-            for(var i = 0; i < res.rows.length; i++){
-                actions.push(res.rows.item(i));
-            }
-        },
-            function(err){ 
-                console.log("Error");
-            })
-         
-            return actions;
-        },
-        remove: function(userId) {
-            $cordovaSQLite.execute(db, "DELETE FROM user WHERE id=?", [userId]).then(function(res){
-                console.log("Deleted");
-            },
-            function(err){ 
-                console.log("Error");
-            })
-        }
-    };
-})
-
 .factory('facebookService', function($q) {
     return {
         getMyLastName: function() {
@@ -222,7 +181,7 @@ angular.module('services', [])
         $http.get(url).success(function(result){ 
             $scope.tabs = result;
             $ionicSlideBoxDelegate.update();
-            console.log(result)
+            // console.log(result)
         })  
         .error(function(){  
             $ionicSlideBoxDelegate.update();
@@ -577,9 +536,98 @@ angular.module('services', [])
         });
     }
 
+      
+    
+}])
+
+.service("SQLite",["$http","$ionicSlideBoxDelegate","_function","$ionicLoading","$cordovaLocalNotification","$cordovaSQLite",function($http,$ionicSlideBoxDelegate,_function,$rootScope,$ionicLoading,$cordovaLocalNotification,$cordovaSQLite){ 
+    var path = "http://artbeat.mfec.co.th/SpringNews_mb/api/";
+    var key = "EAACEdEose0cBAP3LZAULs0sfBDrAFiY0xzMTJHPdzlxArcn4kw";
+    
+   
+    // var actions =[];
+
+    this._login = function($scope){
+
+        var users = [];
+
+        $cordovaSQLite.execute(db, "SELECT * FROM user").then(function(res){
+            for(var i = 0; i < res.rows.length; i++){
+                users.push(res.rows.item(i));
+                console.log(users);
+            }
+        },
+        function(err){ 
+            console.log("Error");
+        })
+
+        console.log($scope.loginData)
+        var url=path+"be/Users/logInUser"; 
+        $http({
+            method  : 'POST',
+            url     :  url,
+            data    :  $scope.loginData,  // pass in data as strings
+            headers : {'api-key': key}  // set the headers so angular passing info as form data (not request payload)
+        })
+        .success(function(data) {
+            console.log(data);
+            console.log("login_success");
+            var url=path+"be/Users/getID?api-key="+key+"&id="+data.ID; 
+            $http.get(url).success(function(result){
+                console.log(result);
+                // $scope.user_info_return = result
+                console.log(result[0].ID+"  "+result[0].name+"  "+result[0].lastname+"  "+db);
+                var user_id = result[0].ID;
+                var fullname = result[0].name+"  "+result[0].lastname;
+                var mycode = result[0].mycode;
+                if (users == []) {
+                    var query = "INSERT INTO user (user_id, name,mycode) VALUES (?,?)";
+                    $cordovaSQLite.execute(db, query, [user_id, fullname,mycode]).then(function(res) {
+                        console.log("INSERT ID -> " + res.insertId);
+                    }, function (err) {
+                        console.error(err);
+                    });
+
+
+                } else{
+                    console.log(users);
+                    var query = "UPDATE user SET user_id = "+user_id+",name = '"+fullname+"' WHERE id = 1";
+                    $cordovaSQLite.execute(db, query,[]).then(function(res) {
+                        console.log("UPDATE ID -> " + res);
+                    }, function (err) {
+                        console.error(err);
+                    });
+                };
+                return true;
+            })  
+            .error(function(){  
+                console.log(result);
+                return false;
+            });
+        }).error(function(){  
+            console.log("login_error");
+            console.log(data);
+            alert("login_error");
+            return false;
+        });
+    }
+
     // --------- สมัครสมาชิก
     this._register = function($scope,user_info){ 
-        console.log(user_info)
+        console.log(user_info);
+        
+        var users = [];
+        $cordovaSQLite.execute(db, "SELECT * FROM user").then(function(res){
+            for(var i = 0; i < res.rows.length; i++){
+                users.push(res.rows.item(i));
+                console.log(users);
+            }
+        },
+        function(err){ 
+            console.log("Error");
+        })
+
+        console.log(user_info);
         var url=path+"be/Users/insert"; 
         $http({
             method  : 'POST',
@@ -590,20 +638,33 @@ angular.module('services', [])
         .success(function(data) {
 
             console.log("register_success");
-            alert("register_success");
             var url=path+"be/Users/getID?api-key="+key+"&id="+data.ID; 
             $http.get(url).success(function(result){
                 console.log(result);
                 // $scope.user_info_return = result
-                console.log(result[0].ID+result[0].name+result[0].lastname);
+                console.log(result[0].ID+"  "+result[0].name+"  "+result[0].lastname+"  "+db);
                 var user_id = result[0].ID;
-                var fullname = result[0].name+result[0].lastname;
-                var query = "INSERT INTO user (user_id, name) VALUES (?,?)";
-                $cordovaSQLite.execute(db, query, [user_id, fullname]).then(function(res) {
-                    console.log("INSERT ID -> " + res.insertId);
-                }, function (err) {
-                    console.error(err);
-                });
+                var fullname = result[0].name+"  "+result[0].lastname;
+                var mycode = result[0].mycode;
+                if (users == []) {
+                    var query = "INSERT INTO user (user_id, name,mycode) VALUES (?,?)";
+                    $cordovaSQLite.execute(db, query, [user_id, fullname,mycode]).then(function(res) {
+                        console.log("INSERT ID -> " + res.insertId);
+                    }, function (err) {
+                        console.error(err);
+                    });
+
+
+                } else{
+                    console.log(users);
+                    var query = "UPDATE user SET user_id = "+user_id+",name = '"+fullname+"' WHERE id = 1";
+                    $cordovaSQLite.execute(db, query,[]).then(function(res) {
+                        console.log("UPDATE ID -> " + res);
+                    }, function (err) {
+                        console.error(err);
+                    });
+                };
+                
             })  
             .error(function(){  
                 console.log(result);
@@ -613,11 +674,98 @@ angular.module('services', [])
             console.log(data);
             alert("register_error");
         });
-        
+    }
+     
+    this._getuser = function() {
+        var users = [];
+        console.log(db)
+        $cordovaSQLite.execute(db, "SELECT * FROM user").then(function(res){
+            for(var i = 0; i < res.rows.length; i++){
+                users.push(res.rows.item(i));
+            }
+            $scope.user_get = users;
+        },
+        function(err){ 
+            console.log("Error");
+        })
+        console.log(users);
+    }
 
-        
-    }  
+    this._getaction = function() {
+        var actions = [];
+        $cordovaSQLite.execute(db, "SELECT * FROM action").then(function(res){
+            for(var i = 0; i < res.rows.length; i++){
+                actions.push(res.rows.item(i));
+            }
+        },
+        function(err){ 
+            console.log("Error");
+        })
+    }
+
+    this._remove =function(userId) {
+        $cordovaSQLite.execute(db, "DELETE FROM user WHERE id=?", [userId]).then(function(res){
+            console.log("Deleted");
+        },
+        function(err){ 
+            console.log("Error");
+        })
+    }
     
-   
 
-}])  
+}]) 
+
+
+.service("Actions",["$http","$ionicSlideBoxDelegate","_function","$ionicLoading","$cordovaLocalNotification","$cordovaSQLite",function($http,$ionicSlideBoxDelegate,_function,$rootScope,$ionicLoading,$cordovaLocalNotification,$cordovaSQLite){ 
+    var path = "http://artbeat.mfec.co.th/SpringNews_mb/api/";
+    var key = "EAACEdEose0cBAP3LZAULs0sfBDrAFiY0xzMTJHPdzlxArcn4kw";
+    
+    // ---------  อ่านข่าว
+    this._read = function($scope,new_info){
+        var url=path+"be/Socials/views"; 
+        $http({
+            method  : 'POST',
+            url     :  url,
+            data    :  new_info,  // pass in data as strings
+            headers : {'api-key': key}  // set the headers so angular passing info as form data (not request payload)
+        })
+        .success(function(data) {
+            console.log("countread_success");
+        }).error(function(){  
+            console.log("countread_error");
+        });
+    }
+
+     // ---------  แชร์ข่าว
+    this._share = function($scope,new_info){
+        var url=path+"be/Socials/shares"; 
+        $http({
+            method  : 'POST',
+            url     :  url,
+            data    :  new_info,  // pass in data as strings
+            headers : {'api-key': key}  // set the headers so angular passing info as form data (not request payload)
+        })
+        .success(function(data) {
+            console.log("countshare_success");
+        }).error(function(){  
+            console.log("countshare_error");
+        });
+    }
+
+     // ---------  แชร์ข่าว
+    this._like = function($scope,new_info){
+        var url=path+"be/Socials/likes"; 
+        $http({
+            method  : 'POST',
+            url     :  url,
+            data    :  new_info,  // pass in data as strings
+            headers : {'api-key': key}  // set the headers so angular passing info as form data (not request payload)
+        })
+        .success(function(data) {
+            console.log("countshare_success");
+        }).error(function(){  
+            console.log("countshare_error");
+        });
+    }
+
+}]) 

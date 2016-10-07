@@ -22,10 +22,10 @@
 				    	<ion-spinner class="spinner-calm" style="z-index:10;margin-top: 55%;" ng-show="loading_catnews" ></ion-spinner>
 						<div class="box-news">
 								<!-- Program Div -->
-								<div class="list-program-ipad" collection-repeat="item in newsCategory |filter: tab.name " >
+								<div class="list-program-ipad" ng-repeat="item in newsCategory |filter: tab.name " >
 									<a href="#/app/videos/{{item.ID}}/{{item.term_taxonomy_id}}/" style="text-decoration: none;">
-										<div style="height: 100%;padding-bottom: 5px;">
-											<div class="item item-text-wrap " style="border-color: #31b5c2;height: 100%;padding: 0px; margin-bottom: 10px;">
+										<div style="height: 100%;padding-bottom: 5px; position: relative;">
+											<div class="item item-text-wrap " style="border-color: #31b5c2;height: 100%;padding: 0px;">
 												<img ng-src="{{item.guid != null ? item.guid:'img/default.jpg'}}" class="box-news-img" >
 											</div>
 											<div class="box-item-new box-news-footer" style="z-index: 100;">
@@ -52,22 +52,12 @@
 
 								<a href="https://www.instagram.com/springnewstv/" class="the-social-links tsl-circle tsl-24 tsl-default tsl-youtube" target="_system" alt="Instagram" title="Instagram"><img  ng-src="./img/social/ig.png" class="box-news-img"></a>
 
-<<<<<<< HEAD
 								<a href="https://www.youtube.com/springnewsonline" class="the-social-links tsl-circle tsl-24 tsl-default tsl-instagram" target="_system" alt="Youtube" title="Youtube"><img  ng-src="./img/social/tyoutube.png" class="box-news-img"></a>
-=======
-											<a href="http://line.me/ti/p/~@springnews" target="_system" alt="Line" title="Line"><img  ng-src="./img/social/line.png" class="box-news-img"></a>
-										</div>
-									</div>	
 
-								</div>
-								<!-- ./Program Div -->
-							
-						</div> 
->>>>>>> origin/SpringNews_V1
-
-								<a href="http://line.me/ti/p/~odeen" target="_system" alt="Line" title="Line"><img  ng-src="./img/social/line.png" class="box-news-img"></a>
+								<a href="http://line.me/ti/p/~@springnews" target="_system" alt="Line" title="Line"><img  ng-src="./img/social/line.png" class="box-news-img"></a>
 							</div>
-						</div>
+						</div>	
+						<!-- ./Program Div -->
 						</br>
 						</br>
 						</br>

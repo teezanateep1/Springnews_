@@ -15,6 +15,12 @@
   height: 250px;
 }
 
+.font-size-news{
+  font-family: 'Conv_SukhumvitReg','Conv_Frank-Regular';
+  font-size: 18px;
+  line-height: 24px;
+}
+
 .program-video{
   border-color: #31b5c2;
   height: 250px;
@@ -1157,6 +1163,7 @@ color: #31b5c2;
   font-size: 24px;
   line-height: 28px;
 }
+
 /* Empty. Add your own CSS if you like */
 .slider-slide h3{
   color:#fff;
