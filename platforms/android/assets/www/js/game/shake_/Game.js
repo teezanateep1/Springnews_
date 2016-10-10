@@ -38,7 +38,7 @@ Shake.Game.prototype = {
 
         //  Here we're passing an array of image keys. It will pick one at random when emitting a new particle.
         emitter = this.game.add.emitter(this.game.world.centerX, this.game.world.centerY - 200, 200);
-        emitter.makeParticles(['object1', 'object2', 'object3','object4']);
+        emitter.makeParticles(['object1', 'object2', 'object3']);
         emitter.gravity = 100;
 
         // emitter.minParticleSpeed.setTo(-150, 150);
@@ -217,7 +217,7 @@ Shake.Game.prototype = {
       if(score != 0 ){
            game.game.paused = false;
            bag.animations.play('bagshake');
-           emitter.start(true, 4000, null, 40);
+           emitter.start(true, 3500, null, 15);
            spellSound.play();
            clearTimeout(timeout_) 
            timeout_ = setTimeout(function () {

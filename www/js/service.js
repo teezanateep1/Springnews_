@@ -543,8 +543,8 @@ angular.module('services', [])
     this._login = function($scope){
 
         var users = [];
-
-        $cordovaSQLite.execute(db, "SELECT * FROM user").then(function(res){
+        var query = "SELECT * FROM user";
+        $cordovaSQLite.execute(db, query,[]).then(function(res){
             for(var i = 0; i < res.rows.length; i++){
                 users.push(res.rows.item(i));
                 console.log(users);
@@ -608,10 +608,11 @@ angular.module('services', [])
     // --------- สมัครสมาชิก
     this._register = function($scope,user_info){ 
         console.log(user_info);
-        
+        var query = "SELECT * FROM user";
         var users = [];
-        $cordovaSQLite.execute(db, "SELECT * FROM user").then(function(res){
+        $cordovaSQLite.execute(db, query,[]).then(function(res){
             for(var i = 0; i < res.rows.length; i++){
+                console.log("SELECTED -> " + res.rows.item(0).id);
                 users.push(res.rows.item(i));
                 console.log(users);
             }
@@ -671,8 +672,9 @@ angular.module('services', [])
      
     this._getuser = function() {
         var users = [];
-        console.log(db)
-        $cordovaSQLite.execute(db, "SELECT * FROM user").then(function(res){
+        console.log(db);
+        var query = "SELECT * FROM user";
+        $cordovaSQLite.execute(db, query,[]).then(function(res){
             for(var i = 0; i < res.rows.length; i++){
                 users.push(res.rows.item(i));
             }
