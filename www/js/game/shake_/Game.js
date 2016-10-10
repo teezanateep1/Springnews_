@@ -25,8 +25,8 @@ Shake.Game.prototype = {
         game = this;
 
         bggame = this.game.add.sprite(0,89, 'backgroundGame');
-        bggame.width = window.screen.availWidth * window.devicePixelRatio
-        bggame.height = window.screen.availHeight * window.devicePixelRatio -89
+        bggame.width = window.screen.availWidth * window.devicePixelRatio;
+        bggame.height = window.screen.availHeight * window.devicePixelRatio -89;
 
         //Object Shake Bag
         this.game.physics.startSystem(Phaser.Physics.ARCADE);
@@ -41,12 +41,6 @@ Shake.Game.prototype = {
         emitter.makeParticles(['object1', 'object2', 'object3']);
         emitter.gravity = 100;
 
-        // emitter.minParticleSpeed.setTo(-150, 150);
-        // emitter.maxParticleSpeed.setTo(150, -150);
-        // emitter.minParticleScale = 0.2;
-        // emitter.maxParticleScale = 1.5;
-        // emitter.bounce.setTo(0.5, 0.5);
-        //emitter.start(true, 5000, null, 40);
         //Sound
         spellSound = this.game.add.audio('spell');
 
@@ -56,20 +50,10 @@ Shake.Game.prototype = {
         group_iconPW.createMultiple(score, 'icon-power', [0], true);
         //  Align the sprites into rows of 12, by however many we need (the -1 argument)
         //  With 48x48 pixel spacing per sprite
-        group_iconPW.align(5, -1, 178, 178);
-        group_iconPW.scale.setTo(0.3,0.3);
+        group_iconPW.align(50, -1, 280, 280);
+        group_iconPW.scale.setTo(0.2,0.2);
         group_iconPW.x = 20;
-        group_iconPW.y = 90;
-
-        // //  The Text is positioned at 0, 100
-        // var style = { font: "bold 32px Arial", fill: "#000", boundsAlignH: "center", boundsAlignV: "middle" };
-        // labelScore = this.game.add.text(70, 0, score, style);
-        // labelScore.setShadow(3, 3, 'rgba(0,0,0,0.5)', 3);
-        // //  We'll set the bounds to be from x0, y100 and be 800px wide by 100px high
-        // labelScore.setTextBounds(0, 100, 100, 100);
-        // //Effect
-        // effect = this.game.make.bitmapData();
-        // effect.load('object1');
+        group_iconPW.y = 120;
 
         //Reward  You can drag the pop-up window around
         popup = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY-300, 'congrats');
@@ -104,57 +88,12 @@ Shake.Game.prototype = {
         this.game.physics.enable(reward, Phaser.Physics.ARCADE);
         popup.addChild(reward);
 
-
-		// bggame = this.game.add.sprite(0,0,'background');
-		// bggame.inputEnabled = true;
-		// bggame.events.onInputDown.add(this.jump, this);
-
-		// this.game.physics.startSystem(Phaser.Physics.ARCADE);
-
-		// pipes = this.game.add.group();
-		// pipes.enableBody = true;
-		// pipes.createMultiple(20, 'pipe');
-		// timer = this.game.time.events.loop(Phaser.Timer.SECOND * 3, this.addRowOfPipes, this);
-
-		// bird = this.game.add.sprite(100,245,'bird');
-		// bird.scale.setTo(1.8 , 1.8);
-		// bird.animations.add('birdfly', Phaser.Animation.generateFrameNames('bird', 0, 2, '', 4), 10, true, false);
-		// bird.animations.add('birddead', Phaser.Animation.generateFrameNames('bird', 3, 3, '', 4), 10, true, false);
-		// bird.animations.play('birdfly');
-		// this.game.physics.arcade.enable(bird);
-		// bird.body.gravity.y = 1000;
-		// bird.anchor.setTo(-0.2, 0.5);
-  //       labelScore = this.game.add.text(20, 20, "0", { font: "30px Arial", fill: "#ffffff" }); 
-
-
-  //       score = -1;
-
-		// jumpSound = this.game.add.audio('jump');
-		// scoreSound = this.game.add.audio('Score');
-		// hitSound = this.game.add.audio('Hit');
-
         //window.addEventListener("deviceorientation", this.handleOrientation, true);
          //manager = this.game.plugins.add(Phaser.ParticleStorm);
 		
 	},
 	update: function () {
-    this.game.physics.arcade.collide(emitter);
-        //labelScore.text = score;
-        // effect.alphaMask('raster', effect, mask);
-        // image.rotation += 0.01;
-
-
-        // startBG.tilePosition.x -= 1;
-        // startBG.tilePosition.y -= 1;
-		// if (bird.inWorld == false)
-  //           this.restartGame(); 
-
-  //       this.game.physics.arcade.overlap(bird, pipes, this.hitPipe, null, this); 
-
-  //       // Slowly rotate the bird downward, up to a certain point.
-  //       if (bird.angle < 20)
-  //           bird.angle += 1;    
-
+    this.game.physics.arcade.collide(emitter);   
 	},
     stopreward:function(){
         var textXP = game.add.text(pw, -ph, xp[Math.floor(Math.random() * xp.length)]+'  XP ');
@@ -188,15 +127,8 @@ Shake.Game.prototype = {
     },
     render:function() {
 
-     // this.game.debug.text('angularVelocity X: ' + stringX, 32, 200);
-     // this.game.debug.text('angularVelocity Y: ' + stringY, 32, 300);
-     //    this.game.debug.text('angularAcceleration: ' + shakeMenu.body.angularAcceleration, 32, 232);
-     //    this.game.debug.text('angularDrag: ' + shakeMenu.body.angularDrag, 32, 264);
-     //    this.game.debug.text('deltaZ: ' + shakeMenu.body.deltaZ(), 32, 296);
     }
-
 };
-
 
     function openWindow() {
         if ((tween && tween.isRunning) || popup.scale.x === 0.6)

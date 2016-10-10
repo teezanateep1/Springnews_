@@ -5,6 +5,10 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.controllers' is found in controllers.js
 var db;
+var path = "http://artbeat.mfec.co.th/SpringNews_mb/api/";
+var path_gm = "http://artbeat.mfec.co.th/SpringNews_mb/static/game/";
+var key = "EAACEdEose0cBAP3LZAULs0sfBDrAFiY0xzMTJHPdzlxArcn4kw";
+
 angular.module('starter', ['ionic', 'starter.controllers',"angular-md5",'services','ngOpenFB','tabSlideBox','ngStorage', 'ionic-cache-src','ngCordova.plugins.googleAds','ngCordovaOauth','ionic-cache-src'])
 
 .run(function($ionicPlatform,$rootScope,$ionicPopup, $cordovaDialogs ,$cordovaSQLite,ngFB, ConnectivityMonitor) { //admobSvc
@@ -341,7 +345,7 @@ angular.module('starter', ['ionic', 'starter.controllers',"angular-md5",'service
       }
     }
   })
-  // activity
+  // activity --------------
   .state('app.activity', {
     url: '/activity',
     views: {
@@ -357,6 +361,15 @@ angular.module('starter', ['ionic', 'starter.controllers',"angular-md5",'service
       'menuContent': {
         templateUrl: 'templates/shake.html',
         controller: 'ShakeCtrl'
+      }
+    }
+  })
+  .state('app.panoGM', {
+    url: '/panoGM',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/panoGM.html',
+        controller: 'PanoGMCtrl'
       }
     }
   })

@@ -172,9 +172,6 @@ angular.module('services', [])
 }])  
 
 .service("SpringNews",["$http","$ionicSlideBoxDelegate","_function","$ionicLoading","$cordovaLocalNotification",function($http,$ionicSlideBoxDelegate,_function,$ionicLoading,$cordovaLocalNotification){
-    var path = "http://artbeat.mfec.co.th/SpringNews_mb/api/";
-    var key = "EAACEdEose0cBAP3LZAULs0sfBDrAFiY0xzMTJHPdzlxArcn4kw";
-
     // --------- หมวดหมู่
     this._category = function($scope,id){ 
         var url=path+"wp/Categories/parent?api-key="+key+"&id="+id; 
@@ -541,10 +538,6 @@ angular.module('services', [])
 }])
 
 .service("SQLite",["$http","$ionicSlideBoxDelegate","_function","$ionicLoading","$cordovaLocalNotification","$cordovaSQLite",function($http,$ionicSlideBoxDelegate,_function,$rootScope,$ionicLoading,$cordovaLocalNotification,$cordovaSQLite){ 
-    var path = "http://artbeat.mfec.co.th/SpringNews_mb/api/";
-    var key = "EAACEdEose0cBAP3LZAULs0sfBDrAFiY0xzMTJHPdzlxArcn4kw";
-    
-   
     // var actions =[];
 
     this._login = function($scope){
@@ -715,11 +708,7 @@ angular.module('services', [])
 
 }]) 
 
-
 .service("Actions",["$http","$ionicSlideBoxDelegate","_function","$ionicLoading","$cordovaLocalNotification","$cordovaSQLite",function($http,$ionicSlideBoxDelegate,_function,$rootScope,$ionicLoading,$cordovaLocalNotification,$cordovaSQLite){ 
-    var path = "http://artbeat.mfec.co.th/SpringNews_mb/api/";
-    var key = "EAACEdEose0cBAP3LZAULs0sfBDrAFiY0xzMTJHPdzlxArcn4kw";
-    
     // ---------  อ่านข่าว
     this._read = function($scope,new_info){
         var url=path+"be/Socials/views"; 
