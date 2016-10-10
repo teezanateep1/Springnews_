@@ -5,6 +5,88 @@
     },
     "config_munge": {
         "files": {
+            "res/xml/config.xml": {
+                "parents": {
+                    "/*": [
+                        {
+                            "xml": "<feature name=\"NativeSettings\"><param name=\"android-package\" value=\"com.phonegap.plugins.nativesettings.NativeSettings\" /></feature>",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"AdMob\"><param name=\"android-package\" value=\"com.rjfun.cordova.admob.AdMobPlugin\" /><param name=\"onload\" value=\"true\" /></feature>",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"Camera\"><param name=\"android-package\" value=\"org.apache.cordova.camera.CameraLauncher\" /></feature>",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"Device\"><param name=\"android-package\" value=\"org.apache.cordova.device.Device\" /></feature>",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"Accelerometer\"><param name=\"android-package\" value=\"org.apache.cordova.devicemotion.AccelListener\" /></feature>",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"Notification\"><param name=\"android-package\" value=\"org.apache.cordova.dialogs.Notification\" /></feature>",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"File\"><param name=\"android-package\" value=\"org.apache.cordova.file.FileUtils\" /><param name=\"onload\" value=\"true\" /></feature>",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"FileTransfer\"><param name=\"android-package\" value=\"org.apache.cordova.filetransfer.FileTransfer\" /></feature>",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"InAppBrowser\"><param name=\"android-package\" value=\"org.apache.cordova.inappbrowser.InAppBrowser\" /></feature>",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"Capture\"><param name=\"android-package\" value=\"org.apache.cordova.mediacapture.Capture\" /></feature>",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"NetworkStatus\"><param name=\"android-package\" value=\"org.apache.cordova.networkinformation.NetworkManager\" /></feature>",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"YoikScreenOrientation\"><param name=\"android-package\" value=\"net.yoik.cordova.plugins.screenorientation.YoikScreenOrientation\" /></feature>",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"SplashScreen\"><param name=\"android-package\" value=\"org.apache.cordova.splashscreen.SplashScreen\" /><param name=\"onload\" value=\"true\" /></feature>",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"StatusBar\"><param name=\"android-package\" value=\"org.apache.cordova.statusbar.StatusBar\" /><param name=\"onload\" value=\"true\" /></feature>",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"Whitelist\"><param name=\"android-package\" value=\"org.apache.cordova.whitelist.WhitelistPlugin\" /><param name=\"onload\" value=\"true\" /></feature>",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"SocialSharing\"><param name=\"android-package\" value=\"nl.xservices.plugins.SocialSharing\" /></feature>",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"SQLitePlugin\"><param name=\"android-package\" value=\"io.sqlc.SQLitePlugin\" /></feature>",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"LocalNotification\"><param name=\"android-package\" value=\"de.appplant.cordova.plugin.localnotification.LocalNotification\" /></feature>",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"Keyboard\"><param name=\"android-package\" value=\"io.ionic.keyboard.IonicKeyboard\" /><param name=\"onload\" value=\"true\" /></feature>",
+                            "count": 1
+                        }
+                    ]
+                }
+            },
             "AndroidManifest.xml": {
                 "parents": {
                     "/manifest/application": [
@@ -74,150 +156,93 @@
                         }
                     ]
                 }
-            },
-            "res/xml/config.xml": {
-                "parents": {
-                    "/*": [
-                        {
-                            "xml": "<feature name=\"AdMob\"><param name=\"android-package\" value=\"com.rjfun.cordova.admob.AdMobPlugin\" /><param name=\"onload\" value=\"true\" /></feature>",
-                            "count": 1
-                        },
-                        {
-                            "xml": "<feature name=\"Camera\"><param name=\"android-package\" value=\"org.apache.cordova.camera.CameraLauncher\" /></feature>",
-                            "count": 1
-                        },
-                        {
-                            "xml": "<feature name=\"Device\"><param name=\"android-package\" value=\"org.apache.cordova.device.Device\" /></feature>",
-                            "count": 1
-                        },
-                        {
-                            "xml": "<feature name=\"Notification\"><param name=\"android-package\" value=\"org.apache.cordova.dialogs.Notification\" /></feature>",
-                            "count": 1
-                        },
-                        {
-                            "xml": "<feature name=\"File\"><param name=\"android-package\" value=\"org.apache.cordova.file.FileUtils\" /><param name=\"onload\" value=\"true\" /></feature>",
-                            "count": 1
-                        },
-                        {
-                            "xml": "<feature name=\"FileTransfer\"><param name=\"android-package\" value=\"org.apache.cordova.filetransfer.FileTransfer\" /></feature>",
-                            "count": 1
-                        },
-                        {
-                            "xml": "<feature name=\"InAppBrowser\"><param name=\"android-package\" value=\"org.apache.cordova.inappbrowser.InAppBrowser\" /></feature>",
-                            "count": 1
-                        },
-                        {
-                            "xml": "<feature name=\"Capture\"><param name=\"android-package\" value=\"org.apache.cordova.mediacapture.Capture\" /></feature>",
-                            "count": 1
-                        },
-                        {
-                            "xml": "<feature name=\"NetworkStatus\"><param name=\"android-package\" value=\"org.apache.cordova.networkinformation.NetworkManager\" /></feature>",
-                            "count": 1
-                        },
-                        {
-                            "xml": "<feature name=\"YoikScreenOrientation\"><param name=\"android-package\" value=\"net.yoik.cordova.plugins.screenorientation.YoikScreenOrientation\" /></feature>",
-                            "count": 1
-                        },
-                        {
-                            "xml": "<feature name=\"SplashScreen\"><param name=\"android-package\" value=\"org.apache.cordova.splashscreen.SplashScreen\" /><param name=\"onload\" value=\"true\" /></feature>",
-                            "count": 1
-                        },
-                        {
-                            "xml": "<feature name=\"StatusBar\"><param name=\"android-package\" value=\"org.apache.cordova.statusbar.StatusBar\" /><param name=\"onload\" value=\"true\" /></feature>",
-                            "count": 1
-                        },
-                        {
-                            "xml": "<feature name=\"Whitelist\"><param name=\"android-package\" value=\"org.apache.cordova.whitelist.WhitelistPlugin\" /><param name=\"onload\" value=\"true\" /></feature>",
-                            "count": 1
-                        },
-                        {
-                            "xml": "<feature name=\"SocialSharing\"><param name=\"android-package\" value=\"nl.xservices.plugins.SocialSharing\" /></feature>",
-                            "count": 1
-                        },
-                        {
-                            "xml": "<feature name=\"LocalNotification\"><param name=\"android-package\" value=\"de.appplant.cordova.plugin.localnotification.LocalNotification\" /></feature>",
-                            "count": 1
-                        },
-                        {
-                            "xml": "<feature name=\"Keyboard\"><param name=\"android-package\" value=\"io.ionic.keyboard.IonicKeyboard\" /><param name=\"onload\" value=\"true\" /></feature>",
-                            "count": 1
-                        },
-                        {
-                            "xml": "<feature name=\"SQLitePlugin\"><param name=\"android-package\" value=\"io.sqlc.SQLitePlugin\" /></feature>",
-                            "count": 1
-                        }
-                    ]
-                }
             }
         }
     },
     "installed_plugins": {
+        "com.phonegap.plugins.nativesettingsopener": {
+            "PACKAGE_NAME": "com.dev.springnews"
+        },
         "cordova-plugin-extension": {
-            "PACKAGE_NAME": "com.sp.springnews"
+            "PACKAGE_NAME": "com.dev.springnews"
         },
         "cordova-plugin-admobpro": {
-            "PACKAGE_NAME": "com.sp.springnews"
+            "PACKAGE_NAME": "com.dev.springnews"
         },
         "cordova-plugin-app-event": {
-            "PACKAGE_NAME": "com.sp.springnews"
+            "PACKAGE_NAME": "com.dev.springnews"
         },
         "cordova-plugin-compat": {
-            "PACKAGE_NAME": "com.sp.springnews"
+            "PACKAGE_NAME": "com.dev.springnews"
         },
         "cordova-plugin-camera": {
-            "PACKAGE_NAME": "com.sp.springnews"
+            "PACKAGE_NAME": "com.dev.springnews"
         },
         "cordova-plugin-console": {
-            "PACKAGE_NAME": "com.sp.springnews"
+            "PACKAGE_NAME": "com.dev.springnews"
         },
         "cordova-plugin-device": {
-            "PACKAGE_NAME": "com.sp.springnews"
+            "PACKAGE_NAME": "com.dev.springnews"
+        },
+        "cordova-plugin-device-motion": {
+            "PACKAGE_NAME": "com.dev.springnews"
         },
         "cordova-plugin-dialogs": {
-            "PACKAGE_NAME": "com.sp.springnews"
+            "PACKAGE_NAME": "com.dev.springnews"
         },
         "cordova-plugin-file": {
-            "PACKAGE_NAME": "com.sp.springnews"
+            "PACKAGE_NAME": "com.dev.springnews"
         },
         "cordova-plugin-file-transfer": {
-            "PACKAGE_NAME": "com.sp.springnews"
+            "PACKAGE_NAME": "com.dev.springnews"
         },
         "cordova-plugin-inappbrowser": {
-            "PACKAGE_NAME": "com.sp.springnews"
+            "PACKAGE_NAME": "com.dev.springnews"
         },
         "cordova-plugin-media-capture": {
-            "PACKAGE_NAME": "com.sp.springnews"
+            "PACKAGE_NAME": "com.dev.springnews"
         },
         "cordova-plugin-network-information": {
-            "PACKAGE_NAME": "com.sp.springnews"
+            "PACKAGE_NAME": "com.dev.springnews"
         },
         "cordova-plugin-screen-orientation": {
-            "PACKAGE_NAME": "com.sp.springnews"
+            "PACKAGE_NAME": "com.dev.springnews"
+        },
+        "cordova-plugin-shake": {
+            "PACKAGE_NAME": "com.dev.springnews"
         },
         "cordova-plugin-splashscreen": {
-            "PACKAGE_NAME": "com.sp.springnews"
+            "PACKAGE_NAME": "com.dev.springnews"
         },
         "cordova-plugin-statusbar": {
-            "PACKAGE_NAME": "com.sp.springnews"
+            "PACKAGE_NAME": "com.dev.springnews"
         },
         "cordova-plugin-whitelist": {
-            "PACKAGE_NAME": "com.sp.springnews"
+            "PACKAGE_NAME": "com.dev.springnews"
         },
         "cordova-plugin-x-socialsharing": {
-            "PACKAGE_NAME": "com.sp.springnews"
-        },
-        "de.appplant.cordova.plugin.local-notification": {
-            "PACKAGE_NAME": "com.sp.springnews"
-        },
-        "ionic-plugin-keyboard": {
-            "PACKAGE_NAME": "com.sp.springnews"
+            "PACKAGE_NAME": "com.dev.springnews"
         },
         "cordova-sqlite-storage": {
-            "PACKAGE_NAME": "com.sp.springnews"
+            "PACKAGE_NAME": "com.dev.springnews"
+        },
+        "de.appplant.cordova.plugin.local-notification": {
+            "PACKAGE_NAME": "com.dev.springnews"
+        },
+        "ionic-plugin-keyboard": {
+            "PACKAGE_NAME": "com.dev.springnews"
         }
     },
     "dependent_plugins": {},
     "modules": [
+        {
+            "id": "com.phonegap.plugins.nativesettingsopener.Settings",
+            "file": "plugins/com.phonegap.plugins.nativesettingsopener/www/settings.js",
+            "pluginId": "com.phonegap.plugins.nativesettingsopener",
+            "clobbers": [
+                "cordova.plugins.settings"
+            ]
+        },
         {
             "id": "cordova-plugin-admobpro.AdMob",
             "file": "plugins/cordova-plugin-admobpro/www/AdMob.js",
@@ -264,6 +289,22 @@
             "pluginId": "cordova-plugin-device",
             "clobbers": [
                 "device"
+            ]
+        },
+        {
+            "id": "cordova-plugin-device-motion.Acceleration",
+            "file": "plugins/cordova-plugin-device-motion/www/Acceleration.js",
+            "pluginId": "cordova-plugin-device-motion",
+            "clobbers": [
+                "Acceleration"
+            ]
+        },
+        {
+            "id": "cordova-plugin-device-motion.accelerometer",
+            "file": "plugins/cordova-plugin-device-motion/www/accelerometer.js",
+            "pluginId": "cordova-plugin-device-motion",
+            "clobbers": [
+                "navigator.accelerometer"
             ]
         },
         {
@@ -570,6 +611,14 @@
             ]
         },
         {
+            "id": "cordova-plugin-shake.Shake",
+            "file": "plugins/cordova-plugin-shake/www/shake.js",
+            "pluginId": "cordova-plugin-shake",
+            "clobbers": [
+                "shake"
+            ]
+        },
+        {
             "id": "cordova-plugin-splashscreen.SplashScreen",
             "file": "plugins/cordova-plugin-splashscreen/www/splashscreen.js",
             "pluginId": "cordova-plugin-splashscreen",
@@ -591,6 +640,14 @@
             "pluginId": "cordova-plugin-x-socialsharing",
             "clobbers": [
                 "window.plugins.socialsharing"
+            ]
+        },
+        {
+            "id": "cordova-sqlite-storage.SQLitePlugin",
+            "file": "plugins/cordova-sqlite-storage/www/SQLitePlugin.js",
+            "pluginId": "cordova-sqlite-storage",
+            "clobbers": [
+                "SQLitePlugin"
             ]
         },
         {
@@ -628,17 +685,10 @@
                 "cordova.plugins.Keyboard"
             ],
             "runs": true
-        },
-        {
-            "id": "cordova-sqlite-storage.SQLitePlugin",
-            "file": "plugins/cordova-sqlite-storage/www/SQLitePlugin.js",
-            "pluginId": "cordova-sqlite-storage",
-            "clobbers": [
-                "SQLitePlugin"
-            ]
         }
     ],
     "plugin_metadata": {
+        "com.phonegap.plugins.nativesettingsopener": "1.2",
         "cordova-plugin-extension": "1.5.1",
         "cordova-plugin-admobpro": "2.19.1",
         "cordova-plugin-app-event": "1.2.0",
@@ -646,6 +696,7 @@
         "cordova-plugin-camera": "2.2.0",
         "cordova-plugin-console": "1.0.3",
         "cordova-plugin-device": "1.1.2",
+        "cordova-plugin-device-motion": "1.2.2",
         "cordova-plugin-dialogs": "1.2.1",
         "cordova-plugin-file": "4.2.0",
         "cordova-plugin-file-transfer": "1.5.1",
@@ -653,12 +704,13 @@
         "cordova-plugin-media-capture": "1.3.0",
         "cordova-plugin-network-information": "1.2.1",
         "cordova-plugin-screen-orientation": "1.4.2",
+        "cordova-plugin-shake": "0.5.4",
         "cordova-plugin-splashscreen": "3.2.2",
         "cordova-plugin-statusbar": "2.1.3",
         "cordova-plugin-whitelist": "1.2.2",
         "cordova-plugin-x-socialsharing": "5.1.2",
+        "cordova-sqlite-storage": "1.4.8-pre5",
         "de.appplant.cordova.plugin.local-notification": "0.8.4",
-        "ionic-plugin-keyboard": "2.2.1",
-        "cordova-sqlite-storage": "1.4.8-pre5"
+        "ionic-plugin-keyboard": "2.2.1"
     }
 }

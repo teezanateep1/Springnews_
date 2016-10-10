@@ -3,10 +3,10 @@
      	<ion-nav-back-button></ion-nav-back-button>
   	</ion-nav-bar>
   	<ion-nav-buttons side="right">
-   		<i class="nut-menu-share float-right" ng-click="share(newsDetail[0].post_title,newsDetail[0].guid != null ? newsDetail[0].guid:'img/default.jpg',newsDetail[0].url)"></i> 
+   		<i class="nut-menu-share float-right" ng-click="share(newsDetail[0].post_title,newsDetail[0].url)"></i> 
   	</ion-nav-buttons>
   	<!-- NEWS DETAIL -->
-  	<ion-content style="margin-top: 15px;" ng-hide="newsShow">
+  	<ion-content style="margin-top: 15px;" >
 		<div class="advertise" >
 			<ion-slide-box does-continue="true"  
 				auto-play="true"  
@@ -18,23 +18,27 @@
 	    	</ion-slide-box> 
 		</div>
 		<!--  BOX -->
-		<div class="box-news">
-			<div class="item item-text-wrap" style="border-color: #31b5c2;height: 250px;padding: 0px;margin: 0px;">
+		<div class="box-news" ng-hide="newsShow">
+			<div class="item item-text-wrap news-size-img" style="border-color: #31b5c2;padding: 0px;margin: 0px;">
 			 <img a.renderedlt="Company Logo" ng-src="{{newsDetail[0].guid}}" class="box-news-img"> 
 			</div>
 			<div class="box-item-clip" >
 				{{newsDetail[0].post_title}}
 				<div class="col box-clip-date">
-					<i class="icon ion-ios-calendar-outline box-news-icon"></i>	
-				{{date}}
+					<div style="float: left;" ng-click="kodlike()">{{like}}</div>
+					<div style="float: right;">
+						<i class="icon ion-ios-calendar-outline box-news-icon"></i>	
+						{{date}}
+					</div>
+					<div class="clear"> </div>
 				</div>
 			</div>
 			
-			<div style="font-family: 'Conv_SukhumvitReg','Conv_Frank-Regular';margin: 25px;" ng-bind-html="replace(newsDetail[0].post_content)">
+			<div class="font-size-news" style="margin: 25px;" ng-bind-html="replace(newsDetail[0].post_content)">
 			</div>
-			<ion-item ng-if="video != null">
+			<ion-item ng-if="video != '' ">
                 <div class="video-container">
-                     <iframe ng-src="https://www.youtube.com/embed/video" frameborder="0" width="100%" height="250" allowfullscreen class="fullscreen-image"></iframe>
+                    <iframe ng-src="{{trustSrc(video)}}" frameborder="0" width="100%" height="250" allowfullscreen class="fullscreen-image"></iframe>
                 </div>
             </ion-item>
 
@@ -45,17 +49,17 @@
 							ข่าวที่เกี่ยวข้อง
 				</div>
 			</div>	    
-				<ul class="list" >
-					<li ng-repeat="_newsConnected in newsConnected | limitTo: 2">
-						<div style="background-color: #fff;" ng-style="{width:'100%'}" >    
+				<ul >
+					<li class="ohters-about" ng-repeat="_newsConnected in newsConnected | limitTo: 2">
+						<div style="background-color: #fff;" ng-style="{width:'100%',height:'100%'}" >    
 						    <a  href="#/app/news/{{_newsConnected.ID}}/{{_newsConnected.term_taxonomy_id}}" class=" ">
-							    <div class="sp-list-news" >
+							    <div class="sp-list-news ohters-list" >
 									<div class="col-40">
 									    <img ng-src="{{_newsConnected.guid}}" style="margin: 1px;">
 									</div>
 									<div class="sp-list-detail-news ">
 									    <div class="sp-list-header">
-									    {{_newsConnected.post_title}}
+									    {{substring(_newsConnected.post_title)}}
 									    </div>
 									    <div class="sp-list-date-news">
 											<i class="icon ion-ios-calendar-outline box-news-icon"></i>	
@@ -87,7 +91,7 @@
 
 				<a href="https://www.youtube.com/springnewsonline" class="the-social-links tsl-circle tsl-24 tsl-default tsl-instagram" target="_system" alt="Youtube" title="Youtube"><img  ng-src="./img/social/tyoutube.png" class="box-news-img"></a>
 
-				<a href="http://line.me/ti/p/~odeen" target="_system" alt="Line" title="Line"><img  ng-src="./img/social/line.png" class="box-news-img"></a>
+				<a href="http://line.me/ti/p/~@springnews" target="_system" alt="Line" title="Line"><img  ng-src="./img/social/line.png" class="box-news-img"></a>
 			</div>
 		</div>	
 	</ion-content>

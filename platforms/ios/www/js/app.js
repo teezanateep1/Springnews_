@@ -12,21 +12,7 @@ angular.module('starter', ['ionic', 'starter.controllers',"angular-md5",'service
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
-    // Check for network connection
-    // if(window.Connection) {
-    //   if(navigator.connection.type == Connection.NONE) {
-    //     $ionicPopup.alert({
-    //       title: 'No Internet Connection',
-    //       content: 'Sorry, no Internet connectivity detected. Please reconnect and try again.'
-    //     })
-    //     .then(function(result) {
-    //         ionic.Platform.exitApp();
-    //     });
-        
 
-    //   }else{
-    //   }
-    // }
     ConnectivityMonitor.startWatching()
 
     if (window.cordova && window.cordova.plugins.Keyboard) {
@@ -70,12 +56,17 @@ angular.module('starter', ['ionic', 'starter.controllers',"angular-md5",'service
               autoShow:true
           });
           // db = $cordovaSQLite.openDB("springnew.db");
+          // try{
+
           db = $cordovaSQLite.openDB({name:"springnew.db",location:'default'});
           console.log(db);
           // db = window.sqlitePlugin.openDatabase( {name: "springnew.db", createFromLocation: 1} );
           $cordovaSQLite.execute(db, "CREATE TABLE IF NOT EXISTS user(id integer primary key,user_id integer,name text ,mycode text ,status integer)");
           $cordovaSQLite.execute(db, "CREATE TABLE IF NOT EXISTS action(id integer primary key, user_id integer,news_id integer)");
-       
+          // }
+          // catch(error){
+          //   alert(error);
+          // }
         });
 
 })
@@ -357,6 +348,15 @@ angular.module('starter', ['ionic', 'starter.controllers',"angular-md5",'service
       'menuContent': {
         templateUrl: 'templates/activity.html',
         controller: 'ActivityCtrl'
+      }
+    }
+  })
+  .state('app.shake', {
+    url: '/shake',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/shake.html',
+        controller: 'ShakeCtrl'
       }
     }
   })

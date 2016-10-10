@@ -90,10 +90,21 @@
           <i class="nut-menu-pr"   ng-class="{'active':link == '/app/pr'}" ></i> 
           <span ng-class="{'active':link == '/app/pr'}" style="margin-left: 10px;"> ประชาสัมพนธ์ </span>
         </ion-item> -->
-        <ion-item menu-close class="menu" href="#/app/activity" ng-click="cl_link('/app/activity')" >
+       <!--  <ion-item menu-close class="menu" href="#/app/activity" ng-click="cl_link('/app/activity')" >
           <i class="nut-menu-activity" ng-class="{'active':link == '/app/activity'}" ></i> 
           <span ng-class="{'active':link == '/app/activity'}" style="margin-left: 10px;"> กิจกรรม </span>
+        </ion-item> -->
+
+        <ion-item  class="menu" ng-click="toggleActivity(menu_toggle_act)" href="" style="cursor:pointer;" >
+          <i class="nut-menu-activity" ng-class="{'active':link == '/app/activity_'}" > </i> 
+          <span ng-class="{'active':link == '/app/activity_'}" style="margin-left: 10px;">กิจกรรม </span>
         </ion-item>
+
+          <div ng-show="submenu_activity">
+             <ion-item menu-close class="sub-menu" ng-click="cl_link('activity')" href="#/app/activity"><span ng-class="{'active':sublink_activity == 'activity'}">กิจกรรม </span></ion-item>
+             <ion-item menu-close class="sub-menu" ng-click="cl_link('shake')" href="#/app/shake"><span ng-class="{'active':sublink_activity == 'shake'}"> Shake </span></ion-item>
+             <ion-item menu-close class="sub-menu" ng-click="cl_link('360')" href="#/app/360"><span ng-class="{'active':sublink_activity == '360'}"> 360 </span></ion-item>
+          </div>
 
         <!-- <ion-item menu-close class="menu" href="#/app/uploadfile" ng-click="cl_link('/app/home')"  >
           <i class="icon nut-menu-home"  ng-class="{'active':link == '/app/uploadfile'}" ></i> 
@@ -129,7 +140,7 @@
            <ion-item menu-close href="#/app/pick"> 360 And Pick Item </ion-item>
         </ion-item> -->
 
-      <!--   <ion-item menu-close class="menu" href="#app/login" href="#" ng-show="login_">
+        <ion-item menu-close class="menu" href="#app/login" href="#" ng-show="login_">
           <i class="nut-menu-logout"></i> 
           <span style="margin-left: 10px;"> เข้าสู่ระบบ </span>
         </ion-item>
@@ -137,7 +148,7 @@
         <ion-item menu-close class="menu" ng-click="logout()" href="#" ng-show="logout_" >
           <i class="nut-menu-logout"></i> 
           <span style="margin-left: 10px;"> ออกจากระบบ </span>
-        </ion-item> -->
+        </ion-item>
 
       </ion-list>
     </ion-content>

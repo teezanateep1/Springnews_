@@ -1,6 +1,14 @@
 cordova.define('cordova/plugin_list', function(require, exports, module) {
 module.exports = [
     {
+        "id": "com.phonegap.plugins.nativesettingsopener.Settings",
+        "file": "plugins/com.phonegap.plugins.nativesettingsopener/www/settings.js",
+        "pluginId": "com.phonegap.plugins.nativesettingsopener",
+        "clobbers": [
+            "cordova.plugins.settings"
+        ]
+    },
+    {
         "id": "cordova-plugin-admobpro.AdMob",
         "file": "plugins/cordova-plugin-admobpro/www/AdMob.js",
         "pluginId": "cordova-plugin-admobpro",
@@ -46,6 +54,22 @@ module.exports = [
         "pluginId": "cordova-plugin-device",
         "clobbers": [
             "device"
+        ]
+    },
+    {
+        "id": "cordova-plugin-device-motion.Acceleration",
+        "file": "plugins/cordova-plugin-device-motion/www/Acceleration.js",
+        "pluginId": "cordova-plugin-device-motion",
+        "clobbers": [
+            "Acceleration"
+        ]
+    },
+    {
+        "id": "cordova-plugin-device-motion.accelerometer",
+        "file": "plugins/cordova-plugin-device-motion/www/accelerometer.js",
+        "pluginId": "cordova-plugin-device-motion",
+        "clobbers": [
+            "navigator.accelerometer"
         ]
     },
     {
@@ -352,6 +376,14 @@ module.exports = [
         ]
     },
     {
+        "id": "cordova-plugin-shake.Shake",
+        "file": "plugins/cordova-plugin-shake/www/shake.js",
+        "pluginId": "cordova-plugin-shake",
+        "clobbers": [
+            "shake"
+        ]
+    },
+    {
         "id": "cordova-plugin-splashscreen.SplashScreen",
         "file": "plugins/cordova-plugin-splashscreen/www/splashscreen.js",
         "pluginId": "cordova-plugin-splashscreen",
@@ -373,6 +405,14 @@ module.exports = [
         "pluginId": "cordova-plugin-x-socialsharing",
         "clobbers": [
             "window.plugins.socialsharing"
+        ]
+    },
+    {
+        "id": "cordova-sqlite-storage.SQLitePlugin",
+        "file": "plugins/cordova-sqlite-storage/www/SQLitePlugin.js",
+        "pluginId": "cordova-sqlite-storage",
+        "clobbers": [
+            "SQLitePlugin"
         ]
     },
     {
@@ -410,19 +450,12 @@ module.exports = [
             "cordova.plugins.Keyboard"
         ],
         "runs": true
-    },
-    {
-        "id": "cordova-sqlite-storage.SQLitePlugin",
-        "file": "plugins/cordova-sqlite-storage/www/SQLitePlugin.js",
-        "pluginId": "cordova-sqlite-storage",
-        "clobbers": [
-            "SQLitePlugin"
-        ]
     }
 ];
 module.exports.metadata = 
 // TOP OF METADATA
 {
+    "com.phonegap.plugins.nativesettingsopener": "1.2",
     "cordova-plugin-extension": "1.5.1",
     "cordova-plugin-admobpro": "2.19.1",
     "cordova-plugin-app-event": "1.2.0",
@@ -430,6 +463,7 @@ module.exports.metadata =
     "cordova-plugin-camera": "2.2.0",
     "cordova-plugin-console": "1.0.3",
     "cordova-plugin-device": "1.1.2",
+    "cordova-plugin-device-motion": "1.2.2",
     "cordova-plugin-dialogs": "1.2.1",
     "cordova-plugin-file": "4.2.0",
     "cordova-plugin-file-transfer": "1.5.1",
@@ -437,13 +471,14 @@ module.exports.metadata =
     "cordova-plugin-media-capture": "1.3.0",
     "cordova-plugin-network-information": "1.2.1",
     "cordova-plugin-screen-orientation": "1.4.2",
+    "cordova-plugin-shake": "0.5.4",
     "cordova-plugin-splashscreen": "3.2.2",
     "cordova-plugin-statusbar": "2.1.3",
     "cordova-plugin-whitelist": "1.2.2",
     "cordova-plugin-x-socialsharing": "5.1.2",
+    "cordova-sqlite-storage": "1.4.8-pre5",
     "de.appplant.cordova.plugin.local-notification": "0.8.4",
-    "ionic-plugin-keyboard": "2.2.1",
-    "cordova-sqlite-storage": "1.4.8-pre5"
+    "ionic-plugin-keyboard": "2.2.1"
 };
 // BOTTOM OF METADATA
 });

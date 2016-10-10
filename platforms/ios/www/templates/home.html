@@ -5,7 +5,7 @@
 		    <div class="tsb-icons tsb-main tsb-home">
 			    <div class="tsb-ic-wrp">
 			    	<div class="main-menu-home">
-						<a href="javascript:;" style="width: 50px;margin-left: 0px;height: 45px;" on-finish-render="test()"><i class="icon nut-menu-home" ></i> </a>
+						<a href="javascript:;" style="width: 50px;margin-left: 0px;" on-finish-render="test()"><i class="icon nut-menu-home" ></i> </a>
 					</div>
 					<ion-scroll direction="x" class="tsb-hscroll" ng-style="{width:'100%'}">
 						<div style="margin-left: 45px;">
@@ -23,17 +23,19 @@
 
 				    	<!-- ทันเหตุการณ์ -->
 				    	<div class="box-news">
-				    	  <div class="row" style="padding: 0px;">
-				    	  	<div class="box-news-header col col-40">
-							   ทันเหตุการณ์
-						    </div>
-						    <div class="col box-news-date">
-						    <i class="icon ion-ios-calendar-outline box-news-icon"></i>	
-						    	{{newsupdate.date}}
-						    </div>
-				    	  </div>
-						  <div class="item item-text-wrap" style="border-color: #31b5c2;height: 250px;padding: 0px;margin: 0px;">
-						    <ion-spinner class="spinner-calm" style="z-index:10;position: absolute;margin-top: 25%;" ng-show="loading_newsupdate"></ion-spinner>
+					    	<div class="row" style="padding: 0px;">
+					    	  	<div class="box-news-header col col-40">
+								   ทันเหตุการณ์
+							    </div>
+							    <div class="col box-news-date">
+							    	<i class="icon ion-ios-calendar-outline box-news-icon"></i>	
+							    	{{newsupdate.date}}
+							    </div>
+					    	</div>
+						  <div class="item item-text-wrap item-respon" >
+					  	<div style="margin-top: 20px;text-align: center;" ng-show="loading_newsupdate">
+							<ion-spinner class="spinner-calm" style="display: inline-block;"></ion-spinner>
+						</div>	
 						  	
 						    <ion-slide-box 
 						    	slide-interval="4000"
@@ -41,12 +43,12 @@
 		        				auto-play="true" 
 		        				on-slide-changed="_slideHasChanged_newsupdate($index)"
 		        				active-slide="0"  
+		        				show-pager="false"
 		        				>
 							  <ion-slide ng-repeat="new in news | limitTo: 5">
 							  <a style="cursor:pointer;" ng-click="share(new.post_title,new.url)"> <i class="nut-menu-share float-right"></i></a>
-							  	<a href="#/app/news/{{new.ID}}/{{new.term_taxonomy_id}}" >
-								  	<img  ng-src="{{new.guid != null ? new.guid:'img/default.jpg'}}" class="box-news-img">
-							  	</a>
+							  <img  ng-src="{{new.guid != null ? new.guid:'img/default.jpg'}}" class="box-news-img">
+							  <a href="#/app/news/{{new.ID}}/{{new.term_taxonomy_id}}" class="a-link" ></a>
 							  </ion-slide>
 							</ion-slide-box>
 
@@ -68,23 +70,26 @@
 						    	{{newshot.date}}
 						    </div>
 				    	  </div>
-						  <div class="item item-text-wrap" style="border-color: #31b5c2;height: 250px;padding: 0px;margin: 0px;">
-						  	<ion-spinner class="spinner-calm" style="z-index:10;position: absolute;margin-top: 25%;" ng-show="loading_newshot"></ion-spinner>
+						  <div class="item item-text-wrap item-respon" >
+						  	<div style="margin-top: 20px;text-align: center;" ng-show="loading_newshot">
+								<ion-spinner class="spinner-calm" style="display: inline-block;"></ion-spinner>
+							</div>	
 					
 						    <ion-slide-box 
 						    	slide-interval="4000"
 						    	does-continue="true"
 		        				auto-play="true" 
 		        				active-slide="0" 
+		        				show-pager="false"
 		        				on-slide-changed="_slideHasChanged_HotNews($index)">
 		        			
 							  <ion-slide ng-repeat="hot in hots | limitTo: 5">
 							    <a style="cursor:pointer;" ng-click="share(hot.post_title,hot.url)"> 
-							    	<i class="nut-menu-share float-right"></i
+							    	<i class="nut-menu-share float-right"></i>
 							    </a>
-							  	<a href="#/app/news/{{hot.ID}}/{{hot.term_taxonomy_id}}">
+							  	
 								  	<img  ng-src="{{hot.guid != null ? hot.guid:'img/default.jpg'}}" class="box-news-img"> 
-							  	</a>
+							  	<a href="#/app/news/{{hot.ID}}/{{hot.term_taxonomy_id}}" class="a-link"></a>
 							  </ion-slide>
 							</ion-slide-box>
 
@@ -97,14 +102,17 @@
 
 					    <!-- คลิปรายการทีวี TV -->
 					    <div class="box-news"  ng-init ="title='คลิป'">
-					     <ion-spinner class="spinner-calm" style="z-index:10;position: absolute;margin-top: 25%;" ng-show="loading_programme"></ion-spinner>
+					    <div style="margin-top: 20px;text-align: center;" ng-show="loading_programme">
+								<ion-spinner class="spinner-calm" style="display: inline-block;"></ion-spinner>
+						</div>	
+
 				    	  <div class="row" style="padding: 0px;">
 				    	  	<div class="box-news-header col col-50">
 							   คลิปรายการทีวี
 						    </div>
 				    	  </div>
 				    	  <a href="#/app/clips/{{title}}" style="text-decoration: none;">
-							  <div class="item item-text-wrap" style="border-color: #31b5c2;height: 250px;padding: 0px;margin: 0px;">
+							  <div class="item item-text-wrap item-respon">
 							  		<img  ng-src="{{clips[0].guid != null ? clips[0].guid:'img/default.jpg'}}" class="box-news-img"> 
 							  </div>
 						  </a>
@@ -121,7 +129,7 @@
 
 						<ion-list > 
 						  <ul >
-						    <li class="list" style="margin-top: 10px; " collection-repeat="_clips in clips_loop " collection-item-width="'100%'">
+						    <li class="list list-ipad" style="margin-top: 10px;" collection-repeat="_clips in clips_loop ">
 						    	<div style="background-color: #fff;" ng-style="{width:'100%'}" >    
 						            <a href="#/app/clips/{{title}}" >
 							            <div class="sp-list" >
@@ -162,7 +170,7 @@
 
 								<a href="https://www.youtube.com/springnewsonline" class="the-social-links tsl-circle tsl-24 tsl-default tsl-instagram" target="_system" alt="Youtube" title="Youtube"><img  ng-src="./img/social/tyoutube.png" class="box-news-img"></a>
 
-								<a href="http://line.me/ti/p/~odeen" target="_system" alt="Line" title="Line"><img  ng-src="./img/social/line.png" class="box-news-img"></a>
+								<a href="http://line.me/ti/p/~@springnews" target="_system" alt="Line" title="Line"><img  ng-src="./img/social/line.png" class="box-news-img"></a>
 							</div>
 						</div>	
 					    <div class="googleADV" >
@@ -178,17 +186,21 @@
 	                <ion-content style="margin-top: 1px;" header-home >
 				    	<!-- <ion-refresher on-refresh="refresh()"></ion-refresher>   -->
 				    	<!--  -->
-				    	<ion-spinner class="spinner-calm" style="z-index:10;margin-top: 45%;" ng-show="loading_catnews" ></ion-spinner>
+
+				    	<div style="margin-top: 20px;text-align: center;" ng-show="loading_catnews">
+							<ion-spinner class="spinner-calm" style="display: inline-block;"></ion-spinner>
+						</div>	
+
 				    	<div class="box-news" ng-repeat="item in newsCategory |filter: tab.term_id " ng-if="$index == 0 ">
 				    	  	<a href="#/app/news/{{item.ID}}/{{item.term_taxonomy_id}}" style="text-decoration: none;">
 
-					    	  <div class="row" style="padding: 0px;">
-							    <div class="col box-news-date">
+					    	  <div class="row " style="padding: 0px;">
+							    <div class="col box-news-date ">
 							    <i class="icon ion-ios-calendar-outline box-news-icon"></i>	
 							    {{date(item.post_date)}}
 							    </div>
 					    	  </div>
-							  <div class="item item-text-wrap" style="border-color: #31b5c2;height: 250px;padding: 0px;margin: 0px;">
+							  <div class="item item-text-wrap ohters-ipad" style="border-color: #31b5c2;padding: 0px;margin: 0px;">
 							    <img  ng-src="{{item.guid != null ? item.guid:'img/default.jpg'}}" class="box-news-img"> 
 
 							  </div>
@@ -199,7 +211,7 @@
 							<a style="cursor:pointer;top: 30px;right: 0px;position: absolute;" ng-click="share(item.post_title,item.url)"> <i class="nut-menu-share float-right"></i></a>
 						</div>
 						<!-- ./ -->
-						<div class="advertise" >
+						<!-- <div class="advertise" >
 							     <ion-slide-box does-continue="true"  
  									auto-play="true"  
  									slide-interval="3000"  
@@ -208,25 +220,79 @@
 							      	<img ng-src="{{item.thumbnail.replace('$','http://artbeat.mfec.co.th/SpringNew/wp-content/')}}"></img> 
 							      </ion-slide>  
 							    </ion-slide-box>  
-						</div>
-						<ul collection-repeat="item in newsCategory |filter: tab.term_id " collection-item-width="'100%'" item-height="($index+1)%5 == 0 ? 175 : 99">
+						</div> -->
 
-							<!-- <li ng-if="($index+1)%5 == 0" class="advertise" >
-             					<ion-slide-box does-continue="true"  
-									auto-play="true"  
- 									slide-interval="3000"  
- 									show-pager="false" >  
-							      	<ion-slide ng-repeat="item in adver">  
-							      		<img ng-src="{{item.thumbnail.replace('$','http://artbeat.mfec.co.th/SpringNew/wp-content/')}}"></img> 
-							      	</ion-slide>  
-							    </ion-slide-box> 
-            				</li> -->
-							<li style="margin-top: 3px; "   item-height="99px"  id="newsList_{{tab.term_id}}" >	
+						<ul ng-style="{width:'100%'}"  item-height="99px" >
+							<li ng-repeat="item in newsCategory |filter: tab.term_id " style="    margin-bottom: 5px;"   item-height="99px"  id="newsList_{{tab.term_id}}" >	
 								<div style="background-color: #fff;" ng-style="{width:'100%'}" >    
 								    <a href="#/app/news/{{item.ID}}/{{item.term_taxonomy_id}}" >
 									    <div class="sp-list" >
 											<div class="col-40">
 											    <img id="img_{{item.ID}}" ng-src="{{item.guid != null ? item.guid:'img/default.jpg'}}">
+										    </div>
+											<div class="sp-list-detail ">
+											    <div class="sp-list-header">
+											      {{substring(item.post_title)}}
+											    </div>
+											    <div class="sp-list-date">
+												<i class="icon ion-ios-calendar-outline box-news-icon"></i>	
+												{{date(item.post_date)}} 
+												</div>
+											</div>
+										</div>
+									</a>
+									<div style="width: 100px;height: 0.5px;" ng-style="{width:'100%'}"></div>
+								</div> 
+								
+						    	
+							</li>
+						
+						</ul>
+						<a href="#/app/allnews/{{tab.term_id}}/{{tab.name}}" style="text-decoration: none;color: #000;">
+							<div style="cursor:pointer;"  class="sp-readmore" >
+					    	<i class="nut-menu-seemore but-seemore"></i>ข่าวในหัวข้อนี้ทั้งหมด</div>
+				    	</a>	
+						<br/>
+						<br/>
+						
+								<div class="sp-follow-us">
+									<div class="sp-title">FOLLOW US</div>
+									<div class="sp-social">
+
+										<a href="https://www.facebook.com/SpringNewsTV" target="_system" alt="Facebook" title="Facebook"><img  ng-src="./img/social/facebook.png" class="box-news-img"></a>
+
+										<a href="https://www.twitter.com/SpringNews_TV" target="_system" alt="Twitter" title="Twitter"><img  ng-src="./img/social/twitter.png" class="box-news-img"></a>
+
+										<a href="https://www.google.com/+springnews" target="_system" alt="Google+" title="Google+"><img  ng-src="./img/social/google_plus.png" class="box-news-img"></a>
+
+										<a href="https://www.instagram.com/springnewstv/" class="the-social-links tsl-circle tsl-24 tsl-default tsl-youtube" target="_system" alt="Instagram" title="Instagram"><img  ng-src="./img/social/ig.png" class="box-news-img"></a>
+
+										<a href="https://www.youtube.com/springnewsonline" class="the-social-links tsl-circle tsl-24 tsl-default tsl-instagram" target="_system" alt="Youtube" title="Youtube"><img  ng-src="./img/social/tyoutube.png" class="box-news-img"></a>
+
+										<a href="http://line.me/ti/p/~@springnews" target="_system" alt="Line" title="Line"><img  ng-src="./img/social/line.png" class="box-news-img"></a>
+									</div>
+								</div>	
+						 <br/>
+						<br/>
+						<br/>
+						<!-- <ul collection-repeat="item in newsCategory |filter: tab.term_id " collection-item-width="'100%'" item-height="($index+1)%5 == 0 ? 175 : 99">
+
+							<li ng-if="($index+1)%5 == 0" class="advertise" >
+             					<ion-slide-box does-continue="true"  
+									auto-play="true"  
+ 									slide-interval="3000"  
+ 									show-pager="false" >  
+							      	<ion-slide ng-repeat="item in adver">  
+							      		<img cache-src="{{item.thumbnail.replace('$','http://artbeat.mfec.co.th/SpringNew/wp-content/')}}"></img> 
+							      	</ion-slide>  
+							    </ion-slide-box> 
+            				</li>
+							<li style="margin-top: 3px; "   item-height="99px"  id="newsList_{{tab.term_id}}" >	
+								<div style="background-color: #fff;" ng-style="{width:'100%'}" >    
+								    <a href="#/app/news/{{item.ID}}/{{item.term_taxonomy_id}}" >
+									    <div class="sp-list" >
+											<div class="col-40">
+											    <img id="img_{{item.ID}}" cache-src="{{item.guid != null ? item.guid.replace('.jpg','-150x90.jpg').replace('.png','-150x90.png'):'img/default.jpg'}}">
 										    </div>
 											<div class="sp-list-detail ">
 											    <div class="sp-list-header">
@@ -259,28 +325,16 @@
 
 										<a href="https://www.youtube.com/springnewsonline" class="the-social-links tsl-circle tsl-24 tsl-default tsl-instagram" target="_system" alt="Youtube" title="Youtube"><img  ng-src="./img/social/tyoutube.png" class="box-news-img"></a>
 
-										<a href="http://line.me/ti/p/~odeen" target="_system" alt="Line" title="Line"><img  ng-src="./img/social/line.png" class="box-news-img"></a>
+										<a href="http://line.me/ti/p/~@springnews" target="_system" alt="Line" title="Line"><img  ng-src="./img/social/line.png" class="box-news-img"></a>
 									</div>
 								</div>	
 						    	
 							</li>
 							
-						</ul>
+						</ul> -->
 						<!-- </ion-list>  -->
 					    <!-- FOLLOW US -->
-					    <br/>
-						<br/>
-						<br/>
-						<br/>
-						<br/>
-						<br/>
-						<br/>
-						<br/>
-						<br/>
-						<br/>
-						<br/>
-						<br/>
-						<br/>
+					   
 					    
 					</ion-content>
 
@@ -368,7 +422,7 @@
 		
 						</div>
 						<!-- ./ราคาน้ำมัน -->
-						<div class="advertise" >
+						<!-- <div class="advertise" >
 							<ion-slide-box does-continue="true"  
 								auto-play="true"  
 								slide-interval="3000"  
@@ -379,7 +433,7 @@
 					    	</ion-slide-box> 
 						</div>
 					</br>
-
+ -->
 						<!-- ราคาทองคำ -->
 				    	<div class="box-news">
 				    	  	<div class="row" style="padding: 0px; border-bottom: 2px solid #31b5c2;">
@@ -525,13 +579,11 @@
 
 								<a href="https://www.youtube.com/springnewsonline" class="the-social-links tsl-circle tsl-24 tsl-default tsl-instagram" target="_system" alt="Youtube" title="Youtube"><img  ng-src="./img/social/tyoutube.png" class="box-news-img"></a>
 
-								<a href="http://line.me/ti/p/~odeen" target="_system" alt="Line" title="Line"><img  ng-src="./img/social/line.png" class="box-news-img"></a>
+								<a href="http://line.me/ti/p/~@springnews" target="_system" alt="Line" title="Line"><img  ng-src="./img/social/line.png" class="box-news-img"></a>
 							</div>
 							<br/>
 						</div>	
 					    <br/>
-						<br/>
-						<br/>
 						<br/>
 						<br/>
 					</ion-content>

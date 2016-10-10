@@ -21,7 +21,7 @@
 		</div>
 		<!--  BOX -->
 		<div class="box-news">
-			<div ng-click="playVideo()" class="item item-text-wrap" style="border-color: #31b5c2;height: 250px;padding: 0px;margin: 0px;">
+			<div ng-click="playVideo()" class="item item-text-wrap program-video" style="padding: 0px;">
 			    <img  ng-src="{{video.slides[0].image != null ? 'img/play_button.png':''}}"  class="but-play" > 
 			    <img  ng-src="{{videosDetail[0].guid != null ? videosDetail[0].guid:'img/default.jpg'}}"  class="box-news-img"> 
 
@@ -43,11 +43,11 @@
 							ข่าวที่เกี่ยวข้อง
 				</div>
 			</div>	    
-				<ul class="list" >
-					<li ng-repeat="_newsConnected in newsConnected | limitTo: 2">
-						<div style="background-color: #fff;" ng-style="{width:'100%'}" >    
+				<ul>
+					<li class="ohters-about" ng-repeat="_newsConnected in newsConnected | limitTo: 2">
+						<div style="background-color: #fff;" ng-style="{width:'100%',height:'100%'}" >    
 						    <a  href="#/app/videos/{{_newsConnected.ID}}/{{_newsConnected.term_taxonomy_id}}/{{title}}" class=" ">
-							    <div class="sp-list-news" >
+							    <div class="sp-list-news ohters-list" >
 									<div class="col-40">
 									    <img ng-src="{{_newsConnected.guid != null ? _newsConnected.guid:'img/default.jpg'}}" style="margin: 1px;">
 									</div>
@@ -85,7 +85,7 @@
 
 				<a href="https://www.youtube.com/springnewsonline" class="the-social-links tsl-circle tsl-24 tsl-default tsl-instagram" target="_system" alt="Youtube" title="Youtube"><img  ng-src="./img/social/tyoutube.png" class="box-news-img"></a>
 
-				<a href="http://line.me/ti/p/~odeen" target="_system" alt="Line" title="Line"><img  ng-src="./img/social/line.png" class="box-news-img"></a>
+				<a href="http://line.me/ti/p/~@springnews" target="_system" alt="Line" title="Line"><img  ng-src="./img/social/line.png" class="box-news-img"></a>
 			</div>
 		</div>	
 		<div class="googleADV" >

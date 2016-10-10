@@ -1,14 +1,14 @@
 <ion-view  >
     <ion-content scroll="false" class="tabs-main-color " >
     	<!-- รายการ TV -->
-    	<div class="row hd-pro" style="padding: 0px;margin-top: 3%;">
+    	<div class="row hd-pro" style="padding: 0px;margin-top: 80px;">
 			<div class="box-news-header col col-33">
 				รายการทีวี
 			</div>
 		</div>
         <tab-slide-box tab="0" >
-		    <div class="tsb-icons tsb-icons-pr tsb-main tsb-program" style="background-color: #4c4c4c;">
-			    <div class="tsb-ic-wrp" style="margin: -1%;">
+		    <div class="tsb-icons tsb-icons-pr tsb-main " style="background-color: #4c4c4c;">
+			    <div class="tsb-ic-wrp" style="margin: -2%;">
 					<ion-scroll direction="x" class="tsb-hscroll" ng-style="{width:'100%'}">
 						<a href="javascript:;" ng-repeat="tab in tabs" on-finish-render="test">{{tab.name}}</a>
 					</ion-scroll>
@@ -17,61 +17,56 @@
         	<ion-slide-box show-pager="false" on-slide-changed="slideHasChanged($index)" ng-style="{width:'100%'}">
 	            <ion-slide ng-repeat="tab in tabs" >
 	            	<!-- HOME -->
-					<ion-content header-program>
+					<ion-content style="margin-top: 1px;" class="test" header-program>
 				    	<!-- รายการ TV -->
 				    	<ion-spinner class="spinner-calm" style="z-index:10;margin-top: 55%;" ng-show="loading_catnews" ></ion-spinner>
 						<div class="box-news">
 								<!-- Program Div -->
-								<div class="list" collection-repeat="item in newsCategory |filter: tab.name " collection-item-width="'100%'"  item-height="255px" ng-style="{width:'100%'}"   >
+								<div class="list-program-ipad" ng-repeat="item in newsCategory |filter: tab.name " >
 									<a href="#/app/videos/{{item.ID}}/{{item.term_taxonomy_id}}/" style="text-decoration: none;">
-										<div class="item item-text-wrap" style="border-color: #31b5c2;height: 250px;padding: 0px;">
-											<img ng-src="{{item.guid != null ? item.guid:'img/default.jpg'}}" class="box-news-img" >
-										</div>
-										<div class="box-item-new box-news-footer" style="line-height: 29px; padding: 0 10px; margin-bottom: 4px;">
-										  	{{substring(item.post_title)}}	
+										<div style="height: 100%;padding-bottom: 5px; position: relative;">
+											<div class="item item-text-wrap " style="border-color: #31b5c2;height: 100%;padding: 0px;">
+												<img ng-src="{{item.guid != null ? item.guid:'img/default.jpg'}}" class="box-news-img" >
+											</div>
+											<div class="box-item-new box-news-footer" style="z-index: 100;">
+											  	{{substring(item.post_title)}}	
+											</div>
 										</div>
 									</a>
-									<!-- <div style="margin-top: 5px;" ng-style="{width:'100%'}"></div>
- -->
-									<!-- FOLLOW US -->
-									<div class="sp-follow-us" ng-show="$last">
-										<div class="sp-title">FOLLOW US</div>
-										<div class="sp-social">
-
-											<a href="https://www.facebook.com/SpringNewsTV" target="_system" alt="Facebook" title="Facebook"><img  ng-src="./img/social/facebook.png" class="box-news-img"></a>
-
-											<a href="https://www.twitter.com/SpringNews_TV" target="_system" alt="Twitter" title="Twitter"><img  ng-src="./img/social/twitter.png" class="box-news-img"></a>
-
-											<a href="https://www.google.com/+springnews" target="_system" alt="Google+" title="Google+"><img  ng-src="./img/social/google_plus.png" class="box-news-img"></a>
-
-											<a href="https://www.instagram.com/springnewstv/" class="the-social-links tsl-circle tsl-24 tsl-default tsl-youtube" target="_system" alt="Instagram" title="Instagram"><img  ng-src="./img/social/ig.png" class="box-news-img"></a>
-
-											<a href="https://www.youtube.com/springnewsonline" class="the-social-links tsl-circle tsl-24 tsl-default tsl-instagram" target="_system" alt="Youtube" title="Youtube"><img  ng-src="./img/social/tyoutube.png" class="box-news-img"></a>
-
-											<a href="http://line.me/ti/p/~odeen" target="_system" alt="Line" title="Line"><img  ng-src="./img/social/line.png" class="box-news-img"></a>
-										</div>
-									</div>	
-
+								<!-- <div style="margin-top: 5px;" ng-style="{width:'100%'}"></div>-->	
 								</div>
 								<!-- ./Program Div -->
-							
-						</div> 
 
-						<br/>
-						<br/>
-						<br/>
-						<br/>
-						<br/>
-						<br/>
-						<br/>
-						<br/>
-						<br/>
-						<br/>
-						<br/>
-						<br/>
-						<br/>
-						<br/>
-						<br/>
+						</div> 
+						</br>
+						<!-- FOLLOW US -->
+						<div class="sp-follow-us">
+							<div class="sp-title">FOLLOW US</div>
+							<div class="sp-social">
+
+								<a href="https://www.facebook.com/SpringNewsTV" target="_system" alt="Facebook" title="Facebook"><img  ng-src="./img/social/facebook.png" class="box-news-img"></a>
+
+								<a href="https://www.twitter.com/SpringNews_TV" target="_system" alt="Twitter" title="Twitter"><img  ng-src="./img/social/twitter.png" class="box-news-img"></a>
+
+								<a href="https://www.google.com/+springnews" target="_system" alt="Google+" title="Google+"><img  ng-src="./img/social/google_plus.png" class="box-news-img"></a>
+
+								<a href="https://www.instagram.com/springnewstv/" class="the-social-links tsl-circle tsl-24 tsl-default tsl-youtube" target="_system" alt="Instagram" title="Instagram"><img  ng-src="./img/social/ig.png" class="box-news-img"></a>
+
+								<a href="https://www.youtube.com/springnewsonline" class="the-social-links tsl-circle tsl-24 tsl-default tsl-instagram" target="_system" alt="Youtube" title="Youtube"><img  ng-src="./img/social/tyoutube.png" class="box-news-img"></a>
+
+								<a href="http://line.me/ti/p/~@springnews" target="_system" alt="Line" title="Line"><img  ng-src="./img/social/line.png" class="box-news-img"></a>
+							</div>
+						</div>	
+						<!-- ./Program Div -->
+						</br>
+						</br>
+						</br>
+						</br>
+						</br>
+						</br>
+						</br>
+						</br>
+						</br>
 
 					</ion-content>
 					<!-- ./HOME -->

@@ -50,6 +50,10 @@
     <feature name="YoikScreenOrientation">
         <param name="ios-package" value="YoikScreenOrientation" />
     </feature>
+    <feature name="CDVShake">
+        <param name="ios-package" value="CDVShake" />
+        <param name="onload" value="true" />
+    </feature>
     <feature name="SplashScreen">
         <param name="ios-package" value="CDVSplashScreen" />
         <param name="onload" value="true" />
@@ -71,6 +75,9 @@
     </feature>
     <feature name="Keyboard">
         <param name="ios-package" onload="true" value="IonicKeyboard" />
+    </feature>
+    <feature name="Accelerometer">
+        <param name="ios-package" value="CDVAccelerometer" />
     </feature>
     <feature name="NetworkStatus">
         <param name="ios-package" value="CDVConnection" />

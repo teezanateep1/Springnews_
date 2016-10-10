@@ -1,11 +1,15 @@
   <ion-view >
       <ion-content>
+
+          <video id="vdo" width="100%" height="40%" controls="">
+            <source type="video/mp4" ng-src="{{picData}}"> 
+          </video>
         
           <img ng-src="{{picData}}">
 
 
           <div class="padding">
-              <button class="button button-full button-assertive ink" ng-click="takePicture()">Select</button>
+              <button class="button button-full button-assertive ink" ng-click="selectPicture()">Select</button>
           </div>
 
            <div class="padding">

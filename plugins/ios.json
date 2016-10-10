@@ -40,6 +40,9 @@
         "cordova-plugin-screen-orientation": {
             "PACKAGE_NAME": "com.dev.springnews"
         },
+        "cordova-plugin-shake": {
+            "PACKAGE_NAME": "com.dev.springnews"
+        },
         "cordova-plugin-splashscreen": {
             "PACKAGE_NAME": "com.dev.springnews"
         },
@@ -70,6 +73,9 @@
             "PACKAGE_NAME": "com.dev.springnews"
         },
         "cordova-plugin-compat": {
+            "PACKAGE_NAME": "com.dev.springnews"
+        },
+        "cordova-plugin-device-motion": {
             "PACKAGE_NAME": "com.dev.springnews"
         },
         "cordova-plugin-network-information": {

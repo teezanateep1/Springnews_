@@ -56,17 +56,17 @@ angular.module('starter', ['ionic', 'starter.controllers',"angular-md5",'service
               autoShow:true
           });
           // db = $cordovaSQLite.openDB("springnew.db");
-          try{
+          // try{
 
           db = $cordovaSQLite.openDB({name:"springnew.db",location:'default'});
           console.log(db);
           // db = window.sqlitePlugin.openDatabase( {name: "springnew.db", createFromLocation: 1} );
           $cordovaSQLite.execute(db, "CREATE TABLE IF NOT EXISTS user(id integer primary key,user_id integer,name text ,mycode text ,status integer)");
           $cordovaSQLite.execute(db, "CREATE TABLE IF NOT EXISTS action(id integer primary key, user_id integer,news_id integer)");
-          }
-          catch(error){
-            alert(error);
-          }
+          // }
+          // catch(error){
+          //   alert(error);
+          // }
         });
 
 })

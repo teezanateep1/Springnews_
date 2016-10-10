@@ -34,7 +34,7 @@
         interval: 200,
         showProgressCircleInBrowser: true,
         showProgressCircleInDevice: true,
-        circleContainerStyle: 'text-align:center'
+        circleContainerStyle: 'text-align:center;float: left;width: 100%;margin-top: 20%;'
     };
 
     function getElement(element) {
