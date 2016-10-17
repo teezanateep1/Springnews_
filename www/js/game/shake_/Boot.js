@@ -7,7 +7,7 @@ Shake.Boot.prototype = {
 
     preload: function() {
 
-        this.load.image('preloader','http://artbeat.mfec.co.th/SpringNews_mb/static/game/shake/GUI/preloader.gif');
+        this.load.image('preloader','./img/game/preloader.gif');
        
     },
 

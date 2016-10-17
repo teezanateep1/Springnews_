@@ -532,7 +532,19 @@ angular.module('services', [])
             alert(data)
         });
     }
-
+    //-------------- get XP 
+    this._xp = function(value,id){
+        var url=path+"be/XP/insert"; 
+        $http({
+            method  : 'POST',
+            url     :  url,
+            data    :  value,  // pass in data as strings
+            headers : {'api-key': key}  // set the headers so angular passing info as form data (not request payload)
+        })
+        .success(function(data) {
+            alert(data)
+        });
+    }
       
     
 }])

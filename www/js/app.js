@@ -8,6 +8,7 @@ var db;
 var path = "http://artbeat.mfec.co.th/SpringNews_mb/api/";
 var path_gm = "http://artbeat.mfec.co.th/SpringNews_mb/static/game/";
 var key = "EAACEdEose0cBAP3LZAULs0sfBDrAFiY0xzMTJHPdzlxArcn4kw";
+var soc_fac,soc_goo,soc_twi,soc_ins,soc_line,soc_you;
 
 angular.module('starter', ['ionic', 'starter.controllers',"angular-md5",'services','ngOpenFB','tabSlideBox','ngStorage', 'ionic-cache-src','ngCordova.plugins.googleAds','ngCordovaOauth','ionic-cache-src'])
 
@@ -16,7 +17,6 @@ angular.module('starter', ['ionic', 'starter.controllers',"angular-md5",'service
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
-
     ConnectivityMonitor.startWatching()
 
     if (window.cordova && window.cordova.plugins.Keyboard) {
@@ -71,6 +71,9 @@ angular.module('starter', ['ionic', 'starter.controllers',"angular-md5",'service
           // catch(error){
           //   alert(error);
           // }
+
+          soc_line = "http://line.me/ti/p/~@springnews"
+
         });
 
 })

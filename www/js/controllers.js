@@ -17,13 +17,6 @@ angular.module('starter.controllers', ['ngOpenFB'])
       StatusBar.hide();
     }
   }
-  // // Create the login modal that we will use later
-  // $ionicModal.fromTemplateUrl('templates/login.html', {
-  //   scope: $scope
-  // }).then(function(modal) {
-  //   $scope.modal = modal;
-  // });
-
  // -------------- MEnu // SubMEnu ---
  $scope.menu_toggle = true;
  $scope.link = $location.path();
@@ -131,16 +124,6 @@ angular.module('starter.controllers', ['ngOpenFB'])
      $rootScope.login_ = true;
      $rootScope.logout_ = false;
   }
-
-  // // Triggered in the login modal to close it
-  // $scope.closeLogin = function() {
-  //   $scope.modal.hide();
-  // };
-
-  // // Open the login modal
-  // $scope.login = function() {
-  //   $scope.modal.show();
-  // };
 
   //Open the logout 
   $scope.logout = function() {
@@ -394,7 +377,7 @@ angular.module('starter.controllers', ['ngOpenFB'])
 .controller('HistoryCtrl', function($scope,_function,SpringNews) {
     $scope.history = []; 
     $scope.adver = [];
-    SpringNews._pages_history($scope); 
+    SpringNews._pages_history($scope); alert(soc_line)
 })
 
 // --------------------- VISION ------------------------
@@ -737,6 +720,7 @@ angular.module('starter.controllers', ['ngOpenFB'])
   $scope.activity = [];
   SpringNews._pages_activity($scope); 
 })
+//==== shake
 .controller('ShakeCtrl', function($scope) {
   var game = new Phaser.Game(window.screen.availWidth * window.devicePixelRatio, window.screen.availHeight * window.devicePixelRatio, Phaser.AUTO, 'game');
       game.state.add('Boot', Shake.Boot);
@@ -745,6 +729,7 @@ angular.module('starter.controllers', ['ngOpenFB'])
       game.state.add('Game', Shake.Game);
       game.state.start('Boot');
 })
+//==== 360
 .controller('PanoGMCtrl', function($scope,$timeout,$window,$interval) {
       var seconds=60, num_gm = 0, play = false,myTimeOut, mouse;
       var camera, scene, renderer, mesh, controls ;
@@ -757,7 +742,7 @@ angular.module('starter.controllers', ['ngOpenFB'])
       phi = 0, theta = 0;
       $scope.countdown = seconds;
       $scope.gm_power = window.localStorage.getItem("gm_power");
-      $scope.gm_xp = path_gm+'panoGM/GUI/5xp.png';
+      $scope.gm_xp = './img/game/5xp.png';
 
       var blocker = document.getElementById( 'blocker' );
       var container = document.getElementById( 'container' );
@@ -795,7 +780,7 @@ angular.module('starter.controllers', ['ngOpenFB'])
 
       function init() {
 
-        camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 1000 );
+        camera = new THREE.PerspectiveCamera( 85, window.innerWidth / window.innerHeight, 1, 1000 );
         camera.target = new THREE.Vector3( 0, 0, 0 );
         controls = new THREE.DeviceOrientationControls( camera );
 
@@ -805,13 +790,33 @@ angular.module('starter.controllers', ['ngOpenFB'])
         var geometry = new THREE.SphereGeometry( 500, 60, 40 );
         geometry.scale( - 1, 1, 1 );
 
-        var material = new THREE.MeshBasicMaterial( {
-          map: new THREE.TextureLoader().load( path_gm+'panoGM/Background/360_game_'+Math.round(Math.random() * 3)+'.jpg' )
-        } );
+        var loader_bg = new THREE.TextureLoader();
 
-        mesh = new THREE.Mesh( geometry, material );
-        scene.add( mesh );
+          loader_bg.load(
+              // resource URL
+              path_gm+'panoGM/360_game_'+Math.round(Math.random() * 3)+'.png',
+              // Function when resource is loaded
+              function ( texture ) {
+                // do something with the texture
+                var material = new THREE.MeshBasicMaterial( {
+                  map: texture 
+                } );
 
+                mesh = new THREE.Mesh( geometry, material );
+                scene.add( mesh );
+              },
+              // Function called when download progresses
+              function ( xhr ) {
+                if((xhr.loaded / xhr.total * 100) == 100){
+                 document.getElementById("loading").style.visibility = "hidden";
+                }
+              },
+              // Function called when download errors
+              function ( xhr ) {
+                console.log( 'An error happened' );
+              }
+            );
+        
         renderer = new THREE.WebGLRenderer();
         renderer.setClearColor( scene.fog.color );
         renderer.setPixelRatio( window.devicePixelRatio );
@@ -835,11 +840,11 @@ angular.module('starter.controllers', ['ngOpenFB'])
 
       function object(){
         loader = new THREE.TextureLoader();
-        var sprite1 = path_gm+'panoGM/GUI/object1.png';
-        var sprite2 = path_gm+'panoGM/GUI/object2.png';
-        var sprite3 = path_gm+'panoGM/GUI/object3.png';
-        var sprite4 = path_gm+'panoGM/GUI/object4.png';
-        var sprite5 = path_gm+'panoGM/GUI/object5.png';
+        var sprite1 = path_gm+'panoGM/object1.png';
+        var sprite2 = path_gm+'panoGM/object2.png';
+        var sprite3 = path_gm+'panoGM/object3.png';
+        var sprite4 = path_gm+'panoGM/object4.png';
+        var sprite5 = path_gm+'panoGM/object5.png';
 
           parameters_obj = [
               [sprite1 ],
@@ -865,9 +870,9 @@ angular.module('starter.controllers', ['ngOpenFB'])
                 materials_obj.map.minFilter = THREE.LinearFilter;
 
                 particles = new THREE.Mesh( new THREE.CubeGeometry(50,50,0), materials_obj );
-                particles.position.x = (Math.random() - 0.5) * 1000;
-                particles.position.y = (Math.random() - 0.5) * 1000;
-                particles.position.z = (Math.random() - 0.5) * 1000;
+                particles.position.x = (Math.random() - 0.5) * 500;
+                particles.position.y = (Math.random() - 0.5) * 500;
+                particles.position.z = (Math.random() - 0.5) * 500;
                 particles.name = 'item_'+i;
 
                 scene.add( particles );
@@ -909,7 +914,7 @@ angular.module('starter.controllers', ['ngOpenFB'])
         raycaster.setFromCamera( mouse, camera );
         raycaster.setFromCamera( mouse3D.clone(), camera );
          
-         $scope.object_gm = obj_gm;
+        $scope.object_gm = obj_gm;
         var intersects = raycaster.intersectObjects( objects ); 
 
         if ( intersects.length > 0 && seconds !=0 ){
