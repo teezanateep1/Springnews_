@@ -83,6 +83,11 @@ angular.module('services', [])
   }
 })
 
+// Quiz
+
+
+// Quiz End
+
 .service("_function",["$http","$ionicSlideBoxDelegate","$ionicPopup",function($http,$ionicSlideBoxDelegate,$ionicPopup){  
     this._onError = function(onError){
         $ionicPopup.alert({  
@@ -172,9 +177,6 @@ angular.module('services', [])
 }])  
 
 .service("SpringNews",["$http","$ionicSlideBoxDelegate","_function","$ionicLoading","$cordovaLocalNotification",function($http,$ionicSlideBoxDelegate,_function,$ionicLoading,$cordovaLocalNotification){
-    var path = "http://artbeat.mfec.co.th/SpringNews_mb/api/";
-    var key = "EAACEdEose0cBAP3LZAULs0sfBDrAFiY0xzMTJHPdzlxArcn4kw";
-
     // --------- หมวดหมู่
     this._category = function($scope,id){ 
         var url=path+"wp/Categories/parent?api-key="+key+"&id="+id; 
@@ -541,10 +543,6 @@ angular.module('services', [])
 }])
 
 .service("SQLite",["$http","$ionicSlideBoxDelegate","_function","$ionicLoading","$cordovaLocalNotification","$cordovaSQLite",function($http,$ionicSlideBoxDelegate,_function,$rootScope,$ionicLoading,$cordovaLocalNotification,$cordovaSQLite){ 
-    var path = "http://artbeat.mfec.co.th/SpringNews_mb/api/";
-    var key = "EAACEdEose0cBAP3LZAULs0sfBDrAFiY0xzMTJHPdzlxArcn4kw";
-    
-   
     // var actions =[];
 
     this._login = function($scope){
@@ -598,35 +596,35 @@ angular.module('services', [])
                         console.error(err);
                     });
                 };
-                return true;
             })  
             .error(function(){  
                 console.log(result);
-                return false;
             });
         }).error(function(){  
             console.log("login_error");
             console.log(data);
             alert("login_error");
-            return false;
         });
     }
 
     // --------- สมัครสมาชิก
     this._register = function($scope,user_info){ 
-        console.log(user_info);
+        // console.log(user_info);
         var query = "SELECT * FROM user";
         var users = [];
+        console.log(user_info);
         $cordovaSQLite.execute(db, query,[]).then(function(res){
             for(var i = 0; i < res.rows.length; i++){
-                console.log("SELECTED -> " + res.rows.item(0).id 
+                console.log("SELECTED -> " + res.rows.item(0).id);
                 users.push(res.rows.item(i));
                 console.log(users);
             }
         },
         function(err){ 
-            console.log("Error");
+            alert("Error"+err);
         })
+
+
 
         console.log(user_info);
         var url=path+"be/Users/insert"; 
@@ -679,8 +677,9 @@ angular.module('services', [])
      
     this._getuser = function() {
         var users = [];
-        console.log(db)
-        $cordovaSQLite.execute(db, "SELECT * FROM user").then(function(res){
+        console.log(db);
+        var query = "SELECT * FROM user";
+        $cordovaSQLite.execute(db, query,[]).then(function(res){
             for(var i = 0; i < res.rows.length; i++){
                 users.push(res.rows.item(i));
             }
@@ -688,6 +687,7 @@ angular.module('services', [])
         },
         function(err){ 
             console.log("Error");
+            alert("Error"+err);
         })
         console.log(users);
     }
@@ -716,11 +716,7 @@ angular.module('services', [])
 
 }]) 
 
-
 .service("Actions",["$http","$ionicSlideBoxDelegate","_function","$ionicLoading","$cordovaLocalNotification","$cordovaSQLite",function($http,$ionicSlideBoxDelegate,_function,$rootScope,$ionicLoading,$cordovaLocalNotification,$cordovaSQLite){ 
-    var path = "http://artbeat.mfec.co.th/SpringNews_mb/api/";
-    var key = "EAACEdEose0cBAP3LZAULs0sfBDrAFiY0xzMTJHPdzlxArcn4kw";
-    
     // ---------  อ่านข่าว
     this._read = function($scope,new_info){
         var url=path+"be/Socials/views"; 

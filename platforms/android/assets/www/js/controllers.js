@@ -745,7 +745,241 @@ angular.module('starter.controllers', ['ngOpenFB'])
       game.state.add('Game', Shake.Game);
       game.state.start('Boot');
 })
+.controller('PanoGMCtrl', function($scope,$timeout,$window,$interval) {
+      var seconds=60, num_gm = 0, play = false,myTimeOut, mouse;
+      var camera, scene, renderer, mesh, controls ;
+      var particles, materials_obj, i, h, color, sprite, imgX, imgY, loader;
+      var parameters_obj, raycaster, objects = [], glitchPass, composer;
+      var isUserInteracting = false,
+      onMouseDownMouseX = 0, onMouseDownMouseY = 0,
+      lon = 0, onMouseDownLon = 0,
+      lat = 0, onMouseDownLat = 0,
+      phi = 0, theta = 0;
+      $scope.countdown = seconds;
+      $scope.gm_power = window.localStorage.getItem("gm_power");
+      $scope.gm_xp = path_gm+'panoGM/GUI/5xp.png';
 
+      var blocker = document.getElementById( 'blocker' );
+      var container = document.getElementById( 'container' );
+      var instructions = document.getElementById( 'instructions' );
+      var start = document.getElementById( 'start' );
+      var start_ = document.getElementById( 'start_' );
+
+      document.getElementById("obj_gm").style.visibility = "hidden";
+      document.getElementById("countdown").style.visibility = "hidden";
+      document.getElementById("game_over").style.visibility = "hidden";
+      document.getElementById("game_compl").style.visibility = "hidden";
+
+      instructions.addEventListener( 'click', function ( event ) {
+         object()
+          document.getElementById("obj_gm").style.visibility = "visible";
+          document.getElementById("countdown").style.visibility = "visible";
+          myTimeOut = $timeout($scope.onTimeout,1000);
+          instructions.style.display = 'none';
+          blocker.className = '';
+          play = true;
+      }, false );
+
+      start.addEventListener( 'click', function ( event ) {
+          $scope.gm_power--;
+          $scope.gm_power = window.localStorage.setItem("gm_power", $scope.gm_power);
+          $window.location.reload(true)
+      }, false );
+
+      start_.addEventListener( 'click', function ( event ) {
+          $window.location.reload(true)
+      }, false );
+
+      init();
+      animate();
+
+      function init() {
+
+        camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 1000 );
+        camera.target = new THREE.Vector3( 0, 0, 0 );
+        controls = new THREE.DeviceOrientationControls( camera );
+
+        scene = new THREE.Scene();
+        scene.fog = new THREE.Fog( 0x050505, 2000, 3500 );
+
+        var geometry = new THREE.SphereGeometry( 500, 60, 40 );
+        geometry.scale( - 1, 1, 1 );
+
+        var material = new THREE.MeshBasicMaterial( {
+          map: new THREE.TextureLoader().load( path_gm+'panoGM/Background/360_game_'+Math.round(Math.random() * 3)+'.jpg' )
+        } );
+
+        mesh = new THREE.Mesh( geometry, material );
+        scene.add( mesh );
+
+        renderer = new THREE.WebGLRenderer();
+        renderer.setClearColor( scene.fog.color );
+        renderer.setPixelRatio( window.devicePixelRatio );
+        renderer.setSize( window.innerWidth, window.innerHeight );
+        container.appendChild( renderer.domElement );
+        // ========================
+        raycaster = new THREE.Raycaster();
+        mouse = new THREE.Vector2();
+        // ========================
+        // postprocessing
+        composer = new THREE.EffectComposer( renderer );
+        composer.addPass( new THREE.RenderPass( scene, camera ) );
+
+        glitchPass = new THREE.GlitchPass();
+        glitchPass.renderToScreen = true;
+        composer.addPass( glitchPass );
+    
+        document.addEventListener( 'mousedown', onDocumentMouseDown, false );
+        window.addEventListener( 'resize', onWindowResize, false );
+      }
+
+      function object(){
+        loader = new THREE.TextureLoader();
+        var sprite1 = path_gm+'panoGM/GUI/object1.png';
+        var sprite2 = path_gm+'panoGM/GUI/object2.png';
+        var sprite3 = path_gm+'panoGM/GUI/object3.png';
+        var sprite4 = path_gm+'panoGM/GUI/object4.png';
+        var sprite5 = path_gm+'panoGM/GUI/object5.png';
+
+          parameters_obj = [
+              [sprite1 ],
+              [sprite2 ],
+              [sprite3 ],
+              [sprite4 ],
+              [sprite5 ]
+          ];
+
+          for ( i = 0; i < 8; i ++ ) {
+            sprite = parameters_obj[Math.round(Math.random() * 4)][0];
+            loader.load(
+              // resource URL
+              sprite,
+              // Function when resource is loaded
+              function ( texture ) {
+                // do something with the texture
+                materials_obj = new THREE.MeshBasicMaterial({ //CHANGED to MeshBasicMaterial
+                    map:texture,
+                    depthTest: false,
+                    transparent : true
+                  });
+                materials_obj.map.minFilter = THREE.LinearFilter;
+
+                particles = new THREE.Mesh( new THREE.CubeGeometry(50,50,0), materials_obj );
+                particles.position.x = (Math.random() - 0.5) * 1000;
+                particles.position.y = (Math.random() - 0.5) * 1000;
+                particles.position.z = (Math.random() - 0.5) * 1000;
+                particles.name = 'item_'+i;
+
+                scene.add( particles );
+                objects.push( particles );
+                document.getElementById( 'obj_gm' ).innerHTML = num_gm+"/5"
+              },
+              // Function called when download progresses
+              function ( xhr ) {
+                console.log( (xhr.loaded / xhr.total * 100) + '% loaded' );
+              },
+              // Function called when download errors
+              function ( xhr ) {
+                console.log( 'An error happened' );
+              }
+            );
+          }
+      }
+
+      function onWindowResize() {
+
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+
+        renderer.setSize( window.innerWidth, window.innerHeight );
+        composer.setSize( window.innerWidth, window.innerHeight );
+
+      }
+
+      function onDocumentMouseDown( event ) {
+     
+        event.preventDefault();
+
+         var mouse3D = new THREE.Vector3( ( event.clientX / window.innerWidth ) * 2 - 1,   //x
+                                        -( event.clientY / window.innerHeight ) * 2 + 1,  //y
+                                        0.5);      
+
+        mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+        mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+        raycaster.setFromCamera( mouse, camera );
+        raycaster.setFromCamera( mouse3D.clone(), camera );
+         
+         $scope.object_gm = obj_gm;
+        var intersects = raycaster.intersectObjects( objects ); 
+
+        if ( intersects.length > 0 && seconds !=0 ){
+            num_gm++;
+            scene.remove(intersects[0].object);
+            objects.pop()
+            document.getElementById( 'obj_gm' ).innerHTML = num_gm+"/5"
+            if (window.navigator && window.navigator.vibrate) {
+               // Check Supported!
+               navigator.vibrate(500);
+            } 
+        }
+      }
+
+      function animate() {
+        controls.update();  
+        requestAnimationFrame( animate );
+        render_();
+      }
+
+      function render_() {
+
+        var time = Date.now() * 0.00005;
+        if ( isUserInteracting === false ) {lon += 0.1;}
+
+        lat = Math.max( - 85, Math.min( 85, lat ) );
+        phi = THREE.Math.degToRad( 90 - lat );
+        theta = THREE.Math.degToRad( lon );
+
+        if (num_gm == 5) { 
+          $timeout.cancel(myTimeOut); 
+          document.getElementById("obj_gm").style.visibility = "hidden";
+          document.getElementById("countdown").style.visibility = "hidden";
+          document.getElementById("game_over").style.visibility = "hidden";
+          document.getElementById("game_compl").style.visibility = "visible";
+          blocker.className = 'bg-color';
+          play = false;
+        }
+
+        if(play == false){
+          camera.target.x = 500 * Math.sin( phi ) * Math.cos( theta );
+          camera.target.y = 500 * Math.cos( phi );
+          camera.target.z = 500 * Math.sin( phi ) * Math.sin( theta );
+
+          camera.lookAt( camera.target );
+        }
+
+        if ($scope.countdown==0) {
+          composer.render()
+          var width = window.innerWidth || 1;
+          var height = window.innerHeight || 1;
+        }else{renderer.render( scene, camera );} 
+
+      }
+
+      $scope.onTimeout = function(){ //function ใช้ในการ นับถอยหลัง
+        seconds--;
+        $scope.countdown =seconds; 
+        if (seconds==0) {
+          document.getElementById("obj_gm").style.visibility = "hidden";
+          document.getElementById("countdown").style.visibility = "hidden";
+          document.getElementById("game_compl").style.visibility = "hidden";
+          document.getElementById("game_over").style.visibility = "visible";
+          document.getElementById("xp").innerHTML = num_gm+" XP";
+          blocker.className = 'bg-color';
+          play = false;
+        }
+        if (seconds>0) { myTimeOut = $timeout($scope.onTimeout,1000);}
+      }
+})
 
 // --------------------- Search ------------------------
 .controller('SearchCtrl', function($scope,$http,$timeout,$stateParams,$ionicSideMenuDelegate,_function,SpringNews) {
@@ -1333,6 +1567,12 @@ angular.module('starter.controllers', ['ngOpenFB'])
         // alert("Error -> " + JSON.stringify(error));
     });
   };
+
+
+})
+
+// --------------------- Register ------------------------
+.controller('quizCtrl', function($scope,$stateParams,_function,SQLite,quizFactory) {
 
 
 })

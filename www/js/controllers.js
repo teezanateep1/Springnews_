@@ -44,7 +44,7 @@ angular.module('starter.controllers', ['ngOpenFB'])
       $scope.sublink_activity = false;
       $scope.submenu_activity = false;
     }
-    else if(argument == "activity" || argument == "shake" || argument == "360" ){
+    else if(argument == "activity" || argument == "shake" || argument == "360" || argument == "quiz"){
       $scope.link = '/app/activity_';
       $scope.sublink_activity = argument;
       $scope.sublink_schedule = false;
@@ -116,38 +116,39 @@ angular.module('starter.controllers', ['ngOpenFB'])
   };  
 
   // Form data for the login modal
-  $rootScope.loginData = {};
-  $rootScope.user  = {};
+  // $rootScope.loginData = {};
+  // $rootScope.user  = {};
   $rootScope.icon = "right";
 
-  if($localStorage.img != undefined){
-     $rootScope.user.img = $localStorage.img;
-     $rootScope.profile = true;
-     $rootScope.login_ = false;
-     $rootScope.logout_ = true;
+  alert("localStorage.logined AppCtrl "+$localStorage.logined);
+  if($localStorage.logined){
+     $localStorage.img = "./img/default_user.png";
+     $scope.user.img = $localStorage.img;
+     $scope.profile = true;
+     $scope.login_ = false;
+     $scope.logout_ = true;
   }else{
      // $scope.profile = true;
-     $rootScope.profile = false;
-     $rootScope.login_ = true;
-     $rootScope.logout_ = false;
+     $scope.profile = false;
+     $scope.login_ = true;
+     $scope.logout_ = false;
   }
-
-  // // Triggered in the login modal to close it
-  // $scope.closeLogin = function() {
-  //   $scope.modal.hide();
-  // };
-
-  // // Open the login modal
-  // $scope.login = function() {
-  //   $scope.modal.show();
-  // };
 
   //Open the logout 
   $scope.logout = function() {
-    $localStorage.img = undefined;
-    $rootScope.profile = false;
-    $rootScope.login_ = true;
-    $rootScope.logout_ = false;
+
+    var query = "UPDATE User SET login_stat = 0 WHERE id = 1";
+    $cordovaSQLite.execute(db, query,[]).then(function(res) {
+        console.log("UPDATE ID -> " + JSON.stringify(res));
+    }, function (err) {
+        console.error(err);
+    });
+
+    $localStorage.logined = false;
+    $scope.profile = false;
+    $scope.login_ = true;
+    $scope.logout_ = false;
+
   }
 
   
@@ -733,9 +734,10 @@ angular.module('starter.controllers', ['ngOpenFB'])
 })
 
 // --------------------- Activity ------------------------
-.controller('ActivityCtrl', function($scope,_function,SpringNews) {
+.controller('ActivityCtrl', function($scope,_function,SpringNews,$cordovaSQLite) {
   $scope.activity = [];
   SpringNews._pages_activity($scope); 
+
 })
 .controller('ShakeCtrl', function($scope) {
   var game = new Phaser.Game(window.screen.availWidth * window.devicePixelRatio, window.screen.availHeight * window.devicePixelRatio, Phaser.AUTO, 'game');
@@ -1030,7 +1032,7 @@ angular.module('starter.controllers', ['ngOpenFB'])
 })
 
 // ---------------------- NEWS DETAIL ---------------------
-.controller('NewsCtrl', function($scope, $stateParams ,Actions,SQLite, SpringNews, $ionicLoading, $timeout,_function, $sce, $cordovaSocialSharing, $timeout) {
+.controller('NewsCtrl', function($scope, $stateParams ,Actions,SQLite_return, SpringNews, $ionicLoading, $timeout,_function, $sce, $cordovaSocialSharing, $timeout) {
   
   $scope.newsDetail = [];
   $scope.newsConnected = [];
@@ -1053,15 +1055,18 @@ angular.module('starter.controllers', ['ngOpenFB'])
 
   $scope.message = '';
   $scope.url = '';
-
+  var u_id;
   // console.log($stateParams);
-  SQLite._getuser();
-
-  
+  SQLite_return._get_info($scope,d).then(function(get_u_info) {
+    alert("get_u_info"+JSON.stringify(get_u_info));
+    if(get_u_info[0].ID != null){
+      u_id = get_u_info[0].ID;   
+    }
+  });
 
   var new_info = { 
       _postID: $stateParams.newsId,
-      _userID: ""
+      _userID: u_id
   }
 
   Actions._read($scope,new_info);
@@ -1403,7 +1408,18 @@ angular.module('starter.controllers', ['ngOpenFB'])
 
 
 // --------------------- Register ------------------------
-.controller('registerCtrl', function($scope,$stateParams,_function,SQLite) {
+.controller('registerCtrl', function($scope,$stateParams,_function,$cordovaSQLite,SQLite_return) {
+
+  /////////// Check User In SQLite ///////////
+  var users_in_db = [];
+  var q_select = "SELECT * FROM User";
+  $cordovaSQLite.execute(db, q_select).then(function(result) {
+    console.log(result);
+    for (var i = 0; i < result.rows.length; i++) {
+      users_in_db.push(result.rows.item(i));
+    }
+    console.log(JSON.stringify(users_in_db));
+  });
 
   $scope.submitForm = function(){
     console.log(this.regis);
@@ -1419,8 +1435,56 @@ angular.module('starter.controllers', ['ngOpenFB'])
       _type: "user"
 
     }
+    ///////////////////// Register User ////////////////////////
+    SQLite_return._Register($scope,user_info).then(function(d) {
+      if(d.ID != null){
+        SQLite_return._get_info($scope,d).then(function(get_u_info) {
 
-    SQLite._register($scope,user_info);
+          if(get_u_info[0].ID != null){
+            var u_id = get_u_info[0].ID;
+            var full_name = get_u_info[0].display;
+            var iv_code = get_u_info[0].mycode;
+            /////////// Insert or Update User to SQLite ///////////
+            if(users_in_db.length > 0 ){
+              var query = "UPDATE User SET user_id = "+u_id+",fullname = '"+full_name+"',mycode ='"+iv_code+"',login_stat = 1 WHERE id = 1";
+              $cordovaSQLite.execute(db, query,[]).then(function(res) {
+                  console.log("UPDATE ID -> " + JSON.stringify(res));
+              }, function (err) {
+                  console.error(err);
+              });
+            }
+            else{
+              var query = "INSERT INTO User (user_id,fullname ,mycode,login_stat) VALUES (?,?,?,?)";
+              $cordovaSQLite.execute(db, query, [u_id,full_name,iv_code,1]).then(function(res) {
+                  console.log("INSERT ID -> " + res.insertId);
+              }, function (err) {
+                  console.error(err);
+              });
+             
+            };
+          }
+
+        });
+      }
+        // /////////// Check Status login In SQLite ///////////
+        // var users_stat_login = [];
+        // var q_select = "SELECT * FROM User";
+        // $cordovaSQLite.execute(db, q_select).then(function(result) {
+        //   console.log(result);
+        //   for (var i = 0; i < result.rows.length; i++) {
+        //     users_stat_login.push(result.rows.item(i));
+        //   }
+        //   console.log("dqwdqwdwqfeagsfse"+JSON.stringify(users_stat_login));
+        // });
+
+        // if(users_stat_login[0].login_stat == 1){
+        //   $localStorage.img = "./img/default_user.png";
+        //   $rootScope.user.img = $localStorage.img;
+        //   $rootScope.profile = true;
+        //   $rootScope.login_ = false;
+        //   $rootScope.logout_ = true;
+        // }
+      });
 
   }
 
@@ -1428,8 +1492,18 @@ angular.module('starter.controllers', ['ngOpenFB'])
 })
 
 // --------------------- login ------------------------
-.controller('loginCtrl', function($scope,$rootScope,$http,$stateParams,$localStorage,ngFB,$cordovaOauth,_function,SpringNews,SQLite) {
-  
+.controller('loginCtrl', function($scope,$http,$stateParams,$localStorage,ngFB,$cordovaOauth,_function,SpringNews,SQLite_return,$cordovaSQLite) {
+  // /////////// Check User In SQLite ///////////
+  // var users_in_db = [];
+  // var q_select = "SELECT * FROM User";
+  // $cordovaSQLite.execute(db, q_select).then(function(result) {
+  //   console.log(result);
+  //   for (var i = 0; i < result.rows.length; i++) {
+  //     users_in_db.push(result.rows.item(i));
+  //   }
+  //   console.log(JSON.stringify(users_in_db));
+  // });
+
   //Alert Fail Login
   $scope.showAlertFail = function() {
      var alertPopup = $ionicPopup.alert({
@@ -1452,14 +1526,55 @@ angular.module('starter.controllers', ['ngOpenFB'])
   // Perform the login action when the user submits the login form
   $scope.doLogin = function() {
 
-    SQLite._login($scope);
-    if(status_login == true){
-      $localStorage.img = "./img/default_user.png";
-      $rootScope.user.img = $localStorage.img;
-      $rootScope.profile = true;
-      $rootScope.login_ = false;
-      $rootScope.logout_ = true;
-    }
+    SQLite_return._login($scope).then(function(d) {
+      if(d.ID != null){
+        SQLite_return._get_info($scope,d).then(function(get_u_info) {
+
+          if(get_u_info[0].ID != null){
+            var u_id = get_u_info[0].ID;
+            var full_name = get_u_info[0].display;
+            var iv_code = get_u_info[0].mycode;
+            /////////// Insert or Update User to SQLite ///////////
+            if(users_in_db.length > 0 ){
+              var query = "UPDATE User SET user_id = "+u_id+",fullname = '"+full_name+"',mycode ='"+iv_code+"',login_stat = 1 WHERE id = 1";
+              $cordovaSQLite.execute(db, query,[]).then(function(res) {
+                  console.log("UPDATE ID -> " + JSON.stringify(res));
+              }, function (err) {
+                  console.error(err);
+              });
+            }
+            else{
+              var query = "INSERT INTO User (user_id,fullname ,mycode,login_stat) VALUES (?,?,?,?)";
+              $cordovaSQLite.execute(db, query, [u_id,full_name,iv_code,1]).then(function(res) {
+                  console.log("INSERT ID -> " + res.insertId);
+              }, function (err) {
+                  console.error(err);
+              });
+             
+            };
+          }
+
+        });
+      }
+    });
+    // /////////// Check Status login In SQLite ///////////
+    // var users_stat_login = [];
+    // var q_select = "SELECT * FROM User";
+    // $cordovaSQLite.execute(db, q_select).then(function(result) {
+    //   console.log(result);
+    //   for (var i = 0; i < result.rows.length; i++) {
+    //     users_stat_login.push(result.rows.item(i));
+    //   }
+    //   console.log(JSON.stringify(users_stat_login));
+    // });
+
+    // if(users_stat_login[0].login_stat == 1){
+    //   $localStorage.img = "./img/default_user.png";
+    //   $rootScope.user.img = $localStorage.img;
+    //   $rootScope.profile = true;
+    //   $rootScope.login_ = false;
+    //   $rootScope.logout_ = true;
+    // }
 
   };
 
@@ -1483,11 +1598,10 @@ angular.module('starter.controllers', ['ngOpenFB'])
 
                         // $scope.user.name = $localStorage.name
                         // $scope.user.email = $localStorage.email 
-                        $rootScope.user.img = $localStorage.img
-
-                        $rootScope.profile = true;
-                        $rootScope.login_ = false;
-                        $rootScope.logout_ = true;
+                        $scope.user.img = $localStorage.img
+                        $scope.profile = true;
+                        $scope.login_ = false;
+                        $scope.logout_ = true;
                         console.log(user)
 
                         var user_info = { 
@@ -1501,7 +1615,10 @@ angular.module('starter.controllers', ['ngOpenFB'])
                           _type: "facebook"
 
                         }
-                        SQLite._register($scope,user_info);
+                        SQLite_return._register($scope,user_info).then(function(d) {
+                          console.log("_register_facebook "+JSON.stringify(d));
+                        });
+                        // SQLite_return._register($scope,user_info);
                     },
                     function (error) {
                         alert('Facebook error: ' + error.error_description);
@@ -1533,7 +1650,8 @@ angular.module('starter.controllers', ['ngOpenFB'])
 
                 // $scope.user.name = $localStorage.name
                 // $scope.user.email = $localStorage.email 
-                $rootScope.user.img = $localStorage.img
+                $scope.user.img = $localStorage.img
+
                 var user_info = { 
                   _email: $scope.user.email,
                   _pass: $scope.user.id ,
@@ -1545,12 +1663,13 @@ angular.module('starter.controllers', ['ngOpenFB'])
                   _type: "google+"
 
                 } 
-                SQLite._register($scope,user_info);
+                SQLite_return._register($scope,user_info).then(function(d) {
+                  console.log("_register_google "+JSON.stringify(d));
+                });
 
-
-                $rootScope.profile = true;
-                $rootScope.login_ = false;
-                $rootScope.logout_ = true;
+                $scope.profile = true;
+                $scope.login_ = false;
+                $scope.logout_ = true;
             }
             $scope.closeLogin();
 
@@ -1567,6 +1686,12 @@ angular.module('starter.controllers', ['ngOpenFB'])
         // alert("Error -> " + JSON.stringify(error));
     });
   };
+
+
+})
+
+// --------------------- Register ------------------------
+.controller('quizCtrl', function($scope,$stateParams,_function,SQLite,quizFactory) {
 
 
 })

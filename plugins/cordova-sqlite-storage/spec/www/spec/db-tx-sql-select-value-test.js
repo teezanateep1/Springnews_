@@ -8,6 +8,7 @@ var isWP8 = /IEMobile/.test(navigator.userAgent); // Matches WP(7/8/8.1)
 var isWindows = /Windows /.test(navigator.userAgent); // Windows
 var isAndroid = !isWindows && /Android/.test(navigator.userAgent);
 var isMac = /Macintosh/.test(navigator.userAgent);
+var isWKWebView = !isWindows && !isAndroid && !isWP8 && !isMac && !!window.webkit && !!window.webkit.messageHandlers;
 
 // NOTE: In the core-master branch there is no difference between the default
 // implementation and implementation #2. But the test will also apply
@@ -433,7 +434,7 @@ var mytests = function() {
               expect(rs).toBeDefined();
               expect(rs.rows).toBeDefined();
               expect(rs.rows.length).toBe(1);
-              if (isWebSql || isMac)
+              if (isWebSql || isMac || isWKWebView)
                 expect(rs.rows.item(0).myresult).toBe('real');
               else if (!isWebSql && isAndroid && isImpl2)
                 expect(rs.rows.item(0).myresult).toBe('text');
@@ -498,7 +499,7 @@ var mytests = function() {
               expect(rs).toBeDefined();
               expect(rs.rows).toBeDefined();
               expect(rs.rows.length).toBe(1);
-              if (isWebSql || isMac)
+              if (isWebSql || isMac || isWKWebView)
                 expect(rs.rows.item(0).myresult).toBe('real');
               else if (!isWebSql && isAndroid && isImpl2)
                 expect(rs.rows.item(0).myresult).toBe('text');
@@ -689,7 +690,7 @@ var mytests = function() {
               expect(rs).toBeDefined();
               expect(rs.rows).toBeDefined();
               expect(rs.rows.length).toBe(1);
-              if (isWebSql || isMac)
+              if (isWebSql || isMac || isWKWebView)
                 expect(rs.rows.item(0).myresult).toBe('real');
               else if (!isWebSql && isAndroid && isImpl2)
                 expect(rs.rows.item(0).myresult).toBe('text');
@@ -754,7 +755,7 @@ var mytests = function() {
               expect(rs).toBeDefined();
               expect(rs.rows).toBeDefined();
               expect(rs.rows.length).toBe(1);
-              if (isWebSql || isMac)
+              if (isWebSql || isMac || isWKWebView)
                 expect(rs.rows.item(0).myresult).toBe('real');
               else if (!isWebSql && isAndroid && isImpl2)
                 expect(rs.rows.item(0).myresult).toBe('text');
@@ -810,6 +811,132 @@ var mytests = function() {
           });
         }, MYTIMEOUT);
 
+        it(suiteName + 'SELECT TYPEOF(?) with [1234567890123.4] (BIG REAL) parameter argument [returns text in case of androidDatabaseImplementation: 2]', function(done) {
+          var db = openDatabase('SELECT-TYPEOF-1234567890123.4.db');
+          expect(db).toBeDefined();
+
+          db.transaction(function(tx) {
+            tx.executeSql('SELECT TYPEOF(?) as myresult', [1234567890123.4], function(ignored, rs) {
+              expect(rs).toBeDefined();
+              expect(rs.rows).toBeDefined();
+              expect(rs.rows.length).toBe(1);
+              if (!isWebSql && isAndroid && isImpl2)
+                expect(rs.rows.item(0).myresult).toBe('text');
+              else
+                expect(rs.rows.item(0).myresult).toBe('real');
+              done();
+            });
+          }, function(error) {
+            expect(false).toBe(true);
+            expect(error.message).toBe('--');
+            done();
+          });
+        }, MYTIMEOUT);
+
+        it(suiteName + 'SELECT ABS(?) with [1234567890123.4] (BIG REAL) parameter argument', function(done) {
+          var db = openDatabase('SELECT-ABS-1234567890123.4.db');
+          expect(db).toBeDefined();
+
+          db.transaction(function(tx) {
+            tx.executeSql('SELECT ABS(?) as myresult', [1234567890123.4], function(ignored, rs) {
+              expect(rs).toBeDefined();
+              expect(rs.rows).toBeDefined();
+              expect(rs.rows.length).toBe(1);
+              expect(rs.rows.item(0).myresult).toBe(1234567890123.4);
+              done();
+            });
+          }, function(error) {
+            expect(false).toBe(true);
+            expect(error.message).toBe('--');
+            done();
+          });
+        }, MYTIMEOUT);
+
+        it(suiteName + 'SELECT ? with [1234567890123.4] (BIG REAL) parameter argument [returns text in case of androidDatabaseImplementation: 2]', function(done) {
+          var db = openDatabase('SELECT-TYPEOF-1234567890123.4.db');
+          expect(db).toBeDefined();
+
+          db.transaction(function(tx) {
+            tx.executeSql('SELECT ? as myresult', [1234567890123.4], function(ignored, rs) {
+              expect(rs).toBeDefined();
+              expect(rs.rows).toBeDefined();
+              expect(rs.rows.length).toBe(1);
+              if (!isWebSql && isAndroid && isImpl2)
+                expect(rs.rows.item(0).myresult).toBe('1.2345678901234E12');
+              else
+                expect(rs.rows.item(0).myresult).toBe(1234567890123.4);
+              done();
+            });
+          }, function(error) {
+            expect(false).toBe(true);
+            expect(error.message).toBe('--');
+            done();
+          });
+        }, MYTIMEOUT);
+
+        it(suiteName + 'SELECT TYPEOF(?) with [-1234567890123.4] (BIG REAL) parameter argument [returns text in case of androidDatabaseImplementation: 2]', function(done) {
+          var db = openDatabase('SELECT-TYPEOF-minus-1234567890123.4.db');
+          expect(db).toBeDefined();
+
+          db.transaction(function(tx) {
+            tx.executeSql('SELECT TYPEOF(?) as myresult', [-1234567890123.4], function(ignored, rs) {
+              expect(rs).toBeDefined();
+              expect(rs.rows).toBeDefined();
+              expect(rs.rows.length).toBe(1);
+              if (!isWebSql && isAndroid && isImpl2)
+                expect(rs.rows.item(0).myresult).toBe('text');
+              else
+                expect(rs.rows.item(0).myresult).toBe('real');
+              done();
+            });
+          }, function(error) {
+            expect(false).toBe(true);
+            expect(error.message).toBe('--');
+            done();
+          });
+        }, MYTIMEOUT);
+
+        it(suiteName + 'SELECT ABS(?) with [-1234567890123.4] (BIG REAL) parameter argument', function(done) {
+          var db = openDatabase('SELECT-ABS-minus-1234567890123.4.db');
+          expect(db).toBeDefined();
+
+          db.transaction(function(tx) {
+            tx.executeSql('SELECT ABS(?) as myresult', [-1234567890123.4], function(ignored, rs) {
+              expect(rs).toBeDefined();
+              expect(rs.rows).toBeDefined();
+              expect(rs.rows.length).toBe(1);
+              expect(rs.rows.item(0).myresult).toBe(1234567890123.4);
+              done();
+            });
+          }, function(error) {
+            expect(false).toBe(true);
+            expect(error.message).toBe('--');
+            done();
+          });
+        }, MYTIMEOUT);
+
+        it(suiteName + 'SELECT ? with [-1234567890123.4] (BIG REAL) parameter argument [returns text in case of androidDatabaseImplementation: 2]', function(done) {
+          var db = openDatabase('SELECT-TYPEOF-minus-1234567890123.4.db');
+          expect(db).toBeDefined();
+
+          db.transaction(function(tx) {
+            tx.executeSql('SELECT ? as myresult', [-1234567890123.4], function(ignored, rs) {
+              expect(rs).toBeDefined();
+              expect(rs.rows).toBeDefined();
+              expect(rs.rows.length).toBe(1);
+              if (!isWebSql && isAndroid && isImpl2)
+                expect(rs.rows.item(0).myresult).toBe('-1.2345678901234E12');
+              else
+                expect(rs.rows.item(0).myresult).toBe(-1234567890123.4);
+              done();
+            });
+          }, function(error) {
+            expect(false).toBe(true);
+            expect(error.message).toBe('--');
+            done();
+          });
+        }, MYTIMEOUT);
+
         // Falsy number value
         // ref: https://developer.mozilla.org/en-US/docs/Glossary/Falsy
 
@@ -822,7 +949,7 @@ var mytests = function() {
               expect(rs).toBeDefined();
               expect(rs.rows).toBeDefined();
               expect(rs.rows.length).toBe(1);
-              if (isWebSql || isMac)
+              if (isWebSql || isMac || isWKWebView)
                 expect(rs.rows.item(0).myresult).toBe('real');
               else if (!isWebSql && isAndroid && isImpl2)
                 expect(rs.rows.item(0).myresult).toBe('text');
@@ -887,7 +1014,7 @@ var mytests = function() {
               expect(rs).toBeDefined();
               expect(rs.rows).toBeDefined();
               expect(rs.rows.length).toBe(1);
-              if (isWebSql || isMac)
+              if (isWebSql || isMac || isWKWebView)
                 expect(rs.rows.item(0).myresult).toBe('real');
               else if (!isWebSql && isAndroid && isImpl2)
                 expect(rs.rows.item(0).myresult).toBe('text');

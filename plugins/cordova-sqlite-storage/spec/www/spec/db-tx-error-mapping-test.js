@@ -101,7 +101,7 @@ var mytests = function() {
               expect(error.code).toBeDefined();
               expect(error.message).toBeDefined();
 
-              if (isWindows)
+              if (isWindows || (isAndroid && isImpl2))
                 expect(error.code).toBe(0);
               else
                 expect(error.code).toBe(5);
@@ -127,7 +127,7 @@ var mytests = function() {
             expect(error.code).toBeDefined();
             expect(error.message).toBeDefined();
 
-            if (isWindows || isWebSql)
+            if (isWindows || isWebSql || (isAndroid && isImpl2))
               expect(error.code).toBe(0);
             else
               expect(error.code).toBe(5);
@@ -171,7 +171,7 @@ var mytests = function() {
               expect(error.code).toBeDefined();
               expect(error.message).toBeDefined();
 
-              if (isWindows)
+              if (isWindows || (isAndroid && isImpl2))
                 expect(error.code).toBe(0);
               else
                 expect(error.code).toBe(5);
@@ -196,7 +196,7 @@ var mytests = function() {
             expect(error.code).toBeDefined();
             expect(error.message).toBeDefined();
 
-            if (isWindows || isWebSql)
+            if (isWindows || isWebSql || (isAndroid && isImpl2))
               expect(error.code).toBe(0);
             else
               expect(error.code).toBe(5);
@@ -256,7 +256,7 @@ var mytests = function() {
 
               // (WebKit) Web SQL (Android/iOS) possibly with a missing 'r'
               if (isWebSql && isAndroid)
-                expect(error.message).toMatch(/could not execute statement due to a constr?aint failure.*19 constraint failed/);
+                expect(error.message).toMatch(/could not execute statement due to a constr?aint failure.*19.*constraint failed/);
               else if (isWebSql)
                 expect(error.message).toMatch(/constr?aint fail/);
               else if (isWindows)
@@ -264,7 +264,7 @@ var mytests = function() {
               else if (isAndroid && !isImpl2)
                 expect(error.message).toMatch(/sqlite3_step failure: UNIQUE constraint failed: test_table\.data/);
               else if (isAndroid && isImpl2)
-                expect(error.message).toMatch(/constraint failure: column data is not unique.*code 19/);
+                expect(error.message).toMatch(/constraint failure/);
               else
                 expect(error.message).toMatch(/UNIQUE constraint failed: test_table\.data/);
 
@@ -596,12 +596,14 @@ var mytests = function() {
               expect(error.code).toBeDefined();
               expect(error.message).toBeDefined();
 
-              if (isWindows || (isAndroid && isImpl2))
+              if (isWindows || (!isWebSql && isAndroid && isImpl2))
                 expect(error.code).toBe(0);
               else
                 expect(error.code).toBe(5);
 
-              if (isWebSql)
+              if (isWebSql && isAndroid)
+                expect(error.message).toMatch(/could not prepare statement.*not authorized/);
+              else if (isWebSql) // (iOS)
                 expect(error.message).toMatch(/could not prepare statement.*1 not authorized/);
               else if (isWindows)
                 expect(error.message).toMatch(/SQLite3 step error result code: 1/);
@@ -655,7 +657,7 @@ var mytests = function() {
             expect(error.code).toBeDefined();
             expect(error.message).toBeDefined();
 
-            if (isWindows)
+            if (isWindows || (isAndroid && isImpl2))
               expect(error.code).toBe(0);
             else
               expect(error.code).toBe(5);
@@ -706,7 +708,7 @@ var mytests = function() {
 
             // (WebKit) Web SQL (Android/iOS) possibly with a missing 'r'
             if (isWebSql && isAndroid)
-              expect(error.message).toMatch(/could not execute statement due to a constr?aint failure.*19 constraint failed/);
+              expect(error.message).toMatch(/could not execute statement due to a constr?aint failure.*19.*constraint failed/);
             else if (isWebSql)
               expect(error.message).toMatch(/constr?aint fail/);
             else if (isWindows)
@@ -714,7 +716,7 @@ var mytests = function() {
             else if (isAndroid && !isImpl2)
               expect(error.message).toMatch(/a statement with no error handler failed: sqlite3_step failure: UNIQUE constraint failed: test_table\.data/);
             else if (isAndroid && isImpl2)
-              expect(error.message).toMatch(/a statement with no error handler failed: constraint failure: column data is not unique.*code 19/);
+              expect(error.message).toMatch(/a statement with no error handler failed:.*constraint failure/);
             else
               expect(error.message).toMatch(/a statement with no error handler failed: UNIQUE constraint failed: test_table\.data/);
 

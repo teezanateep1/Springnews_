@@ -5,6 +5,10 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.controllers' is found in controllers.js
 var db;
+var path = "http://artbeat.mfec.co.th/SpringNews_mb/api/";
+var path_gm = "http://artbeat.mfec.co.th/SpringNews_mb/static/game/";
+var key = "EAACEdEose0cBAP3LZAULs0sfBDrAFiY0xzMTJHPdzlxArcn4kw";
+
 angular.module('starter', ['ionic', 'starter.controllers',"angular-md5",'services','ngOpenFB','tabSlideBox','ngStorage', 'ionic-cache-src','ngCordova.plugins.googleAds','ngCordovaOauth','ionic-cache-src'])
 
 .run(function($ionicPlatform,$rootScope,$ionicPopup, $cordovaDialogs ,$cordovaSQLite,ngFB, ConnectivityMonitor) { //admobSvc
@@ -250,6 +254,107 @@ angular.module('starter', ['ionic', 'starter.controllers',"angular-md5",'service
 //   }
 // })
 
+// Quiz
+.directive('quiz', function(quizFactory) {
+  return {
+    restrict: 'AE',
+    scope: {},
+    templateUrl: './templates/templatequiz.html',
+    link: function(scope, elem, attrs) {
+      scope.start = function() {
+        scope.id = 0;
+        scope.quizOver = false;
+        scope.inProgress = true;
+        scope.getQuestion();
+      };
+
+      scope.reset = function() {
+        scope.inProgress = false;
+        scope.score = 0;
+      }
+
+      scope.getQuestion = function() {
+        var q = quizFactory.getQuestion(scope.id);
+        if(q) {
+          scope.question = q.question;
+          scope.options = q.options;
+          scope.answer = q.answer;
+          scope.answerMode = true;
+        } else {
+          scope.quizOver = true;
+        }
+      };
+
+      scope.checkAnswer = function() {
+        if(!$('input[name=answer]:checked').length) return;
+
+        var ans = $('input[name=answer]:checked').val();
+
+        if(ans == scope.options[scope.answer]) {
+          scope.score++;
+          scope.correctAns = true;
+        } else {
+          scope.correctAns = false;
+        }
+
+        scope.answerMode = false;
+      };
+
+      scope.nextQuestion = function() {
+        scope.id++;
+        scope.getQuestion();
+      }
+
+      scope.reset();
+    }
+  }
+})
+
+.factory('quizFactory', function() {
+  var questions = [
+    {
+      question: "Which is the largest country in the world by population?",
+      options: ["India", "USA", "China", "Russia"],
+      answer: 2
+    },
+    {
+      question: "When did the second world war end?",
+      options: ["1945", "1939", "1944", "1942"],
+      answer: 0
+    },
+    {
+      question: "Which was the first country to issue paper currency?",
+      options: ["USA", "France", "Italy", "China"],
+      answer: 3
+    },
+    {
+      question: "Which city hosted the 1996 Summer Olympics?",
+      options: ["Atlanta", "Sydney", "Athens", "Beijing"],
+      answer: 0
+    },
+    { 
+      question: "Who invented telephone?",
+      options: ["Albert Einstein", "Alexander Graham Bell", "Isaac Newton", "Marie Curie"],
+      answer: 1
+    }
+  ];
+
+  return {
+    getQuestion: function(id) {
+      if(id < questions.length) {
+        return questions[id];
+      } else {
+        return false;
+      }
+    }
+  };
+})
+
+
+
+
+// Quiz
+
 .config(function($stateProvider, $urlRouterProvider) {  //admobSvcProvider
 
   $stateProvider
@@ -341,7 +446,7 @@ angular.module('starter', ['ionic', 'starter.controllers',"angular-md5",'service
       }
     }
   })
-  // activity
+  // activity --------------
   .state('app.activity', {
     url: '/activity',
     views: {
@@ -357,6 +462,15 @@ angular.module('starter', ['ionic', 'starter.controllers',"angular-md5",'service
       'menuContent': {
         templateUrl: 'templates/shake.html',
         controller: 'ShakeCtrl'
+      }
+    }
+  })
+  .state('app.panoGM', {
+    url: '/panoGM',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/panoGM.html',
+        controller: 'PanoGMCtrl'
       }
     }
   })
@@ -482,6 +596,17 @@ angular.module('starter', ['ionic', 'starter.controllers',"angular-md5",'service
       'menuContent': {
         templateUrl: 'templates/register.html',
         controller: 'registerCtrl'
+      }
+    }
+  })
+
+  // Quiz
+  .state('app.quiz', {
+    url: '/quiz',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/quiz.html',
+        controller: 'quizCtrl'
       }
     }
   });

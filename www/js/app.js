@@ -8,10 +8,10 @@ var db;
 var path = "http://artbeat.mfec.co.th/SpringNews_mb/api/";
 var path_gm = "http://artbeat.mfec.co.th/SpringNews_mb/static/game/";
 var key = "EAACEdEose0cBAP3LZAULs0sfBDrAFiY0xzMTJHPdzlxArcn4kw";
-
+var users_for_check_login = [];
 angular.module('starter', ['ionic', 'starter.controllers',"angular-md5",'services','ngOpenFB','tabSlideBox','ngStorage', 'ionic-cache-src','ngCordova.plugins.googleAds','ngCordovaOauth','ionic-cache-src'])
 
-.run(function($ionicPlatform,$rootScope,$ionicPopup, $cordovaDialogs ,$cordovaSQLite,ngFB, ConnectivityMonitor) { //admobSvc
+.run(function($ionicPlatform,$rootScope,$ionicPopup,$localStorage, $cordovaDialogs ,$cordovaSQLite,ngFB, ConnectivityMonitor) { //admobSvc
   ngFB.init({appId: '647791618729432'});
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
@@ -28,50 +28,69 @@ angular.module('starter', ['ionic', 'starter.controllers',"angular-md5",'service
       StatusBar.styleDefault();
     }
     ionic.Platform.fullScreen();
-  //======admob code start=============
+    //======admob code start=============
  
-      var admobid = {};
-        // select the right Ad Id according to platform
-        if( /(android)/i.test(navigator.userAgent) ) { 
-            admobid = { // for Android
-                banner: 'ca-app-pub-7291107843041210/9939517281',
-                publisherId : "ca-app-pub-7291107843041210/9939517281",
-                interstitial: 'ca-app-pub-7291107843041210/9939517281'
-            };
-        } else if(/(ipod|iphone|ipad)/i.test(navigator.userAgent)) {
-            admobid = { // for iOS
-                banner: 'ca-app-pub-7291107843041210/9939517281',
-                publisherId : "ca-app-pub-7291107843041210/9939517281",
-                interstitial: 'ca-app-pub-7291107843041210/9939517281'
-            };
-        } else {
-            admobid = { // for Windows Phone
-                banner: 'ca-app-pub-7291107843041210/9939517281',
-                publisherId : "ca-app-pub-7291107843041210/9939517281",
-                interstitial: 'ca-app-pub-7291107843041210/9939517281'
-            };
-        }
+    var admobid = {};
+    // select the right Ad Id according to platform
+    if( /(android)/i.test(navigator.userAgent) ) { 
+        admobid = { // for Android
+            banner: 'ca-app-pub-7291107843041210/9939517281',
+            publisherId : "ca-app-pub-7291107843041210/9939517281",
+            interstitial: 'ca-app-pub-7291107843041210/9939517281'
+        };
+    } else if(/(ipod|iphone|ipad)/i.test(navigator.userAgent)) {
+        admobid = { // for iOS
+            banner: 'ca-app-pub-7291107843041210/9939517281',
+            publisherId : "ca-app-pub-7291107843041210/9939517281",
+            interstitial: 'ca-app-pub-7291107843041210/9939517281'
+        };
+    } else {
+        admobid = { // for Windows Phone
+            banner: 'ca-app-pub-7291107843041210/9939517281',
+            publisherId : "ca-app-pub-7291107843041210/9939517281",
+            interstitial: 'ca-app-pub-7291107843041210/9939517281'
+        };
+    }
  
-  //=======AdMob Code End=======
-        if(window.AdMob) 
-          AdMob.createBanner( {
-              adId:admobid.banner, 
-              position:AdMob.AD_POSITION.BOTTOM_CENTER, 
-              autoShow:true
-          });
-          // db = $cordovaSQLite.openDB("springnew.db");
-          // try{
-
+    //=======AdMob Code End=======
+    if(window.AdMob) 
+      AdMob.createBanner( {
+          adId:admobid.banner, 
+          position:AdMob.AD_POSITION.BOTTOM_CENTER, 
+          autoShow:true
+      });
+      // db = $cordovaSQLite.openDB("springnew.db");
+      // try{
+      try {
           db = $cordovaSQLite.openDB({name:"springnew.db",location:'default'});
-          console.log(db);
-          // db = window.sqlitePlugin.openDatabase( {name: "springnew.db", createFromLocation: 1} );
-          $cordovaSQLite.execute(db, "CREATE TABLE IF NOT EXISTS user(id integer primary key,user_id integer,name text ,mycode text ,status integer)");
-          $cordovaSQLite.execute(db, "CREATE TABLE IF NOT EXISTS action(id integer primary key, user_id integer,news_id integer)");
-          // }
-          // catch(error){
-          //   alert(error);
-          // }
-        });
+          // $cordovaSQLite.deleteDB("springnew.db");
+      } catch (error) {
+          alert(error);
+      }
+      $cordovaSQLite.execute(db, "CREATE TABLE IF NOT EXISTS User(id integer primary key,user_id text,fullname text ,mycode text ,login_stat integer)");
+      $cordovaSQLite.execute(db, "CREATE TABLE IF NOT EXISTS Action(id integer primary key, user_id integer,news_id integer)");
+      
+      /////////// Check Status login In SQLite ///////////
+      var q_select = "SELECT * FROM User";
+      $cordovaSQLite.execute(db, q_select).then(function(result) {
+        console.log(result);
+        for (var i = 0; i < result.rows.length; i++) {
+          users_for_check_login.push(result.rows.item(i));
+        }
+        console.log(JSON.stringify(users_for_check_login[0]));
+        if(users_for_check_login[0].login_stat == 1){
+          $localStorage.logined = true;
+          console.log("localStorage.logined Check "+$localStorage.logined);
+        }else{
+          $localStorage.logined = false;
+          console.log("localStorage.logined Check "+$localStorage.logined);
+        };
+        // $window.location.reload(true)
+      });
+
+      
+
+    });
 
 })
 
@@ -253,6 +272,107 @@ angular.module('starter', ['ionic', 'starter.controllers',"angular-md5",'service
 //     }
 //   }
 // })
+
+// Quiz
+.directive('quiz', function(quizFactory) {
+  return {
+    restrict: 'AE',
+    scope: {},
+    templateUrl: './templates/templatequiz.html',
+    link: function(scope, elem, attrs) {
+      scope.start = function() {
+        scope.id = 0;
+        scope.quizOver = false;
+        scope.inProgress = true;
+        scope.getQuestion();
+      };
+
+      scope.reset = function() {
+        scope.inProgress = false;
+        scope.score = 0;
+      }
+
+      scope.getQuestion = function() {
+        var q = quizFactory.getQuestion(scope.id);
+        if(q) {
+          scope.question = q.question;
+          scope.options = q.options;
+          scope.answer = q.answer;
+          scope.answerMode = true;
+        } else {
+          scope.quizOver = true;
+        }
+      };
+
+      scope.checkAnswer = function() {
+        if(!$('input[name=answer]:checked').length) return;
+
+        var ans = $('input[name=answer]:checked').val();
+
+        if(ans == scope.options[scope.answer]) {
+          scope.score++;
+          scope.correctAns = true;
+        } else {
+          scope.correctAns = false;
+        }
+
+        scope.answerMode = false;
+      };
+
+      scope.nextQuestion = function() {
+        scope.id++;
+        scope.getQuestion();
+      }
+
+      scope.reset();
+    }
+  }
+})
+
+.factory('quizFactory', function() {
+  var questions = [
+    {
+      question: "Which is the largest country in the world by population?",
+      options: ["India", "USA", "China", "Russia"],
+      answer: 2
+    },
+    {
+      question: "When did the second world war end?",
+      options: ["1945", "1939", "1944", "1942"],
+      answer: 0
+    },
+    {
+      question: "Which was the first country to issue paper currency?",
+      options: ["USA", "France", "Italy", "China"],
+      answer: 3
+    },
+    {
+      question: "Which city hosted the 1996 Summer Olympics?",
+      options: ["Atlanta", "Sydney", "Athens", "Beijing"],
+      answer: 0
+    },
+    { 
+      question: "Who invented telephone?",
+      options: ["Albert Einstein", "Alexander Graham Bell", "Isaac Newton", "Marie Curie"],
+      answer: 1
+    }
+  ];
+
+  return {
+    getQuestion: function(id) {
+      if(id < questions.length) {
+        return questions[id];
+      } else {
+        return false;
+      }
+    }
+  };
+})
+
+
+
+
+// Quiz
 
 .config(function($stateProvider, $urlRouterProvider) {  //admobSvcProvider
 
@@ -495,6 +615,17 @@ angular.module('starter', ['ionic', 'starter.controllers',"angular-md5",'service
       'menuContent': {
         templateUrl: 'templates/register.html',
         controller: 'registerCtrl'
+      }
+    }
+  })
+
+  // Quiz
+  .state('app.quiz', {
+    url: '/quiz',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/quiz.html',
+        controller: 'quizCtrl'
       }
     }
   });
