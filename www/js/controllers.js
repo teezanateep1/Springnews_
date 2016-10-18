@@ -377,7 +377,7 @@ angular.module('starter.controllers', ['ngOpenFB'])
 .controller('HistoryCtrl', function($scope,_function,SpringNews) {
     $scope.history = []; 
     $scope.adver = [];
-    SpringNews._pages_history($scope); alert(soc_line)
+    SpringNews._pages_history($scope); 
 })
 
 // --------------------- VISION ------------------------
@@ -730,7 +730,8 @@ angular.module('starter.controllers', ['ngOpenFB'])
       game.state.start('Boot');
 })
 //==== 360
-.controller('PanoGMCtrl', function($scope,$timeout,$window,$interval) {
+.controller('PanoGMCtrl', function($scope,$timeout,$window,$interval,SpringNews) {
+
       var seconds=60, num_gm = 0, play = false,myTimeOut, mouse;
       var camera, scene, renderer, mesh, controls ;
       var particles, materials_obj, i, h, color, sprite, imgX, imgY, loader;
@@ -742,7 +743,7 @@ angular.module('starter.controllers', ['ngOpenFB'])
       phi = 0, theta = 0;
       $scope.countdown = seconds;
       $scope.gm_power = window.localStorage.getItem("gm_power");
-      $scope.gm_xp = './img/game/5xp.png';
+      $scope.gm_xp = '../img/game/5xp.png';
 
       var blocker = document.getElementById( 'blocker' );
       var container = document.getElementById( 'container' );
@@ -979,6 +980,7 @@ angular.module('starter.controllers', ['ngOpenFB'])
           document.getElementById("game_compl").style.visibility = "hidden";
           document.getElementById("game_over").style.visibility = "visible";
           document.getElementById("xp").innerHTML = num_gm+" XP";
+          SpringNews._intxp(1,num_gm);
           blocker.className = 'bg-color';
           play = false;
         }
@@ -1422,7 +1424,6 @@ angular.module('starter.controllers', ['ngOpenFB'])
       _address: this.regis.address ,
       _phone: this.regis.tel ,
       _type: "user"
-
     }
 
     SQLite._register($scope,user_info);
