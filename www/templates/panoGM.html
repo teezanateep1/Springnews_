@@ -1,5 +1,5 @@
 <ion-view >
-  <ion-content> 	
+  <ion-content scroll="false"> 	
   <style>
 		 	.info {
 				position: absolute;
@@ -108,6 +108,11 @@
 
 		</style>	
 
+		<div id="loading" style="background-color: black;width: 100%;height: 100%;position: fixed;z-index: 10;text-align: center;">
+			<div style="margin-top: 50%">
+				<img src="./img/game/preloader.gif">
+			</div>
+		</div>
 		<div class="space-label" id="game_compl">
 			<img ng-src="gm_xp" style="width: 50%;display: table-cell;position: relative;left: 35px;line-height: initial;padding-bottom: 30%;">
 			<span id="start_" class="start" >Click to play</span>

@@ -430,7 +430,7 @@ angular.module('services', ['ngCordova'])
         $ionicLoading.show();  
         $http.get(url).success(function(result){ 
             $scope.history = result[0].post_content; 
-            $ionicLoading.hide();           
+            $ionicLoading.hide();       
         })  
         .error(function(){  
             $ionicLoading.hide();   
@@ -533,7 +533,32 @@ angular.module('services', ['ngCordova'])
             alert(data)
         });
     }
+    //-------------- get XP 
+    this._getxp = function(value,id){
+        var url=path+"be/Levels/getUserLV"; 
+        $http({
+            method  : 'GET',
+            url     :  url,
+            data    :  value,  // pass in data as strings
+            headers : {'api-key': key}  // set the headers so angular passing info as form data (not request payload)
+        })
+        .success(function(data) {
+            alert(data)
+        });
+    }
+    //-------------- int XP 
+    this._intxp = function(id_,value_){
+        var url=path+"be/Levels/insertuserLV"; 
+        $http({
+            method  : 'POST',
+            url     :  url,
+            data    :  {id:id_,xp:value_},  // pass in data as strings
+            headers : {'api-key': key}  // set the headers so angular passing info as form data (not request payload)
+        })
+        .success(function(data) {
 
+        });
+    }
       
     
 }])
