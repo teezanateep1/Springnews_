@@ -66,6 +66,14 @@
                   <p ng-show="registerForm.tel.$invalid && !registerForm.tel.$pristine" class="help-block">*กรุณากรอกเบอร์โทร</p>
                 </div>
 
+                 <div>
+                  <label class="item-login item-input">
+                    <span class="input-label">Invite Code</span>
+                    <input type="text" name="invite" class="form-control" ng-model="regis.invite" >
+                  </label>
+                  <!-- <p ng-show="registerForm.invite.$invalid && !registerForm.invite.$pristine" class="help-block">*กรุณากรอกเบอร์โทร</p> -->
+                </div>
+
                 </br>
                 <div style="text-align: center;height: 30px;">
                   <button type="submit" class="button button-sp" ng-disabled="registerForm.$invalid">

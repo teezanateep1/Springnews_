@@ -13,27 +13,26 @@ Shake.Preloader.prototype = {
 		this.game.forceSingleUpdate = true;
 
 		//Background/Logo/Button
-		this.load.image('backgroundGame',path_gm+'shake/Background/bg_game.jpg');
-		this.load.image('backgroundMain',path_gm+'shake/Background/bg_main.png');
-		this.load.image('logo',path_gm+'shake/GUI/logo.png');
-		this.load.image('buttonplay',path_gm+'shake/GUI/play.png');
-		this.load.image('congrats',path_gm+'shake/Background/congrats.png');
-		this.load.image('but-continue',path_gm+'shake/Background/button-continue.png');
-		this.load.image('icon-power',path_gm+'shake/GUI/power.png');
+		this.load.image('backgroundGame',path_gm+'shake/bg_game.png');
+		this.load.image('backgroundMain',path_gm+'shake/bg_main.png');
+
+		this.load.image('buttonplay','./img/game/shake/play.png');
+		this.load.image('congrats','./img/game/shake/cong.png');
+		this.load.image('but-continue','./img/game/shake/but-conti.png');
+		this.load.image('icon-power','./img/game/power.png');
 
 		//Object Shake /Reward
-		this.load.spritesheet('bag', path_gm+'shake/Player/bagspringnews.png',386, 350);
-		this.load.spritesheet('shake', path_gm+'shake/Background/shake.png',350, 250);
-		this.load.spritesheet('reward', path_gm+'shake/Player/treasure.png',350, 250);
+		this.load.spritesheet('bag', path_gm+'shake/shake.png',386, 350);
+		this.load.spritesheet('shake', './img/game/shake/shake.png',350, 250);
+		this.load.spritesheet('reward', './img/game/shake/treasure.png',350, 250);
 
 		//Random
-		this.load.image('object1', path_gm+'shake/Background/flare-white-blue-star.png');
-	    this.load.image('object2', path_gm+'shake/Background/scene_01_pandulum.png');
-	    this.load.image('object3', path_gm+'shake/GUI/bubble.png');
-	    this.load.image('object4', path_gm+'shake/Background/star.png');
+		this.load.image('object1', path_gm+'shake/object1.png');
+	    this.load.image('object2', path_gm+'shake/object2.png');
+	    this.load.image('object3', path_gm+'shake/object3.png');
 
 	    //Sounds
-		this.load.audio('spell', path_gm+'shake/Sounds/spell4.wav');
+		this.load.audio('spell','./img/game/shake/spell4.wav');
 
 	},
 

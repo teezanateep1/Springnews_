@@ -41,8 +41,8 @@ Shake.Menu.prototype = {
 	    var grd = text.context.createLinearGradient(0, 0, 0, text.height);
 
 	    //  Add in 2 color stops
-	    grd.addColorStop(0, '#ffd42a');   
-	    grd.addColorStop(1, '#f79514');
+	    grd.addColorStop(0, '#000');   
+	    grd.addColorStop(1, '#000');
 
 	    //  And apply to the Text
 	    text.fill = grd;
@@ -52,7 +52,7 @@ Shake.Menu.prototype = {
 		startButton.anchor.setTo(0.5, -0.5);
 		startButton.scale.setTo(0.8, 0.8);
 
-		this.game.state.start('Game');
+		//this.game.state.start('Game');
 	},
 	update:function() {
 		shakeMenu.animations.play('shakeshake');

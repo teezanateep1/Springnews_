@@ -13,19 +13,19 @@
 
 		<div ng-show="!answerMode">
 			<button ng-click="nextQuestion()" class="next-question">Next</button>
-			<span ng-show="correctAns">That is correct!</span>
-			<span ng-show="!correctAns">Sorry, that is an incorrect answer.</span>
+			<!-- <span ng-show="correctAns">That is correct!</span>
+			<span ng-show="!correctAns">Sorry, that is an incorrect answer.</span> -->
 		</div>
 	</div>
 
 	<div ng-show="quizOver">
-		<h2>Quiz is over</h2>
+		<h2>Score: {{score}}</h2>
 		<button ng-click="reset()">Play again</button>
 	</div>
 
-	<div id="score">
+	<!-- <div id="score">
 		Score: {{score}}
-	</div>
+	</div> -->
 </div>
 
 <div class="intro" ng-show="!inProgress">

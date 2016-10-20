@@ -1,4 +1,4 @@
-angular.module('services', [])
+angular.module('services', ['ngCordova'])
 
 .factory('facebookService', function($q) {
     return {
@@ -83,10 +83,6 @@ angular.module('services', [])
   }
 })
 
-// Quiz
-
-
-// Quiz End
 
 .service("_function",["$http","$ionicSlideBoxDelegate","$ionicPopup",function($http,$ionicSlideBoxDelegate,$ionicPopup){  
     this._onError = function(onError){
@@ -434,7 +430,7 @@ angular.module('services', [])
         $ionicLoading.show();  
         $http.get(url).success(function(result){ 
             $scope.history = result[0].post_content; 
-            $ionicLoading.hide();           
+            $ionicLoading.hide();       
         })  
         .error(function(){  
             $ionicLoading.hide();   
@@ -537,184 +533,93 @@ angular.module('services', [])
             alert(data)
         });
     }
+    //-------------- get XP 
+    this._getxp = function(value,id){
+        var url=path+"be/Levels/getUserLV"; 
+        $http({
+            method  : 'GET',
+            url     :  url,
+            data    :  value,  // pass in data as strings
+            headers : {'api-key': key}  // set the headers so angular passing info as form data (not request payload)
+        })
+        .success(function(data) {
+            alert(data)
+        });
+    }
+    //-------------- int XP 
+    this._intxp = function(id_,value_){
+        var url=path+"be/Levels/insertuserLV"; 
+        $http({
+            method  : 'POST',
+            url     :  url,
+            data    :  {id:id_,xp:value_},  // pass in data as strings
+            headers : {'api-key': key}  // set the headers so angular passing info as form data (not request payload)
+        })
+        .success(function(data) {
 
+        });
+    }
       
     
 }])
 
-.service("SQLite",["$http","$ionicSlideBoxDelegate","_function","$ionicLoading","$cordovaLocalNotification","$cordovaSQLite",function($http,$ionicSlideBoxDelegate,_function,$rootScope,$ionicLoading,$cordovaLocalNotification,$cordovaSQLite){ 
-    // var actions =[];
 
-    this._login = function($scope){
+.factory('SQLite_return', function($http) {
+    var user_res,user_get_res,user_get_login;
+    var Data_User = {
+        _Register: function($scope,user_info){ 
+            if(!user_res){
 
-        var users = [];
-        var query = "SELECT * FROM user";
-        $cordovaSQLite.execute(db, query,[]).then(function(res){
-            for(var i = 0; i < res.rows.length; i++){
-                users.push(res.rows.item(i));
-                console.log(users);
+                console.log(user_info);
+                var url=path+"be/Users/insert"; 
+                user_res = $http({
+                    method  : 'POST',
+                    url     :  url,
+                    data    :  user_info,  // pass in data as strings
+                    headers : {'api-key': key}  // set the headers so angular passing info as form data (not request payload)
+                }).then(function(response) {
+                    console.log("register_success");
+                    return response.data;
+                });
             }
+            console.log(user_res);
+            return user_res;
         },
-        function(err){ 
-            console.log("Error");
-        })
 
-        console.log($scope.loginData)
-        var url=path+"be/Users/logInUser"; 
-        $http({
-            method  : 'POST',
-            url     :  url,
-            data    :  $scope.loginData,  // pass in data as strings
-            headers : {'api-key': key}  // set the headers so angular passing info as form data (not request payload)
-        })
-        .success(function(data) {
-            console.log(data);
-            console.log("login_success");
-            var url=path+"be/Users/getID?api-key="+key+"&id="+data.ID; 
-            $http.get(url).success(function(result){
-                console.log(result);
-                // $scope.user_info_return = result
-                console.log(result[0].ID+"  "+result[0].name+"  "+result[0].lastname+"  "+db);
-                var user_id = result[0].ID;
-                var fullname = result[0].name+"  "+result[0].lastname;
-                var mycode = result[0].mycode;
-                if (users == []) {
-                    var query = "INSERT INTO user (user_id, name,mycode) VALUES (?,?)";
-                    $cordovaSQLite.execute(db, query, [user_id, fullname,mycode]).then(function(res) {
-                        console.log("INSERT ID -> " + res.insertId);
-                    }, function (err) {
-                        console.error(err);
-                    });
+        _get_info: function($scope,d){
+            if(!user_get_res){
+                console.log(d);
 
-
-                } else{
-                    console.log(users);
-                    var query = "UPDATE user SET user_id = "+user_id+",name = '"+fullname+"' WHERE id = 1";
-                    $cordovaSQLite.execute(db, query,[]).then(function(res) {
-                        console.log("UPDATE ID -> " + res);
-                    }, function (err) {
-                        console.error(err);
-                    });
-                };
-            })  
-            .error(function(){  
-                console.log(result);
-            });
-        }).error(function(){  
-            console.log("login_error");
-            console.log(data);
-            alert("login_error");
-        });
-    }
-
-    // --------- สมัครสมาชิก
-    this._register = function($scope,user_info){ 
-        // console.log(user_info);
-        var query = "SELECT * FROM user";
-        var users = [];
-        console.log(user_info);
-        $cordovaSQLite.execute(db, query,[]).then(function(res){
-            for(var i = 0; i < res.rows.length; i++){
-                console.log("SELECTED -> " + res.rows.item(0).id);
-                users.push(res.rows.item(i));
-                console.log(users);
+                var url=path+"be/Users/getID?api-key="+key+"&id="+d.ID; 
+                user_get_res = $http.get(url).then(function(result){
+                  console.log(result.data);
+                  return result.data;
+                });
             }
+            return user_get_res;
         },
-        function(err){ 
-            alert("Error"+err);
-        })
 
+        _login: function($scope){
+            if(!user_get_login){
+                console.log($scope.loginData);
 
-
-        console.log(user_info);
-        var url=path+"be/Users/insert"; 
-        $http({
-            method  : 'POST',
-            url     :  url,
-            data    :  user_info,  // pass in data as strings
-            headers : {'api-key': key}  // set the headers so angular passing info as form data (not request payload)
-        })
-        .success(function(data) {
-
-            console.log("register_success");
-            var url=path+"be/Users/getID?api-key="+key+"&id="+data.ID; 
-            $http.get(url).success(function(result){
-                console.log(result);
-                // $scope.user_info_return = result
-                console.log(result[0].ID+"  "+result[0].name+"  "+result[0].lastname+"  "+db);
-                var user_id = result[0].ID;
-                var fullname = result[0].name+"  "+result[0].lastname;
-                var mycode = result[0].mycode;
-                if (users == []) {
-                    var query = "INSERT INTO user (user_id, name,mycode) VALUES (?,?)";
-                    $cordovaSQLite.execute(db, query, [user_id, fullname,mycode]).then(function(res) {
-                        console.log("INSERT ID -> " + res.insertId);
-                    }, function (err) {
-                        console.error(err);
-                    });
-
-
-                } else{
-                    console.log(users);
-                    var query = "UPDATE user SET user_id = "+user_id+",name = '"+fullname+"' WHERE id = 1";
-                    $cordovaSQLite.execute(db, query,[]).then(function(res) {
-                        console.log("UPDATE ID -> " + res);
-                    }, function (err) {
-                        console.error(err);
-                    });
-                };
-                
-            })  
-            .error(function(){  
-                console.log(result);
-            });
-        }).error(function(){  
-            console.log("register_error");
-            console.log(data);
-            alert("register_error");
-        });
-    }
-     
-    this._getuser = function() {
-        var users = [];
-        console.log(db);
-        var query = "SELECT * FROM user";
-        $cordovaSQLite.execute(db, query,[]).then(function(res){
-            for(var i = 0; i < res.rows.length; i++){
-                users.push(res.rows.item(i));
+                var url=path+"be/Users/logInUser"; 
+                user_get_login =$http({
+                    method  : 'POST',
+                    url     :  url,
+                    data    :  $scope.loginData,  // pass in data as strings
+                    headers : {'api-key': key}  // set the headers so angular passing info as form data (not request payload)
+                }).then(function(response) {
+                    console.log("login_success");
+                    return response.data;
+                });
             }
-            $scope.user_get = users;
-        },
-        function(err){ 
-            console.log("Error");
-            alert("Error"+err);
-        })
-        console.log(users);
-    }
+            return user_get_login;
+        }
 
-    this._getaction = function() {
-        var actions = [];
-        $cordovaSQLite.execute(db, "SELECT * FROM action").then(function(res){
-            for(var i = 0; i < res.rows.length; i++){
-                actions.push(res.rows.item(i));
-            }
-        },
-        function(err){ 
-            console.log("Error");
-        })
-    }
-
-    this._remove =function(userId) {
-        $cordovaSQLite.execute(db, "DELETE FROM user WHERE id=?", [userId]).then(function(res){
-            console.log("Deleted");
-        },
-        function(err){ 
-            console.log("Error");
-        })
-    }
-    
-
-}]) 
+    };
+    return Data_User;
+})
 
 .service("Actions",["$http","$ionicSlideBoxDelegate","_function","$ionicLoading","$cordovaLocalNotification","$cordovaSQLite",function($http,$ionicSlideBoxDelegate,_function,$rootScope,$ionicLoading,$cordovaLocalNotification,$cordovaSQLite){ 
     // ---------  อ่านข่าว

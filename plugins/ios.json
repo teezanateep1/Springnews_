@@ -55,13 +55,13 @@
         "cordova-plugin-x-socialsharing": {
             "PACKAGE_NAME": "com.dev.springnews"
         },
+        "cordova-sqlite-storage": {
+            "PACKAGE_NAME": "com.dev.springnews"
+        },
         "de.appplant.cordova.plugin.local-notification": {
             "PACKAGE_NAME": "com.dev.springnews"
         },
         "ionic-plugin-keyboard": {
-            "PACKAGE_NAME": "com.dev.springnews"
-        },
-        "cordova-sqlite-storage": {
             "PACKAGE_NAME": "com.dev.springnews"
         }
     },

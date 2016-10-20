@@ -17,13 +17,6 @@ angular.module('starter.controllers', ['ngOpenFB'])
       StatusBar.hide();
     }
   }
-  // // Create the login modal that we will use later
-  // $ionicModal.fromTemplateUrl('templates/login.html', {
-  //   scope: $scope
-  // }).then(function(modal) {
-  //   $scope.modal = modal;
-  // });
-
  // -------------- MEnu // SubMEnu ---
  $scope.menu_toggle = true;
  $scope.link = $location.path();
@@ -44,7 +37,7 @@ angular.module('starter.controllers', ['ngOpenFB'])
       $scope.sublink_activity = false;
       $scope.submenu_activity = false;
     }
-    else if(argument == "activity" || argument == "shake" || argument == "360" ){
+    else if(argument == "activity" || argument == "shake" || argument == "360" || argument == "quiz"){
       $scope.link = '/app/activity_';
       $scope.sublink_activity = argument;
       $scope.sublink_schedule = false;
@@ -116,38 +109,39 @@ angular.module('starter.controllers', ['ngOpenFB'])
   };  
 
   // Form data for the login modal
-  $rootScope.loginData = {};
-  $rootScope.user  = {};
+  // $rootScope.loginData = {};
+  // $rootScope.user  = {};
   $rootScope.icon = "right";
 
-  if($localStorage.img != undefined){
-     $rootScope.user.img = $localStorage.img;
-     $rootScope.profile = true;
-     $rootScope.login_ = false;
-     $rootScope.logout_ = true;
+  // alert("localStorage.logined AppCtrl "+$localStorage.logined);
+  if($localStorage.logined){
+     $localStorage.img = "./img/default_user.png";
+     $scope.user.img = $localStorage.img;
+     $scope.profile = true;
+     $scope.login_ = false;
+     $scope.logout_ = true;
   }else{
      // $scope.profile = true;
-     $rootScope.profile = false;
-     $rootScope.login_ = true;
-     $rootScope.logout_ = false;
+     $scope.profile = false;
+     $scope.login_ = true;
+     $scope.logout_ = false;
   }
-
-  // // Triggered in the login modal to close it
-  // $scope.closeLogin = function() {
-  //   $scope.modal.hide();
-  // };
-
-  // // Open the login modal
-  // $scope.login = function() {
-  //   $scope.modal.show();
-  // };
 
   //Open the logout 
   $scope.logout = function() {
-    $localStorage.img = undefined;
-    $rootScope.profile = false;
-    $rootScope.login_ = true;
-    $rootScope.logout_ = false;
+
+    var query = "UPDATE User SET login_stat = 0 WHERE id = 1";
+    $cordovaSQLite.execute(db, query,[]).then(function(res) {
+        console.log("UPDATE ID -> " + JSON.stringify(res));
+    }, function (err) {
+        console.error(err);
+    });
+
+    $localStorage.logined = false;
+    $scope.profile = false;
+    $scope.login_ = true;
+    $scope.logout_ = false;
+
   }
 
   
@@ -733,10 +727,12 @@ angular.module('starter.controllers', ['ngOpenFB'])
 })
 
 // --------------------- Activity ------------------------
-.controller('ActivityCtrl', function($scope,_function,SpringNews) {
+.controller('ActivityCtrl', function($scope,_function,SpringNews,$cordovaSQLite) {
   $scope.activity = [];
   SpringNews._pages_activity($scope); 
+
 })
+//==== shake
 .controller('ShakeCtrl', function($scope) {
   var game = new Phaser.Game(window.screen.availWidth * window.devicePixelRatio, window.screen.availHeight * window.devicePixelRatio, Phaser.AUTO, 'game');
       game.state.add('Boot', Shake.Boot);
@@ -745,7 +741,9 @@ angular.module('starter.controllers', ['ngOpenFB'])
       game.state.add('Game', Shake.Game);
       game.state.start('Boot');
 })
-.controller('PanoGMCtrl', function($scope,$timeout,$window,$interval) {
+//==== 360
+.controller('PanoGMCtrl', function($scope,$timeout,$window,$interval,SpringNews) {
+
       var seconds=60, num_gm = 0, play = false,myTimeOut, mouse;
       var camera, scene, renderer, mesh, controls ;
       var particles, materials_obj, i, h, color, sprite, imgX, imgY, loader;
@@ -757,7 +755,7 @@ angular.module('starter.controllers', ['ngOpenFB'])
       phi = 0, theta = 0;
       $scope.countdown = seconds;
       $scope.gm_power = window.localStorage.getItem("gm_power");
-      $scope.gm_xp = path_gm+'panoGM/GUI/5xp.png';
+      $scope.gm_xp = '../img/game/5xp.png';
 
       var blocker = document.getElementById( 'blocker' );
       var container = document.getElementById( 'container' );
@@ -795,7 +793,7 @@ angular.module('starter.controllers', ['ngOpenFB'])
 
       function init() {
 
-        camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 1000 );
+        camera = new THREE.PerspectiveCamera( 85, window.innerWidth / window.innerHeight, 1, 1000 );
         camera.target = new THREE.Vector3( 0, 0, 0 );
         controls = new THREE.DeviceOrientationControls( camera );
 
@@ -805,13 +803,33 @@ angular.module('starter.controllers', ['ngOpenFB'])
         var geometry = new THREE.SphereGeometry( 500, 60, 40 );
         geometry.scale( - 1, 1, 1 );
 
-        var material = new THREE.MeshBasicMaterial( {
-          map: new THREE.TextureLoader().load( path_gm+'panoGM/Background/360_game_'+Math.round(Math.random() * 3)+'.jpg' )
-        } );
+        var loader_bg = new THREE.TextureLoader();
 
-        mesh = new THREE.Mesh( geometry, material );
-        scene.add( mesh );
+          loader_bg.load(
+              // resource URL
+              path_gm+'panoGM/360_game_'+Math.round(Math.random() * 3)+'.png',
+              // Function when resource is loaded
+              function ( texture ) {
+                // do something with the texture
+                var material = new THREE.MeshBasicMaterial( {
+                  map: texture 
+                } );
 
+                mesh = new THREE.Mesh( geometry, material );
+                scene.add( mesh );
+              },
+              // Function called when download progresses
+              function ( xhr ) {
+                if((xhr.loaded / xhr.total * 100) == 100){
+                 document.getElementById("loading").style.visibility = "hidden";
+                }
+              },
+              // Function called when download errors
+              function ( xhr ) {
+                console.log( 'An error happened' );
+              }
+            );
+        
         renderer = new THREE.WebGLRenderer();
         renderer.setClearColor( scene.fog.color );
         renderer.setPixelRatio( window.devicePixelRatio );
@@ -835,11 +853,11 @@ angular.module('starter.controllers', ['ngOpenFB'])
 
       function object(){
         loader = new THREE.TextureLoader();
-        var sprite1 = path_gm+'panoGM/GUI/object1.png';
-        var sprite2 = path_gm+'panoGM/GUI/object2.png';
-        var sprite3 = path_gm+'panoGM/GUI/object3.png';
-        var sprite4 = path_gm+'panoGM/GUI/object4.png';
-        var sprite5 = path_gm+'panoGM/GUI/object5.png';
+        var sprite1 = path_gm+'panoGM/object1.png';
+        var sprite2 = path_gm+'panoGM/object2.png';
+        var sprite3 = path_gm+'panoGM/object3.png';
+        var sprite4 = path_gm+'panoGM/object4.png';
+        var sprite5 = path_gm+'panoGM/object5.png';
 
           parameters_obj = [
               [sprite1 ],
@@ -865,9 +883,9 @@ angular.module('starter.controllers', ['ngOpenFB'])
                 materials_obj.map.minFilter = THREE.LinearFilter;
 
                 particles = new THREE.Mesh( new THREE.CubeGeometry(50,50,0), materials_obj );
-                particles.position.x = (Math.random() - 0.5) * 1000;
-                particles.position.y = (Math.random() - 0.5) * 1000;
-                particles.position.z = (Math.random() - 0.5) * 1000;
+                particles.position.x = (Math.random() - 0.5) * 500;
+                particles.position.y = (Math.random() - 0.5) * 500;
+                particles.position.z = (Math.random() - 0.5) * 500;
                 particles.name = 'item_'+i;
 
                 scene.add( particles );
@@ -909,7 +927,7 @@ angular.module('starter.controllers', ['ngOpenFB'])
         raycaster.setFromCamera( mouse, camera );
         raycaster.setFromCamera( mouse3D.clone(), camera );
          
-         $scope.object_gm = obj_gm;
+        $scope.object_gm = obj_gm;
         var intersects = raycaster.intersectObjects( objects ); 
 
         if ( intersects.length > 0 && seconds !=0 ){
@@ -974,6 +992,7 @@ angular.module('starter.controllers', ['ngOpenFB'])
           document.getElementById("game_compl").style.visibility = "hidden";
           document.getElementById("game_over").style.visibility = "visible";
           document.getElementById("xp").innerHTML = num_gm+" XP";
+          SpringNews._intxp(1,num_gm);
           blocker.className = 'bg-color';
           play = false;
         }
@@ -1030,7 +1049,7 @@ angular.module('starter.controllers', ['ngOpenFB'])
 })
 
 // ---------------------- NEWS DETAIL ---------------------
-.controller('NewsCtrl', function($scope, $stateParams ,Actions,SQLite, SpringNews, $ionicLoading, $timeout,_function, $sce, $cordovaSocialSharing, $timeout) {
+.controller('NewsCtrl', function($scope, $stateParams ,Actions,SQLite_return, SpringNews, $ionicLoading, $timeout,_function, $sce, $cordovaSocialSharing, $timeout) {
   
   $scope.newsDetail = [];
   $scope.newsConnected = [];
@@ -1054,34 +1073,54 @@ angular.module('starter.controllers', ['ngOpenFB'])
   $scope.message = '';
   $scope.url = '';
 
-  // console.log($stateParams);
-  SQLite._getuser();
+  var users_in_db = [];
+  var q_select = "SELECT * FROM User";
+  $cordovaSQLite.execute(db, q_select).then(function(result) {
+    alert(JSON.stringify(result));
+    for (var i = 0; i < result.rows.length; i++) {
+      users_in_db.push(result.rows.item(i));
+    }
+    
+  });
 
-  
+  // var like_in_db =[];
+  // var q_select = "SELECT * FROM Action where news_id ="+$stateParams.newsId+"";
+  // $cordovaSQLite.execute(db, q_select).then(function(result) {
+  //   console.log(result);
+  //   for (var i = 0; i < result.rows.length; i++) {
+  //     like_in_db.push(result.rows.item(i));
+  //     $scope.like = "ถูกใจแล้ว";
+  //     alert("ถูกใจแล้ว");
+  //   }
+  // });
+  var u_id = 0;
+  if (users_in_db.length > 0) {
+    u_id = users_in_db.user_id;
+  } 
 
   var new_info = { 
       _postID: $stateParams.newsId,
-      _userID: ""
+      _userID: u_id
   }
 
   Actions._read($scope,new_info);
 
   $scope.share = function (title,url){
-      $scope.title_ = title
-      $scope.url = url
-      $cordovaSocialSharing
-      .share($scope.title_,null,null,$scope.url)
-      .then(function(result) {
-        // Success!
-        Actions._share($scope,new_info);
-      }, function(err) {
-        // An error occurred. Show a message to the user
-        $ionicPopup.alert({
-           title: 'An error occurred.'
-         });
-      });
-    }
- //substring
+    $scope.title_ = title
+    $scope.url = url
+    $cordovaSocialSharing
+    .share($scope.title_,null,null,$scope.url)
+    .then(function(result) {
+      // Success!
+      Actions._share($scope,new_info);
+    }, function(err) {
+      // An error occurred. Show a message to the user
+      $ionicPopup.alert({
+         title: 'An error occurred.'
+       });
+    });
+  }
+  //substring
   $scope.substring = function(str){
     if(str.length > 50){
       return str.substring(0, 50)+"...";
@@ -1089,6 +1128,24 @@ angular.module('starter.controllers', ['ngOpenFB'])
       return str;
     } 
   }
+
+  $scope.kodlike =function(){
+
+    if($scope.like == "ถูกใจ" && u_id != 0){
+
+      Actions._like($scope,new_info);
+      var query = "INSERT INTO Action (user_id,news_id) VALUES (?,?)";
+      $cordovaSQLite.execute(db, query, [u_id,$stateParams.newsId]).then(function(res) {
+          console.log("INSERT ID -> " + res.insertId);
+          alert("เพิ่มข้อมูลถูกใจแล้ว");
+      }, function (err) {
+          console.error(err);
+      });
+      $scope.like = "ถูกใจแล้ว";
+    }
+    
+  }
+
   $scope.trustSrc = function(src) {
     if(src != ""){
       return $sce.trustAsResourceUrl(src);
@@ -1096,6 +1153,7 @@ angular.module('starter.controllers', ['ngOpenFB'])
       return "";
     }
   }
+
   $scope.replace = function (str) {
     if(str != undefined){
       return str.replace(/[embed][^]+/g,"").replace('[',"");
@@ -1106,10 +1164,6 @@ angular.module('starter.controllers', ['ngOpenFB'])
   //วันที่
   $scope.date_ = function(d){
     return _function._date(d.substring(0, 10),d.substring(12, 16));
-  }
-
-  $scope.kodlike =function(){
-    $scope.like = "ถูกใจแล้ว";
   }
 
   // console.log($stateParams)
@@ -1403,7 +1457,18 @@ angular.module('starter.controllers', ['ngOpenFB'])
 
 
 // --------------------- Register ------------------------
-.controller('registerCtrl', function($scope,$stateParams,_function,SQLite) {
+.controller('registerCtrl', function($scope,$stateParams,_function,$cordovaSQLite,SQLite_return) {
+
+  // /////////// Check User In SQLite ///////////
+  var users_in_db = [];
+  var q_select = "SELECT * FROM User";
+  $cordovaSQLite.execute(db, q_select).then(function(result) {
+    console.log(result);
+    for (var i = 0; i < result.rows.length; i++) {
+      users_in_db.push(result.rows.item(i));
+    }
+    console.log(JSON.stringify(users_in_db));
+  });
 
   $scope.submitForm = function(){
     console.log(this.regis);
@@ -1416,11 +1481,59 @@ angular.module('starter.controllers', ['ngOpenFB'])
       _display: this.regis.fname,
       _address: this.regis.address ,
       _phone: this.regis.tel ,
+      _invite: this.regis.invite,
       _type: "user"
-
     }
+    ///////////////////// Register User ////////////////////////
+    SQLite_return._Register($scope,user_info).then(function(d) {
+      if(d.ID != null){
+        SQLite_return._get_info($scope,d).then(function(get_u_info) {
 
-    SQLite._register($scope,user_info);
+          if(get_u_info[0].ID != null){
+            var u_id = get_u_info[0].ID;
+            var full_name = get_u_info[0].display;
+            var iv_code = get_u_info[0].mycode;
+            /////////// Insert or Update User to SQLite ///////////
+            if(users_in_db.length > 0 ){
+              var query = "UPDATE User SET user_id = "+u_id+",fullname = '"+full_name+"',mycode ='"+iv_code+"',login_stat = 1 WHERE id = 1";
+              $cordovaSQLite.execute(db, query,[]).then(function(res) {
+                  console.log("UPDATE ID -> " + JSON.stringify(res));
+              }, function (err) {
+                  console.error(err);
+              });
+            }
+            else{
+              var query = "INSERT INTO User (user_id,fullname ,mycode,login_stat) VALUES (?,?,?,?)";
+              $cordovaSQLite.execute(db, query, [u_id,full_name,iv_code,1]).then(function(res) {
+                  console.log("INSERT ID -> " + res.insertId);
+              }, function (err) {
+                  console.error(err);
+              });
+             
+            };
+          }
+
+        });
+      }
+        // /////////// Check Status login In SQLite ///////////
+        // var users_stat_login = [];
+        // var q_select = "SELECT * FROM User";
+        // $cordovaSQLite.execute(db, q_select).then(function(result) {
+        //   console.log(result);
+        //   for (var i = 0; i < result.rows.length; i++) {
+        //     users_stat_login.push(result.rows.item(i));
+        //   }
+        //   console.log("dqwdqwdwqfeagsfse"+JSON.stringify(users_stat_login));
+        // });
+
+        // if(users_stat_login[0].login_stat == 1){
+        //   $localStorage.img = "./img/default_user.png";
+        //   $rootScope.user.img = $localStorage.img;
+        //   $rootScope.profile = true;
+        //   $rootScope.login_ = false;
+        //   $rootScope.logout_ = true;
+        // }
+      });
 
   }
 
@@ -1428,8 +1541,18 @@ angular.module('starter.controllers', ['ngOpenFB'])
 })
 
 // --------------------- login ------------------------
-.controller('loginCtrl', function($scope,$rootScope,$http,$stateParams,$localStorage,ngFB,$cordovaOauth,_function,SpringNews,SQLite) {
-  
+.controller('loginCtrl', function($scope,$http,$stateParams,$localStorage,ngFB,$cordovaOauth,_function,SpringNews,SQLite_return,$cordovaSQLite) {
+  // /////////// Check User In SQLite ///////////
+  // var users_in_db = [];
+  // var q_select = "SELECT * FROM User";
+  // $cordovaSQLite.execute(db, q_select).then(function(result) {
+  //   console.log(result);
+  //   for (var i = 0; i < result.rows.length; i++) {
+  //     users_in_db.push(result.rows.item(i));
+  //   }
+  //   console.log(JSON.stringify(users_in_db));
+  // });
+
   //Alert Fail Login
   $scope.showAlertFail = function() {
      var alertPopup = $ionicPopup.alert({
@@ -1452,14 +1575,55 @@ angular.module('starter.controllers', ['ngOpenFB'])
   // Perform the login action when the user submits the login form
   $scope.doLogin = function() {
 
-    SQLite._login($scope);
-    if(status_login == true){
-      $localStorage.img = "./img/default_user.png";
-      $rootScope.user.img = $localStorage.img;
-      $rootScope.profile = true;
-      $rootScope.login_ = false;
-      $rootScope.logout_ = true;
-    }
+    SQLite_return._login($scope).then(function(d) {
+      if(d.ID != null){
+        SQLite_return._get_info($scope,d).then(function(get_u_info) {
+
+          if(get_u_info[0].ID != null){
+            var u_id = get_u_info[0].ID;
+            var full_name = get_u_info[0].display;
+            var iv_code = get_u_info[0].mycode;
+            /////////// Insert or Update User to SQLite ///////////
+            if(users_in_db.length > 0 ){
+              var query = "UPDATE User SET user_id = "+u_id+",fullname = '"+full_name+"',mycode ='"+iv_code+"',login_stat = 1 WHERE id = 1";
+              $cordovaSQLite.execute(db, query,[]).then(function(res) {
+                  console.log("UPDATE ID -> " + JSON.stringify(res));
+              }, function (err) {
+                  console.error(err);
+              });
+            }
+            else{
+              var query = "INSERT INTO User (user_id,fullname ,mycode,login_stat) VALUES (?,?,?,?)";
+              $cordovaSQLite.execute(db, query, [u_id,full_name,iv_code,1]).then(function(res) {
+                  console.log("INSERT ID -> " + res.insertId);
+              }, function (err) {
+                  console.error(err);
+              });
+             
+            };
+          }
+
+        });
+      }
+    });
+    // /////////// Check Status login In SQLite ///////////
+    // var users_stat_login = [];
+    // var q_select = "SELECT * FROM User";
+    // $cordovaSQLite.execute(db, q_select).then(function(result) {
+    //   console.log(result);
+    //   for (var i = 0; i < result.rows.length; i++) {
+    //     users_stat_login.push(result.rows.item(i));
+    //   }
+    //   console.log(JSON.stringify(users_stat_login));
+    // });
+
+    // if(users_stat_login[0].login_stat == 1){
+    //   $localStorage.img = "./img/default_user.png";
+    //   $rootScope.user.img = $localStorage.img;
+    //   $rootScope.profile = true;
+    //   $rootScope.login_ = false;
+    //   $rootScope.logout_ = true;
+    // }
 
   };
 
@@ -1483,11 +1647,10 @@ angular.module('starter.controllers', ['ngOpenFB'])
 
                         // $scope.user.name = $localStorage.name
                         // $scope.user.email = $localStorage.email 
-                        $rootScope.user.img = $localStorage.img
-
-                        $rootScope.profile = true;
-                        $rootScope.login_ = false;
-                        $rootScope.logout_ = true;
+                        $scope.user.img = $localStorage.img
+                        $scope.profile = true;
+                        $scope.login_ = false;
+                        $scope.logout_ = true;
                         console.log(user)
 
                         var user_info = { 
@@ -1501,7 +1664,10 @@ angular.module('starter.controllers', ['ngOpenFB'])
                           _type: "facebook"
 
                         }
-                        SQLite._register($scope,user_info);
+                        SQLite_return._register($scope,user_info).then(function(d) {
+                          console.log("_register_facebook "+JSON.stringify(d));
+                        });
+                        // SQLite_return._register($scope,user_info);
                     },
                     function (error) {
                         alert('Facebook error: ' + error.error_description);
@@ -1533,7 +1699,8 @@ angular.module('starter.controllers', ['ngOpenFB'])
 
                 // $scope.user.name = $localStorage.name
                 // $scope.user.email = $localStorage.email 
-                $rootScope.user.img = $localStorage.img
+                $scope.user.img = $localStorage.img
+
                 var user_info = { 
                   _email: $scope.user.email,
                   _pass: $scope.user.id ,
@@ -1545,12 +1712,13 @@ angular.module('starter.controllers', ['ngOpenFB'])
                   _type: "google+"
 
                 } 
-                SQLite._register($scope,user_info);
+                SQLite_return._register($scope,user_info).then(function(d) {
+                  console.log("_register_google "+JSON.stringify(d));
+                });
 
-
-                $rootScope.profile = true;
-                $rootScope.login_ = false;
-                $rootScope.logout_ = true;
+                $scope.profile = true;
+                $scope.login_ = false;
+                $scope.logout_ = true;
             }
             $scope.closeLogin();
 

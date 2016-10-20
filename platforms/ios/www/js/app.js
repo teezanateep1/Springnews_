@@ -69,7 +69,6 @@ angular.module('starter', ['ionic', 'starter.controllers',"angular-md5",'service
       }
       $cordovaSQLite.execute(db, "CREATE TABLE IF NOT EXISTS User(id integer primary key,user_id text,fullname text ,mycode text ,login_stat integer)");
       $cordovaSQLite.execute(db, "CREATE TABLE IF NOT EXISTS Action(id integer primary key, user_id integer,news_id integer)");
-      
       /////////// Check Status login In SQLite ///////////
       var q_select = "SELECT * FROM User";
       $cordovaSQLite.execute(db, q_select).then(function(result) {
@@ -78,17 +77,22 @@ angular.module('starter', ['ionic', 'starter.controllers',"angular-md5",'service
           users_for_check_login.push(result.rows.item(i));
         }
         console.log(JSON.stringify(users_for_check_login[0]));
-        if(users_for_check_login[0].login_stat == 1){
-          $localStorage.logined = true;
-          console.log("localStorage.logined Check "+$localStorage.logined);
-        }else{
-          $localStorage.logined = false;
-          console.log("localStorage.logined Check "+$localStorage.logined);
-        };
-        // $window.location.reload(true)
       });
 
-      
+      // $scope.login_ = false;
+      // if(users_for_check_login[0].login_stat == 1){
+      //   $localStorage.logined = true;
+      //   $rootScope.user.img = "./img/default_user.png";
+      //   $rootScope.profile = true;
+      //   $rootScope.login_ = false;
+      //   $rootScope.logout_ = true;
+      // }else{
+      //   // $scope.profile = true;
+      //   $localStorage.logined = false;
+      //   $rootScope.profile = false;
+      //   $rootScope.login_ = true;
+      //   $rootScope.logout_ = false;
+      // }; 
 
     });
 

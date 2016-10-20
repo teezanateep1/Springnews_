@@ -113,7 +113,7 @@ angular.module('starter.controllers', ['ngOpenFB'])
   // $rootScope.user  = {};
   $rootScope.icon = "right";
 
-  alert("localStorage.logined AppCtrl "+$localStorage.logined);
+  // alert("localStorage.logined AppCtrl "+$localStorage.logined);
   if($localStorage.logined){
      $localStorage.img = "./img/default_user.png";
      $scope.user.img = $localStorage.img;
@@ -1049,7 +1049,7 @@ angular.module('starter.controllers', ['ngOpenFB'])
 })
 
 // ---------------------- NEWS DETAIL ---------------------
-.controller('NewsCtrl', function($scope, $stateParams ,Actions,SQLite_return, SpringNews, $ionicLoading, $timeout,_function, $sce, $cordovaSocialSharing, $timeout) {
+.controller('NewsCtrl', function($scope, $stateParams ,Actions,SQLite_return,$cordovaSQLite, SpringNews, $ionicLoading, $timeout,_function, $sce, $cordovaSocialSharing, $timeout) {
   
   $scope.newsDetail = [];
   $scope.newsConnected = [];
@@ -1059,7 +1059,10 @@ angular.module('starter.controllers', ['ngOpenFB'])
   $scope.adver = [];
   $scope.newsShow = true;
   $scope.like = "ถูกใจ"
+  $scope.like_btn = false;
   $ionicLoading.show();
+  var new_info = {}
+
   
   $timeout(function(){ 
     SpringNews._advertise($scope,'14');
@@ -1072,38 +1075,70 @@ angular.module('starter.controllers', ['ngOpenFB'])
 
   $scope.message = '';
   $scope.url = '';
-  var u_id;
-  // console.log($stateParams);
-  SQLite_return._get_info($scope,d).then(function(get_u_info) {
-    alert("get_u_info"+JSON.stringify(get_u_info));
-    if(get_u_info[0].ID != null){
-      u_id = get_u_info[0].ID;   
-    }
-  });
 
-  var new_info = { 
-      _postID: $stateParams.newsId,
-      _userID: u_id
-  }
+  // var u_id = 0;
+  // var users_in_db = [];
+  // var q_select = "SELECT * FROM User";
+  // $cordovaSQLite.execute(db, q_select).then(function(result) {
+  //     for (var i = 0; i < result.rows.length; i++) {
+  //       users_in_db.push(result.rows.item(i));
+  //     }
+  //     if (users_in_db.length > 0) {
+  //       u_id = users_in_db[0].user_id;
+  //       $scope.like_btn = true;
+  //       new_info = { 
+  //           _postID: $stateParams.newsId,
+  //           _userID: u_id
+  //       }
+  //     }
+  // });
+  // var like_in_db =[];
+  // var q_select = "SELECT * FROM Action where news_id ="+$stateParams.newsId+"";
+  // $cordovaSQLite.execute(db, q_select).then(function(result) {
+  //   // console.log(result);
+  //   for (var i = 0; i < result.rows.length; i++) {
+  //     like_in_db.push(result.rows.item(i));
+  //     $scope.like = "ถูกใจแล้ว";
+  //   }
+  // });
 
   Actions._read($scope,new_info);
 
   $scope.share = function (title,url){
-      $scope.title_ = title
-      $scope.url = url
-      $cordovaSocialSharing
-      .share($scope.title_,null,null,$scope.url)
-      .then(function(result) {
-        // Success!
-        Actions._share($scope,new_info);
-      }, function(err) {
-        // An error occurred. Show a message to the user
-        $ionicPopup.alert({
-           title: 'An error occurred.'
-         });
+    $scope.title_ = title
+    $scope.url = url
+    $cordovaSocialSharing
+    .share($scope.title_,null,null,$scope.url)
+    .then(function(result) {
+      // Success!
+      Actions._share($scope,new_info);
+    }, function(err) {
+      // An error occurred. Show a message to the user
+      $ionicPopup.alert({
+         title: 'An error occurred.'
+       });
+    });
+  }
+
+  $scope.kodlike =function(){
+    console.log(u_id);
+    if($scope.like == "ถูกใจ" && u_id != 0){
+
+      Actions._like($scope,new_info);
+      console.log(new_info._userID);
+      var query = "INSERT INTO Action (user_id,news_id) VALUES (?,?)";
+      $cordovaSQLite.execute(db, query, [u_id,$stateParams.newsId]).then(function(res) {
+          console.log("INSERT ID -> " + res.insertId);
+          // alert("เพิ่มข้อมูลถูกใจแล้ว");
+      }, function (err) {
+          console.error(err);
       });
+      $scope.like = "ถูกใจแล้ว";
     }
- //substring
+    
+  }
+
+  //substring
   $scope.substring = function(str){
     if(str.length > 50){
       return str.substring(0, 50)+"...";
@@ -1111,6 +1146,7 @@ angular.module('starter.controllers', ['ngOpenFB'])
       return str;
     } 
   }
+
   $scope.trustSrc = function(src) {
     if(src != ""){
       return $sce.trustAsResourceUrl(src);
@@ -1118,6 +1154,7 @@ angular.module('starter.controllers', ['ngOpenFB'])
       return "";
     }
   }
+
   $scope.replace = function (str) {
     if(str != undefined){
       return str.replace(/[embed][^]+/g,"").replace('[',"");
@@ -1128,10 +1165,6 @@ angular.module('starter.controllers', ['ngOpenFB'])
   //วันที่
   $scope.date_ = function(d){
     return _function._date(d.substring(0, 10),d.substring(12, 16));
-  }
-
-  $scope.kodlike =function(){
-    $scope.like = "ถูกใจแล้ว";
   }
 
   // console.log($stateParams)
@@ -1427,7 +1460,7 @@ angular.module('starter.controllers', ['ngOpenFB'])
 // --------------------- Register ------------------------
 .controller('registerCtrl', function($scope,$stateParams,_function,$cordovaSQLite,SQLite_return) {
 
-  /////////// Check User In SQLite ///////////
+  // /////////// Check User In SQLite ///////////
   var users_in_db = [];
   var q_select = "SELECT * FROM User";
   $cordovaSQLite.execute(db, q_select).then(function(result) {
@@ -1449,6 +1482,7 @@ angular.module('starter.controllers', ['ngOpenFB'])
       _display: this.regis.fname,
       _address: this.regis.address ,
       _phone: this.regis.tel ,
+      _invite: this.regis.invite,
       _type: "user"
     }
     ///////////////////// Register User ////////////////////////
@@ -1707,7 +1741,7 @@ angular.module('starter.controllers', ['ngOpenFB'])
 })
 
 // --------------------- Register ------------------------
-.controller('quizCtrl', function($scope,$stateParams,_function,SQLite,quizFactory) {
+.controller('quizCtrl', function($scope,$stateParams,_function,quizFactory) {
 
 
 })

@@ -654,7 +654,7 @@ angular.module('services', ['ngCordova'])
         });
     }
 
-     // ---------  แชร์ข่าว
+     // ---------  ชอบข่าว
     this._like = function($scope,new_info){
         var url=path+"be/Socials/likes"; 
         $http({
@@ -664,9 +664,9 @@ angular.module('services', ['ngCordova'])
             headers : {'api-key': key}  // set the headers so angular passing info as form data (not request payload)
         })
         .success(function(data) {
-            console.log("countshare_success");
-        }).error(function(){  
-            console.log("countshare_error");
+            console.log("countlike_success");
+        }).error(function(err){  
+            console.log("countlike_error"+err);
         });
     }
 

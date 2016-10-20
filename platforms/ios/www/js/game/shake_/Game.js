@@ -12,7 +12,7 @@ var labelScore,score = 5,group_iconPW;
 var bag,reward,anim,emitter;
 var game = null;
 var timeout_ = null;
-var xp = ['5','10','20','30']
+var xp = ['5','10','20','30'],point = 0;
 
 var effect,pw,ph;
 var image;
@@ -33,6 +33,7 @@ Shake.Game.prototype = {
         bag = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY - 300, 'bag');
         bag.anchor.setTo(0.5, 0);
         bag.scale.setTo(1,1);
+        bag.y = 400;
         bag.animations.add('bagshake', [0,3,1,0,3,1,0], 7, true);
         this.game.physics.enable(bag, Phaser.Physics.ARCADE);
 
@@ -53,12 +54,12 @@ Shake.Game.prototype = {
         group_iconPW.align(50, -1, 280, 280);
         group_iconPW.scale.setTo(0.2,0.2);
         group_iconPW.x = 20;
-        group_iconPW.y = 120;
+        group_iconPW.y = 140;
 
         //Reward  You can drag the pop-up window around
-        popup = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY-300, 'congrats');
+        popup = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY-290, 'congrats');
         popup.anchor.set(0.5);
-        popup.scale.setTo(-0.5,-2.8);
+        popup.scale.setTo(-0.5,-3);
         popup.inputEnabled = true;
 
         //  Position the close button to the top-right of the popup sprite (minus 8px for spacing)
@@ -77,7 +78,7 @@ Shake.Game.prototype = {
         popup.scale.set(0);
 
         //  Pop the window open
-       // this.game.input.onDown.add(openWindow, this);
+        //this.game.input.onDown.add(openWindow, this);
 
         reward = this.game.add.sprite(pw, -ph, 'reward');
         anim = reward.animations.add('rewardRandom', [0,1,0,1,0,1,0,2], 4,false);
@@ -93,10 +94,11 @@ Shake.Game.prototype = {
 		
 	},
 	update: function () {
-    this.game.physics.arcade.collide(emitter);   
+        this.game.physics.arcade.collide(emitter);   
 	},
     stopreward:function(){
-        var textXP = game.add.text(pw, -ph, xp[Math.floor(Math.random() * xp.length)]+'  XP ');
+        point = xp[Math.floor(Math.random() * xp.length)];
+        var textXP = game.add.text(pw, -ph, point+'  XP ');
         textXP.anchor.set(0,6);
         textXP.align = 'center';
 
@@ -123,7 +125,7 @@ Shake.Game.prototype = {
         score--;
         //  Create a tween that will close the window, but only if it's not already tweening or closed
         tween = game.add.tween(popup.scale).to( { x: 0, y: 0 }, 500, Phaser.Easing.Elastic.In, true);
-
+        alert(point)
     },
     render:function() {
 
@@ -171,7 +173,6 @@ Shake.Game.prototype = {
     document.addEventListener("deviceready", function () {
         // Start watching for shake gestures and call "onShake"
         shake.startWatch(onShake, 15 , onError );
-
         document.addEventListener("pause", function() {
            game.game.paused = true;
         }, false);

@@ -430,7 +430,7 @@ angular.module('services', ['ngCordova'])
         $ionicLoading.show();  
         $http.get(url).success(function(result){ 
             $scope.history = result[0].post_content; 
-            $ionicLoading.hide();           
+            $ionicLoading.hide();       
         })  
         .error(function(){  
             $ionicLoading.hide();   
@@ -533,7 +533,32 @@ angular.module('services', ['ngCordova'])
             alert(data)
         });
     }
+    //-------------- get XP 
+    this._getxp = function(value,id){
+        var url=path+"be/Levels/getUserLV"; 
+        $http({
+            method  : 'GET',
+            url     :  url,
+            data    :  value,  // pass in data as strings
+            headers : {'api-key': key}  // set the headers so angular passing info as form data (not request payload)
+        })
+        .success(function(data) {
+            alert(data)
+        });
+    }
+    //-------------- int XP 
+    this._intxp = function(id_,value_){
+        var url=path+"be/Levels/insertuserLV"; 
+        $http({
+            method  : 'POST',
+            url     :  url,
+            data    :  {id:id_,xp:value_},  // pass in data as strings
+            headers : {'api-key': key}  // set the headers so angular passing info as form data (not request payload)
+        })
+        .success(function(data) {
 
+        });
+    }
       
     
 }])
@@ -554,12 +579,10 @@ angular.module('services', ['ngCordova'])
                     headers : {'api-key': key}  // set the headers so angular passing info as form data (not request payload)
                 }).then(function(response) {
                     console.log("register_success");
-                    alert("_register_in_then"+JSON.stringify(response.data));
                     return response.data;
                 });
             }
             console.log(user_res);
-            alert("_regis_befor_return"+JSON.stringify(user_res));
             return user_res;
         },
 
@@ -570,11 +593,9 @@ angular.module('services', ['ngCordova'])
                 var url=path+"be/Users/getID?api-key="+key+"&id="+d.ID; 
                 user_get_res = $http.get(url).then(function(result){
                   console.log(result.data);
-                  alert("_get_info_in_then"+JSON.stringify(result.data));
                   return result.data;
                 });
             }
-            alert("_get_info_befor_return"+JSON.stringify(user_get_res));
             return user_get_res;
         },
 
@@ -590,11 +611,9 @@ angular.module('services', ['ngCordova'])
                     headers : {'api-key': key}  // set the headers so angular passing info as form data (not request payload)
                 }).then(function(response) {
                     console.log("login_success");
-                    alert("_login_in_then"+JSON.stringify(response.data));
                     return response.data;
                 });
             }
-            alert("_get_login_befor_return"+JSON.stringify(user_get_login));
             return user_get_login;
         }
 
@@ -635,7 +654,7 @@ angular.module('services', ['ngCordova'])
         });
     }
 
-     // ---------  แชร์ข่าว
+     // ---------  ชอบข่าว
     this._like = function($scope,new_info){
         var url=path+"be/Socials/likes"; 
         $http({
@@ -645,9 +664,9 @@ angular.module('services', ['ngCordova'])
             headers : {'api-key': key}  // set the headers so angular passing info as form data (not request payload)
         })
         .success(function(data) {
-            console.log("countshare_success");
-        }).error(function(){  
-            console.log("countshare_error");
+            console.log("countlike_success");
+        }).error(function(err){  
+            console.log("countlike_error"+err);
         });
     }
 
