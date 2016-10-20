@@ -875,7 +875,7 @@ color: #31b5c2;
 }
 
 .sp-social{
-  /*display: inline-flex;*/
+  display: inline-flex;
 }
 
 .sp-social img{
@@ -2023,7 +2023,7 @@ color: #31b5c2;
 }
 
 .sp-social{
-  /*display: inline-flex;*/
+  display: inline-flex;
 }
 
 .sp-social img{
