@@ -589,6 +589,7 @@ angular.module('services', ['ngCordova'])
                 var url=path+"be/Users/getID?api-key="+key+"&id="+d.ID; 
                 user_get_res = $http.get(url).then(function(result){
 
+                  alert(JSON.stringify(result.data));
                   return result.data;
                 });
             }
