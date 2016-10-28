@@ -635,6 +635,6 @@ angular.module('starter', ['ionic', 'starter.controllers',"angular-md5",'service
   });
 
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/app/hometest'); 
+  $urlRouterProvider.otherwise('/app/uploadfile'); 
   //$urlRouterProvider.otherwise('/app/program');
 });

@@ -1076,31 +1076,31 @@ angular.module('starter.controllers', ['ngOpenFB'])
   $scope.message = '';
   $scope.url = '';
 
-  // var u_id = 0;
-  // var users_in_db = [];
-  // var q_select = "SELECT * FROM User";
-  // $cordovaSQLite.execute(db, q_select).then(function(result) {
-  //     for (var i = 0; i < result.rows.length; i++) {
-  //       users_in_db.push(result.rows.item(i));
-  //     }
-  //     if (users_in_db.length > 0) {
-  //       u_id = users_in_db[0].user_id;
-  //       $scope.like_btn = true;
-  //       new_info = { 
-  //           _postID: $stateParams.newsId,
-  //           _userID: u_id
-  //       }
-  //     }
-  // });
-  // var like_in_db =[];
-  // var q_select = "SELECT * FROM Action where news_id ="+$stateParams.newsId+"";
-  // $cordovaSQLite.execute(db, q_select).then(function(result) {
-  //   // console.log(result);
-  //   for (var i = 0; i < result.rows.length; i++) {
-  //     like_in_db.push(result.rows.item(i));
-  //     $scope.like = "ถูกใจแล้ว";
-  //   }
-  // });
+  var u_id = 0;
+  var users_in_db = [];
+  var q_select = "SELECT * FROM User";
+  $cordovaSQLite.execute(db, q_select).then(function(result) {
+      for (var i = 0; i < result.rows.length; i++) {
+        users_in_db.push(result.rows.item(i));
+      }
+      if (users_in_db.length > 0) {
+        u_id = users_in_db[0].user_id;
+        $scope.like_btn = true;
+        new_info = { 
+            _postID: $stateParams.newsId,
+            _userID: u_id
+        }
+      }
+  });
+  var like_in_db =[];
+  var q_select = "SELECT * FROM Action where news_id ="+$stateParams.newsId+"";
+  $cordovaSQLite.execute(db, q_select).then(function(result) {
+    // console.log(result);
+    for (var i = 0; i < result.rows.length; i++) {
+      like_in_db.push(result.rows.item(i));
+      $scope.like = "ถูกใจแล้ว";
+    }
+  });
 
   Actions._read($scope,new_info);
 
@@ -1245,28 +1245,30 @@ angular.module('starter.controllers', ['ngOpenFB'])
 
 .controller('uploadfileCtrl', function($scope, $cordovaCamera, $ionicLoading,$localStorage,$cordovaFileTransfer) {
    
-    $scope.data = { "ImageURI" :  "Select Image" };
+    $scope.data = { "FileURI" :  "Select file" };
+    var file_type;
+    $scope.prevideo = false;
+    $scope.preimage = false;
 
-    $scope.takePicture = function() {
-    var options = {
-        quality: 50,
-        destinationType: Camera.DestinationType.FILE_URL,
-        sourceType: Camera.PictureSourceType.CAMERA
-      };
-    $cordovaCamera.getPicture(options).then(
-    function(imageData) {
-      $scope.picData = imageData;
-      $scope.ftLoad = true;
-      $localstorage.set('fotoUp', imageData);
-      $ionicLoading.show({template: 'Foto acquisita...', duration:500});
-    },
-    function(err){
-      $ionicLoading.show({template: 'Errore di caricamento...', duration:500});
-      })
-    }
+    // $scope.takePicture = function() {
+    // var options = {
+    //     quality: 50,
+    //     destinationType: Camera.DestinationType.FILE_URL,
+    //     sourceType: Camera.PictureSourceType.CAMERA
+    //   };
+    // $cordovaCamera.getPicture(options).then(
+    // function(imageData) {
+    //   $scope.picData = imageData;
+    //   $scope.ftLoad = true;
+    //   $localstorage.set('fotoUp', imageData);
+    //   $ionicLoading.show({template: 'Foto acquisita...', duration:500});
+    // },
+    // function(err){
+    //   $ionicLoading.show({template: 'Errore di caricamento...', duration:500});
+    //   })
+    // }
 
     $scope.selectPicture = function() { 
-    alert("11111");
     var options = {
         quality: 50,
         destinationType: Camera.DestinationType.FILE_URI,
@@ -1274,162 +1276,105 @@ angular.module('starter.controllers', ['ngOpenFB'])
         targetWidth: 300,
         targetHeight: 300
     };
-     alert("aaaaaa");
-    $cordovaCamera.getPicture(options).then(
-    function(imageURI) {
+    $cordovaCamera.getPicture(options).then(function(imageURI) {
+      file_type = 1;
+      $scope.preimage = true;
+      $scope.prevideo = false;
       window.resolveLocalFileSystemURI(imageURI, function(fileEntry) {
-        alert("bbbbb");
-        $scope.picData = fileEntry.nativeURL;
+        $scope.fileData = fileEntry.nativeURL;
         $scope.ftLoad = true;
         var image = document.getElementById('myImage');
         image.src = fileEntry.nativeURL;
         });
-      $ionicLoading.show({template: 'Foto acquisita...', duration:500});
+      $ionicLoading.show({template: 'Selecting File ...', duration:500});
     },
     function(err){
-      $ionicLoading.show({template: 'Errore di caricamento...', duration:500});
+      $ionicLoading.show({template: 'Select File error', duration:500});
     })
   };
 
-  $scope.captureVideo = function() {
-    alert("aaaaaaa")
-    var options = {   quality: 50,
-                      destinationType: Camera.DestinationType.FILE_URL,
-                      sourceType: Camera.PictureSourceType.CAMERA
-                      };
-    
-    $cordovaCapture.captureVideo(options).then(function(videoData) {
-    alert("bbbbbb")
-    $scope.clip = videoData[0].fullPath;
-    $scope.file=videoData[0].name;
-    var first=$scope.clip.substr(0,$scope.clip.lastIndexOf('/')+1);
-
-    $cordovaFile.readAsDataURL(first,$scope.file)
-    .then(function (success) {
-      alert("cccccccc")
-
-      var bucket = new AWS.S3({params: { Bucket: 'jbf-dev-bucket' }});
-
-      var params = {
-        Key: videoData[0].name, 
-        ContentEncoding: 'base64', 
-        ContentType: 'video/mp4', 
-        Body: success
+  $scope.selectVideo = function() {
+      var options = {
+        quality: 50,
+        destinationType: Camera.DestinationType.DATA_URL,
+        sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
+        mediaType: Camera.MediaType.VIDEO
       };
-
-      bucket.upload(params).on("http://artbeat.mfec.co.th/mail/upload.php" , function(evt) {
-        alert("ddddddd")
-        $scope.uploading = true;
-        $scope.progress = parseInt((evt.loaded * 100) / evt.total)+'%';
-        console.log("Uploaded :: " + $scope.progress );         
-        $scope.$apply();
-      }).send(function(err, data) {
-        alert("eeeeeee")
-        $scope.uploading = false;
-        /*$scope.images.push(data.Location);*/
-
-        /*console.log(data.Location);*/
-        $scope.$apply();
+      $cordovaCamera.getPicture(options).then(function(videoURI) {
+        file_type = 2;
+        $scope.prevideo = true;
+        $scope.preimage = false;
+        console.log("videoURI",JSON.stringify(videoURI));
+        window.resolveLocalFileSystemURI(videoURI, function(fileEntry) {
+          $scope.fileData = fileEntry.nativeURL;
+          $scope.ftLoad = true;
+          var image = document.getElementById('myImage');
+          image.src = fileEntry.nativeURL;
+        });
+      $ionicLoading.show({template: 'Selecting File ...', duration:500});
+      }, function(err) {
+        console.log("err",JSON.stringify(err));
+        $ionicLoading.show({template: 'Select File error', duration:500});
       });
-    
-      $scope.i++;
-
-      }, function (error) { 
-        console.log("==========error==========");
-        console.log(error);
-      })
-    })
-        
       
   }
 
 
   $scope.upload = function() {
+    
+    if(file_type == 1){
+      var date = new Date().getTime();
+      var filename = "img_upload"+date+".png";
 
-        var date = new Date().getTime();
-        var filename = "img_upload"+date+".png";
-        $ionicLoading.show({template: 'กำลังอัพโหลดไฟล์...'});
-        var fileURL = videodata;
-        var fileURL = $scope.picData;
+      $ionicLoading.show({template: 'กำลังอัพโหลดไฟล์...'});
+      var fileURL = $scope.fileData;
 
-        var options = {
-            fileKey: "file",
-            fileName: filename,
-            chunkedMode: false,
-            mimeType: "video/mp4",
-            params : {'directory':'photo', 'fileName': filename}
-        };
-        $cordovaFileTransfer.upload("http://artbeat.mfec.co.th/mail/upload.php", fileURL, options).then(function(result) {
-            console.log("SUCCESS: " + JSON.stringify(result.response));
-            alert(("SUCCESS: " + JSON.stringify(result.response)));
-        }, function(err) {
-            console.log("ERROR: " + JSON.stringify(err));
-            alert("ERROR: " + JSON.stringify(err));
-        }, function (progress) {
-            // constant progress updates
-        });
-        $ionicLoading.hide();
+      var options = {
+          fileKey: "file",
+          fileName: filename,
+          chunkedMode: false,
+          mimeType: "image/png",
+          params : {'directory':'uploads', 'fileName': filename}
+      };
+      $cordovaFileTransfer.upload("http://artbeat.mfec.co.th/mail/upload.php", fileURL, options).then(function(result) {
+          console.log("SUCCESS: " + JSON.stringify(result.response));
+          alert(("SUCCESS: " + JSON.stringify(result.response)));
+      }, function(err) {
+          console.log("ERROR: " + JSON.stringify(err));
+          alert("ERROR: " + JSON.stringify(err));
+      }, function (progress) {
+          // constant progress updates
+      });
+      $ionicLoading.hide();
+    }
+    else if(file_type == 2){
+      var date = new Date().getTime();
+      var filename = "video_upload"+date+".mp4";
+
+      $ionicLoading.show({template: 'กำลังอัพโหลดไฟล์...'});
+      var fileURL = $scope.fileData;
+
+      var options = {
+          fileKey: "file",
+          fileName: filename,
+          chunkedMode: false,
+          mimeType: "video/mp4",
+          params : {'directory':'uploads', 'fileName': filename}
+      };
+      $cordovaFileTransfer.upload("http://artbeat.mfec.co.th/mail/upload.php", fileURL, options).then(function(result) {
+          console.log("SUCCESS: " + JSON.stringify(result.response));
+          alert(("SUCCESS: " + JSON.stringify(result.response)));
+      }, function(err) {
+          console.log("ERROR: " + JSON.stringify(err));
+          alert("ERROR: " + JSON.stringify(err));
+      }, function (progress) {
+          // constant progress updates
+      });
+      $ionicLoading.hide();
+
+    }
   }
 
-    // $scope.uploadPicture = function() {
-    // $ionicLoading.show({template: 'Sto inviando la foto...'});
-    // var fileURL = $scope.picData;
-    // var options = new FileUploadOptions();
-    // options.fileKey = "file";
-    // options.fileName = fileURL.substr(fileURL.lastIndexOf('/') + 1);
-    // options.mimeType = "image/jpeg";
-    // options.chunkedMode = true;
-
-    // var params = {};
-    // params.value1 = "someparams";
-    // params.value2 = "otherparams";
-
-    // options.params = params;
-
-    // var ft = new FileTransfer();
-    // ft.upload(fileURL, encodeURI("http://artbeat.mfec.co.th/mail/upload.php"), viewUploadedPictures, function(error) {
-    //   $ionicLoading.show({template: 'Errore di connessione...'});
-    // $ionicLoading.hide();}, options);
-
-  var viewUploadedPictures = function() {
-    $ionicLoading.show({template: 'Sto cercando le tue foto...'});
-        server = "http://artbeat.mfec.co.th/mail/upload.php";
-        if (server) {
-            var xmlhttp = new XMLHttpRequest();
-            xmlhttp.onreadystatechange=function(){
-            if(xmlhttp.readyState === 4){
-                    if (xmlhttp.status === 200) {          
-                document.getElementById('server_images').innerHTML = xmlhttp.responseText;
-                    }
-                    else { $ionicLoading.show({template: 'Errore durante il caricamento...', duration: 1000});
-          return false;
-                    }
-                }
-            };
-            xmlhttp.open("GET", server , true);
-            xmlhttp.send()} ;
-    $ionicLoading.hide();
-    }
-
-  $scope.viewPictures = function() {
-    $ionicLoading.show({template: 'Sto cercando le tue foto...'});
-        server = "http://artbeat.mfec.co.th/mail/upload.php";
-        if (server) {
-            var xmlhttp = new XMLHttpRequest();
-            xmlhttp.onreadystatechange=function(){
-            if(xmlhttp.readyState === 4){
-                    if (xmlhttp.status === 200) {          
-                document.getElementById('server_images').innerHTML = xmlhttp.responseText;
-                    }
-                    else { $ionicLoading.show({template: 'Errore durante il caricamento...', duration: 1000});
-          return false;
-                    }
-                }
-            };
-            xmlhttp.open("GET", server , true);
-            xmlhttp.send()} ;
-    $ionicLoading.hide();
-    }
 })
 
 // --------------------- AllNews ------------------------
