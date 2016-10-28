@@ -67,32 +67,26 @@ angular.module('starter', ['ionic', 'starter.controllers',"angular-md5",'service
       } catch (error) {
           alert(error);
       }
-      $cordovaSQLite.execute(db, "CREATE TABLE IF NOT EXISTS User(id integer primary key,user_id text,fullname text ,mycode text ,login_stat integer)");
+      $cordovaSQLite.execute(db, "CREATE TABLE IF NOT EXISTS User(id integer primary key,user_id text,fullname text ,mycode text ,login_stat integer, path text)");
       $cordovaSQLite.execute(db, "CREATE TABLE IF NOT EXISTS Action(id integer primary key, user_id integer,news_id integer)");
       /////////// Check Status login In SQLite ///////////
-      var q_select = "SELECT * FROM User";
+      var q_select = "SELECT * FROM User WHERE login_stat = 1";
       $cordovaSQLite.execute(db, q_select).then(function(result) {
-        console.log(result);
-        for (var i = 0; i < result.rows.length; i++) {
-          users_for_check_login.push(result.rows.item(i));
+        if(result.rows.length == 1){
+          for (var i = 0; i < result.rows.length; i++) {
+            users_for_check_login.push(result.rows.item(i));
+          }
+          $rootScope.userImg = users_for_check_login[0].path;
+          $rootScope.userName = users_for_check_login[0].fullname;
+          $rootScope.profile = true;
+          $rootScope.login_ = false;
+          $rootScope.logout_ = true;
+        }else{
+          $rootScope.profile = false;
+          $rootScope.login_ = true;
+          $rootScope.logout_ = false;
         }
-        console.log(JSON.stringify(users_for_check_login[0]));
       });
-
-      // $scope.login_ = false;
-      // if(users_for_check_login[0].login_stat == 1){
-      //   $localStorage.logined = true;
-      //   $rootScope.user.img = "./img/default_user.png";
-      //   $rootScope.profile = true;
-      //   $rootScope.login_ = false;
-      //   $rootScope.logout_ = true;
-      // }else{
-      //   // $scope.profile = true;
-      //   $localStorage.logined = false;
-      //   $rootScope.profile = false;
-      //   $rootScope.login_ = true;
-      //   $rootScope.logout_ = false;
-      // }; 
 
     });
 
@@ -189,93 +183,6 @@ angular.module('starter', ['ionic', 'starter.controllers',"angular-md5",'service
     }
   }
 })
-
-// .directive('headerProgram', function($document,$timeout) {
-//   var fadeAmt;
-
-//   var shrink = function(header, content, amt, max) {
-//     amt = Math.min(54, amt);
-//     fadeAmt = 1 - amt / 54;
-//     ionic.requestAnimationFrame(function() {
-//       header.style[ionic.CSS.TRANSFORM] = 'translate3d(0, -' + amt + 'px, 0)';
-//       for(var i = 0, j = header.children.length; i < j; i++) {
-//         header.children[i].style.opacity = fadeAmt;
-//       }
-//     });
-//   };
-//   var header_ = function(header, content, amt, max) {
-//     amt = Math.min(54, amt);
-//     fadeAmt = 1 - amt / 54;
-//     ionic.requestAnimationFrame(function() {
-//       header.style[ionic.CSS.TRANSFORM] = 'translate3d(0, -' + amt + 'px, 0)';
-//       //header.style.marginTop = '70px';
-//     });
-//   };
-//   var tab = function(header, content, amt, max) {
-//     amt = Math.min(54, amt);
-//     fadeAmt = 1 - amt / 54;
-//     ionic.requestAnimationFrame(function() {
-//       header.style[ionic.CSS.TRANSFORM] = 'translate3d(0, -' + amt + 'px, 0)';
-//     });
-//   };
-//   var slider_ = function(header, content, amt, max) {
-//     amt = Math.min(53, amt);
-//     fadeAmt = 1 - amt / 53;
-//     ionic.requestAnimationFrame(function() {
-//       header.style[ionic.CSS.TRANSFORM] = 'translate3d(0, -' + amt + 'px, 0)';
-//       header.style.marginTop = '-'+amt+'px';
-//       header.style.top = '-'+amt+'px';
-//     });
-//   };
-
-//   return {
-//     restrict: 'A',
-//     link: function($scope, $element, $attr) {
-//       $timeout(function(){  
-//         var starty = orgStarty = $scope.$eval($attr.headerProgram) || 40;
-//         var shrinkAmt,timeoutID=null;
-        
-//         var header = $document[0].body.querySelector('[nav-bar="active"]');
-//         var chil = header.querySelector('.bar-header');
-//         var header1 = $document[0].body.querySelector('[nav-bar="cached"]');
-//         var chil1 = header1.querySelector('.bar-header');
-
-//         // var header2 = $document[0].body.querySelector('.hd-pro');
-//         // var header3 = $document[0].body.querySelector('.tsb-program');
-
-//         // var header4 = $document[0].body.querySelector('.slider');
-
-//         var headerHeight = chil.offsetHeight;
-
-//         $element.bind('scroll', function(e) { 
-//             shrinkAmt = headerHeight - (headerHeight - (e.detail.scrollTop - starty));
-
-//             if (shrinkAmt >= headerHeight){
-//               //header is totaly hidden - start moving startY downward so that when scrolling up the header starts showing
-//               starty = (e.detail.scrollTop - headerHeight);
-//               shrinkAmt = headerHeight;
-//               if(window.AdMob) AdMob.hideBanner(); 
-//               $timeout.cancel(timeoutID);
-//               timeoutID=$timeout(function(){ if(window.AdMob) AdMob.showBanner(AdMob.AD_POSITION.BOTTOM_CENTER);  },3000); 
-//             } else if (shrinkAmt < 0){
-//               //header is totaly displayed - start moving startY upwards so that when scrolling down the header starts shrinking
-//               starty = Math.max(orgStarty, e.detail.scrollTop);
-//               shrinkAmt = 0;
-//               if(window.AdMob) AdMob.hideBanner(); 
-//               $timeout.cancel(timeoutID);
-//               timeoutID=$timeout(function(){ if(window.AdMob) AdMob.showBanner(AdMob.AD_POSITION.BOTTOM_CENTER);  },3000); 
-//             } 
-//             // shrink(chil, $element[0], shrinkAmt, headerHeight); //do the shrinking   
-//             // shrink(chil1, $element[0], shrinkAmt, headerHeight); //do the shrinking   
-//             // header_(header2, $element[0], shrinkAmt, headerHeight); //do the shrinking   
-//             // tab(header3, $element[0], shrinkAmt, headerHeight); //do the shrinking   
-//             // slider_(header4, $element[0], shrinkAmt, headerHeight); //do the shrinking   
-          
-//         });
-//       },3000);
-//     }
-//   }
-// })
 
 // Quiz
 .directive('quiz', function(quizFactory) {
@@ -395,17 +302,6 @@ angular.module('starter', ['ionic', 'starter.controllers',"angular-md5",'service
       'menuContent': {
         templateUrl: 'templates/home.html',
         controller: 'HomeCtrl'
-      }
-    }
-  })
-
-  // HOMETEST
-  .state('app.hometest', {
-    url: '/hometest',
-    views: {
-      'menuContent': {
-        templateUrl: 'templates/hometest.html',
-        controller: 'HometestCtrl'
       }
     }
   })
@@ -635,6 +531,10 @@ angular.module('starter', ['ionic', 'starter.controllers',"angular-md5",'service
   });
 
   // if none of the above states are matched, use this as the fallback
+<<<<<<< HEAD
   $urlRouterProvider.otherwise('/app/uploadfile'); 
+=======
+  $urlRouterProvider.otherwise('/app/home'); 
+>>>>>>> origin/SpringNews_V1
   //$urlRouterProvider.otherwise('/app/program');
 });

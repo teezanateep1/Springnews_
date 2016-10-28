@@ -33,11 +33,10 @@
     <ion-header-bar class="bar-profile" ng-show="profile" >
         <div class="profile">
             <!-- <img class="profile-picture" src="img/logo.png"  /> -->
-            <img class="profile-picture" ng-src="{{ user.img }}"  />
-            <h3 class="name" >{{user.name}}</h3>
+            <img class="profile-picture" ng-src="{{ userImg }}"  />
+            <h3 class="name" >{{userName}}</h3>
             <!-- <span class="lang-fr" ><a href="#">EN</a></span>
             <span class="lang-se" ><a href="#" class="active">TH</a></span> -->
-            <h4 class="email" style="display: none;">{{user.email}}</h4>
        </div>
     </ion-header-bar>
     <!-- ///////// -->
@@ -62,9 +61,9 @@
            <span ng-class="{'active':link == '/app/home'}" style="margin-left: 10px;">หน้าหลัก</span>
         </ion-item> -->
 
-        <ion-item menu-close class="menu" href="#/app/hometest" ng-click="cl_link('/app/hometest')"  style="border: none;" >
-          <i class="icon nut-menu-home"  ng-class="{'active':link == '/app/hometest'}" ></i> 
-           <span ng-class="{'active':link == '/app/hometest'}" style="margin-left: 10px;">หน้าหลัก</span>
+        <ion-item menu-close class="menu" href="#/app/home" ng-click="cl_link('/app/home')"  style="border: none;" >
+          <i class="icon nut-menu-home"  ng-class="{'active':link == '/app/home'}" ></i> 
+           <span ng-class="{'active':link == '/app/home'}" style="margin-left: 10px;">หน้าหลัก</span>
         </ion-item>
 
         <ion-item menu-close class="menu" ng-click="cl_link('/app/program')" href="#/app/program">

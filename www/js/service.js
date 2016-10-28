@@ -569,8 +569,6 @@ angular.module('services', ['ngCordova'])
     var Data_User = {
         _Register: function($scope,user_info){ 
             if(!user_res){
-
-                console.log(user_info);
                 var url=path+"be/Users/insert"; 
                 user_res = $http({
                     method  : 'POST',
@@ -578,7 +576,6 @@ angular.module('services', ['ngCordova'])
                     data    :  user_info,  // pass in data as strings
                     headers : {'api-key': key}  // set the headers so angular passing info as form data (not request payload)
                 }).then(function(response) {
-                    console.log("register_success");
                     return response.data;
                 });
             }
@@ -589,10 +586,10 @@ angular.module('services', ['ngCordova'])
         _get_info: function($scope,d){
             if(!user_get_res){
                 console.log(d);
-
                 var url=path+"be/Users/getID?api-key="+key+"&id="+d.ID; 
                 user_get_res = $http.get(url).then(function(result){
-                  console.log(result.data);
+
+                  alert(JSON.stringify(result.data));
                   return result.data;
                 });
             }
@@ -601,8 +598,7 @@ angular.module('services', ['ngCordova'])
 
         _login: function($scope){
             if(!user_get_login){
-                console.log($scope.loginData);
-
+                alert(JSON.stringify($scope.loginData));
                 var url=path+"be/Users/logInUser"; 
                 user_get_login =$http({
                     method  : 'POST',
@@ -610,7 +606,6 @@ angular.module('services', ['ngCordova'])
                     data    :  $scope.loginData,  // pass in data as strings
                     headers : {'api-key': key}  // set the headers so angular passing info as form data (not request payload)
                 }).then(function(response) {
-                    console.log("login_success");
                     return response.data;
                 });
             }

@@ -1,6 +1,6 @@
 angular.module('starter.controllers', ['ngOpenFB'])
 
-.controller('AppCtrl', function($scope,$rootScope, $ionicModal, $timeout, $ionicPopup, $http ,$window, $location, md5,$localStorage,ngFB,$cordovaOauth,$ionicSideMenuDelegate) {
+.controller('AppCtrl', function($scope,$rootScope, $ionicModal, $timeout, $ionicPopup, $http ,$window, $location, md5,$localStorage,ngFB,$cordovaOauth,$ionicSideMenuDelegate,$cordovaSQLite) {
 
   // With the new view caching in Ionic, Controllers are only called
   // when they are recreated or on app start, instead of every page change.
@@ -108,39 +108,20 @@ angular.module('starter.controllers', ['ngOpenFB'])
       $timeout.cancel(timeoutID);
   };  
 
-  // Form data for the login modal
-  // $rootScope.loginData = {};
-  // $rootScope.user  = {};
-  $rootScope.icon = "right";
-
-  // alert("localStorage.logined AppCtrl "+$localStorage.logined);
-  if($localStorage.logined){
-     $localStorage.img = "./img/default_user.png";
-     $scope.user.img = $localStorage.img;
-     $scope.profile = true;
-     $scope.login_ = false;
-     $scope.logout_ = true;
-  }else{
-     // $scope.profile = true;
-     $scope.profile = false;
-     $scope.login_ = true;
-     $scope.logout_ = false;
-  }
-
   //Open the logout 
   $scope.logout = function() {
-
     var query = "UPDATE User SET login_stat = 0 WHERE id = 1";
     $cordovaSQLite.execute(db, query,[]).then(function(res) {
-        console.log("UPDATE ID -> " + JSON.stringify(res));
+        alert("UPDATE ID -> " + JSON.stringify(res));
     }, function (err) {
-        console.error(err);
+        alert(JSON.stringify(err));
     });
 
-    $localStorage.logined = false;
-    $scope.profile = false;
-    $scope.login_ = true;
-    $scope.logout_ = false;
+    $rootScope.userImg = '';
+    $rootScope.userName = '';
+    $rootScope.profile = false;
+    $rootScope.login_ = true;
+    $rootScope.logout_ = false;
 
   }
 
@@ -149,125 +130,6 @@ angular.module('starter.controllers', ['ngOpenFB'])
 
 // --------------------- HOME ------------------------
 .controller('HomeCtrl', function($scope, $stateParams, SpringNews, $ionicSlideBoxDelegate,_function, $ionicModal,$ionicLoading,$cordovaSocialSharing,$ionicScrollDelegate, $ionicNavBarDelegate, $timeout, ConnectivityMonitor) { //admobSvc
-
- 
-  $ionicLoading.show();
-  $scope.adver = [];
-
-  $scope.news = [];  
-  $scope.newsupdate = []; //title & date
-  $scope.loading_newsupdate = true;
-
-  $scope.hots = [];
-  $scope.newshot = [];
-  $scope.loading_newshot = true;
-
-  $scope.clips = [];
-  $scope.loading_clip = true;
-
-  $scope.newsCategory = [];
-  $scope.loading_catnews = true;
-
-  $scope.tabs = [];
-  $scope.oils = [];
-  $scope.parts = [];
-  $scope.thaigolds = [];
-
- // $timeout(function(){
-    SpringNews._advertise($scope,'14');
-    SpringNews._newsupdate($scope,'ข่าวเด่น'); 
-    SpringNews._newshot($scope,'ประเด็นร้อน');
-    SpringNews._clips($scope,'30','4'); 
-    SpringNews._category($scope,'889');
-    SpringNews._oil($scope);
-    SpringNews._part($scope);
-    SpringNews._thaigold($scope);
-  // },3000);
-  
-  //วันที่
-  $scope.date = function(d){
-    if(d != undefined){
-      return _function._date(d.substring(0, 10),d.substring(12, 16));
-    }else{ return ""; }
-  }
-  //rendom
-  $scope.random = function() {
-    return 0.5 - Math.random();
-  }
-  //replace
-  $scope.replace = function (str) {
-    if(str != undefined){
-      return str.replace(/(<([^>]+)>)/ig,"");
-    }else{ return ""; }
-  }
-  //substring
-  $scope.substring = function(str){
-    if(str.length > 50){
-      return str.substring(0, 50)+"...";
-    }else{
-      return str;
-    } 
-  }
-  //refresh
-  $scope.refresh = function(){    
-    SpringNews._oil($scope);
-    SpringNews._part($scope);
-    SpringNews._thaigold($scope);
-  }
-  //Show Silde News
-  $scope._slideHasChanged_newsupdate = function($index) {
-    $scope.newsupdate.title = $scope.news[$index].post_title;
-    $scope.newsupdate.date = _function._date($scope.news[$index].post_date.substring(0, 10),$scope.news[$index].post_date.substring(12, 16));
-    $ionicSlideBoxDelegate.update();
-    $ionicSlideBoxDelegate.loop(true); 
-  }
-  $scope._slideHasChanged_HotNews = function ($index) {
-    $scope.newshot.title = $scope.hots[$index].post_title;
-    $scope.newshot.date = _function._date($scope.hots[$index].post_date.substring(0, 10),$scope.hots[$index].post_date.substring(12, 16));
-    $ionicSlideBoxDelegate.update();
-    $ionicSlideBoxDelegate.loop(true); 
-  }
-  //------------\\
-  //------------ Silde Tab
-  var arr = [];
-  $scope.onSlideMove = function(data){
-    if(data.index != '0' && data.index != $scope.tabs.length+1 ){ 
-      if(arr.indexOf(data.index-1) == "-1"){
-        arr.push(data.index-1);
-        $scope.loading_catnews = true;
-        SpringNews._catNews($scope,$scope.tabs[data.index-1].term_id,0);
-      }
-    }
-  }
-  
-   //------ Popup Social
-  $scope.message = '';
-  $scope.img = '';
-  $scope.url = '';
-
-  $scope.share = function(title,url){
-    $scope.title_ = title
-    $scope.url = url
-    $cordovaSocialSharing
-    .share($scope.title_, null,null, $scope.url) // Share via native share sheet
-    .then(function(result) {
-      // Success!
-    }, function(err) {
-      alert("Error");
-    });
-  };
-  //-----------\\ 
-  // ------ loadMore Data -----
-  $scope.loadMore = function(id,length){  
-    $ionicLoading.show();
-    SpringNews._catNews($scope,id,length+1);
-  };
-  // ------------------------
-})
-
-
-// --------------------- HOMETEST ------------------------
-.controller('HometestCtrl', function($scope, $stateParams, SpringNews, $ionicSlideBoxDelegate,_function, $ionicModal,$ionicLoading,$cordovaSocialSharing,$ionicScrollDelegate, $ionicNavBarDelegate, $timeout, ConnectivityMonitor) { //admobSvc
 
  
   $ionicLoading.show();
@@ -1403,7 +1265,7 @@ angular.module('starter.controllers', ['ngOpenFB'])
 
 
 // --------------------- Register ------------------------
-.controller('registerCtrl', function($scope,$stateParams,_function,$cordovaSQLite,SQLite_return) {
+.controller('registerCtrl', function($scope,$stateParams,_function,$cordovaSQLite,SQLite_return,$rootScope) {
 
   // /////////// Check User In SQLite ///////////
   var users_in_db = [];
@@ -1417,7 +1279,6 @@ angular.module('starter.controllers', ['ngOpenFB'])
   });
 
   $scope.submitForm = function(){
-    console.log(this.regis);
 
     var user_info = { 
       _email: this.regis.email ,
@@ -1432,6 +1293,7 @@ angular.module('starter.controllers', ['ngOpenFB'])
     }
     ///////////////////// Register User ////////////////////////
     SQLite_return._Register($scope,user_info).then(function(d) {
+       alert(JSON.stringify(d));
       if(d.ID != null){
         SQLite_return._get_info($scope,d).then(function(get_u_info) {
 
@@ -1439,27 +1301,67 @@ angular.module('starter.controllers', ['ngOpenFB'])
             var u_id = get_u_info[0].ID;
             var full_name = get_u_info[0].display;
             var iv_code = get_u_info[0].mycode;
+            var path = './img/default_user.png';
             /////////// Insert or Update User to SQLite ///////////
             if(users_in_db.length > 0 ){
-              var query = "UPDATE User SET user_id = "+u_id+",fullname = '"+full_name+"',mycode ='"+iv_code+"',login_stat = 1 WHERE id = 1";
+              var query = "UPDATE User SET user_id = "+u_id+",fullname = '"+full_name+"',mycode ='"+iv_code+"',path ='"+path+"',login_stat = 1 WHERE id = 1";
               $cordovaSQLite.execute(db, query,[]).then(function(res) {
-                  console.log("UPDATE ID -> " + JSON.stringify(res));
+                  //alert("UPDATE ID -> " + JSON.stringify(res));
+                   var q_select = "SELECT * FROM User WHERE login_stat = 1";
+                    $cordovaSQLite.execute(db, q_select).then(function(result) {
+                      if(result.rows.length == 1){
+                        for (var i = 0; i < result.rows.length; i++) {
+                          users_for_check_login.push(result.rows.item(i));
+                        }
+                        $rootScope.userImg = users_for_check_login[0].path;
+                        $rootScope.userName = users_for_check_login[0].fullname;
+                        $rootScope.profile = true;
+                        $rootScope.login_ = false;
+                        $rootScope.logout_ = true;
+                      }else{
+                        $rootScope.profile = false;
+                        $rootScope.login_ = true;
+                        $rootScope.logout_ = false;
+                      }
+                    });
+
               }, function (err) {
-                  console.error(err);
+                  alert(JSON.stringify(err));
               });
             }
             else{
-              var query = "INSERT INTO User (user_id,fullname ,mycode,login_stat) VALUES (?,?,?,?)";
-              $cordovaSQLite.execute(db, query, [u_id,full_name,iv_code,1]).then(function(res) {
-                  console.log("INSERT ID -> " + res.insertId);
+              var query = "INSERT INTO User (user_id,fullname ,mycode,login_stat,path) VALUES (?,?,?,?,?)";
+              $cordovaSQLite.execute(db, query, [u_id,full_name,iv_code,1,path]).then(function(res) {
+                  //alert("INSERT ID -> " + res.insertId);
+
+                  var q_select = "SELECT * FROM User WHERE login_stat = 1";
+                    $cordovaSQLite.execute(db, q_select).then(function(result) {
+                      if(result.rows.length == 1){
+                        for (var i = 0; i < result.rows.length; i++) {
+                          users_for_check_login.push(result.rows.item(i));
+                        }
+                        $rootScope.userImg = users_for_check_login[0].path;
+                        $rootScope.userName = users_for_check_login[0].fullname;
+                        $rootScope.profile = true;
+                        $rootScope.login_ = false;
+                        $rootScope.logout_ = true;
+                      }else{
+                        $rootScope.profile = false;
+                        $rootScope.login_ = true;
+                        $rootScope.logout_ = false;
+                      }
+                    });
+
               }, function (err) {
-                  console.error(err);
+                  alert(JSON.stringify(err));
               });
              
             };
           }
 
         });
+      }else{
+        alert(d.message);
       }
         // /////////// Check Status login In SQLite ///////////
         // var users_stat_login = [];
@@ -1520,36 +1422,76 @@ angular.module('starter.controllers', ['ngOpenFB'])
 
   // Perform the login action when the user submits the login form
   $scope.doLogin = function() {
-
     SQLite_return._login($scope).then(function(d) {
+      alert(JSON.stringify(d));
       if(d.ID != null){
         SQLite_return._get_info($scope,d).then(function(get_u_info) {
-
+          
           if(get_u_info[0].ID != null){
             var u_id = get_u_info[0].ID;
             var full_name = get_u_info[0].display;
             var iv_code = get_u_info[0].mycode;
+            var path = './img/default_user.png';
             /////////// Insert or Update User to SQLite ///////////
             if(users_in_db.length > 0 ){
-              var query = "UPDATE User SET user_id = "+u_id+",fullname = '"+full_name+"',mycode ='"+iv_code+"',login_stat = 1 WHERE id = 1";
+              var query = "UPDATE User SET user_id = "+u_id+",fullname = '"+full_name+"',mycode ='"+iv_code+"',path ='"+path+"',login_stat = 1 WHERE id = 1";
               $cordovaSQLite.execute(db, query,[]).then(function(res) {
-                  console.log("UPDATE ID -> " + JSON.stringify(res));
+                  //console.log("UPDATE ID -> " + JSON.stringify(res));
+                  var q_select = "SELECT * FROM User WHERE login_stat = 1";
+                    $cordovaSQLite.execute(db, q_select).then(function(result) {
+                      if(result.rows.length == 1){
+                        for (var i = 0; i < result.rows.length; i++) {
+                          users_for_check_login.push(result.rows.item(i));
+                        }
+                        $rootScope.userImg = users_for_check_login[0].path;
+                        $rootScope.userName = users_for_check_login[0].fullname;
+                        $rootScope.profile = true;
+                        $rootScope.login_ = false;
+                        $rootScope.logout_ = true;
+                      }else{
+                        $rootScope.profile = false;
+                        $rootScope.login_ = true;
+                        $rootScope.logout_ = false;
+                      }
+                    });
+
               }, function (err) {
-                  console.error(err);
+                  alert(JSON.stringify(err));
               });
             }
             else{
-              var query = "INSERT INTO User (user_id,fullname ,mycode,login_stat) VALUES (?,?,?,?)";
-              $cordovaSQLite.execute(db, query, [u_id,full_name,iv_code,1]).then(function(res) {
-                  console.log("INSERT ID -> " + res.insertId);
+              var query = "INSERT INTO User (user_id,fullname ,mycode,login_stat) VALUES (?,?,?,?,?)";
+              $cordovaSQLite.execute(db, query, [u_id,full_name,iv_code,1,path]).then(function(res) {
+                  //console.log("INSERT ID -> " + res.insertId);
+                  var q_select = "SELECT * FROM User WHERE login_stat = 1";
+                    $cordovaSQLite.execute(db, q_select).then(function(result) {
+                      if(result.rows.length == 1){
+                        for (var i = 0; i < result.rows.length; i++) {
+                          users_for_check_login.push(result.rows.item(i));
+                        }
+                        $rootScope.userImg = users_for_check_login[0].path;
+                        $rootScope.userName = users_for_check_login[0].fullname;
+                        $rootScope.profile = true;
+                        $rootScope.login_ = false;
+                        $rootScope.logout_ = true;
+                      }else{
+                        $rootScope.profile = false;
+                        $rootScope.login_ = true;
+                        $rootScope.logout_ = false;
+                      }
+                    });
+
               }, function (err) {
-                  console.error(err);
+                  alert(JSON.stringify(err));
               });
              
             };
-          }
 
+          }
         });
+      } 
+      else{
+        alert(d.message);
       }
     });
     // /////////// Check Status login In SQLite ///////////
