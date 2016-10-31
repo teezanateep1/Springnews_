@@ -78,6 +78,7 @@ angular.module('starter', ['ionic', 'starter.controllers',"angular-md5",'service
           }
           $rootScope.userImg = users_for_check_login[0].path;
           $rootScope.userName = users_for_check_login[0].fullname;
+          $rootScope.invite_code = users_for_check_login[0].mycode;
           $rootScope.profile = true;
           $rootScope.login_ = false;
           $rootScope.logout_ = true;
@@ -531,10 +532,6 @@ angular.module('starter', ['ionic', 'starter.controllers',"angular-md5",'service
   });
 
   // if none of the above states are matched, use this as the fallback
-<<<<<<< HEAD
-  $urlRouterProvider.otherwise('/app/uploadfile'); 
-=======
   $urlRouterProvider.otherwise('/app/home'); 
->>>>>>> origin/SpringNews_V1
   //$urlRouterProvider.otherwise('/app/program');
 });

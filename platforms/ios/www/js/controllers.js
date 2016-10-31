@@ -1,6 +1,6 @@
 angular.module('starter.controllers', ['ngOpenFB'])
 
-.controller('AppCtrl', function($scope,$rootScope, $ionicModal, $timeout, $ionicPopup, $http ,$window, $location, md5,$localStorage,ngFB,$cordovaOauth,$ionicSideMenuDelegate) {
+.controller('AppCtrl', function($scope,$rootScope, $ionicModal, $timeout, $ionicPopup, $http ,$window, $location, md5,$localStorage,ngFB,$cordovaOauth,$ionicSideMenuDelegate,$cordovaSQLite) {
 
   // With the new view caching in Ionic, Controllers are only called
   // when they are recreated or on app start, instead of every page change.
@@ -108,39 +108,21 @@ angular.module('starter.controllers', ['ngOpenFB'])
       $timeout.cancel(timeoutID);
   };  
 
-  // Form data for the login modal
-  // $rootScope.loginData = {};
-  // $rootScope.user  = {};
-  $rootScope.icon = "right";
-
-  // alert("localStorage.logined AppCtrl "+$localStorage.logined);
-  if($localStorage.logined){
-     $localStorage.img = "./img/default_user.png";
-     $scope.user.img = $localStorage.img;
-     $scope.profile = true;
-     $scope.login_ = false;
-     $scope.logout_ = true;
-  }else{
-     // $scope.profile = true;
-     $scope.profile = false;
-     $scope.login_ = true;
-     $scope.logout_ = false;
-  }
-
   //Open the logout 
   $scope.logout = function() {
-
     var query = "UPDATE User SET login_stat = 0 WHERE id = 1";
     $cordovaSQLite.execute(db, query,[]).then(function(res) {
-        console.log("UPDATE ID -> " + JSON.stringify(res));
+        // alert("UPDATE ID -> " + JSON.stringify(res));
     }, function (err) {
-        console.error(err);
+        alert(JSON.stringify(err));
     });
 
-    $localStorage.logined = false;
-    $scope.profile = false;
-    $scope.login_ = true;
-    $scope.logout_ = false;
+    $rootScope.userImg = '';
+    $rootScope.userName = '';
+    $rootScope.invite_code = '';
+    $rootScope.profile = false;
+    $rootScope.login_ = true;
+    $rootScope.logout_ = false;
 
   }
 
@@ -149,125 +131,6 @@ angular.module('starter.controllers', ['ngOpenFB'])
 
 // --------------------- HOME ------------------------
 .controller('HomeCtrl', function($scope, $stateParams, SpringNews, $ionicSlideBoxDelegate,_function, $ionicModal,$ionicLoading,$cordovaSocialSharing,$ionicScrollDelegate, $ionicNavBarDelegate, $timeout, ConnectivityMonitor) { //admobSvc
-
- 
-  $ionicLoading.show();
-  $scope.adver = [];
-
-  $scope.news = [];  
-  $scope.newsupdate = []; //title & date
-  $scope.loading_newsupdate = true;
-
-  $scope.hots = [];
-  $scope.newshot = [];
-  $scope.loading_newshot = true;
-
-  $scope.clips = [];
-  $scope.loading_clip = true;
-
-  $scope.newsCategory = [];
-  $scope.loading_catnews = true;
-
-  $scope.tabs = [];
-  $scope.oils = [];
-  $scope.parts = [];
-  $scope.thaigolds = [];
-
- // $timeout(function(){
-    SpringNews._advertise($scope,'14');
-    SpringNews._newsupdate($scope,'ข่าวเด่น'); 
-    SpringNews._newshot($scope,'ประเด็นร้อน');
-    SpringNews._clips($scope,'30','4'); 
-    SpringNews._category($scope,'889');
-    SpringNews._oil($scope);
-    SpringNews._part($scope);
-    SpringNews._thaigold($scope);
-  // },3000);
-  
-  //วันที่
-  $scope.date = function(d){
-    if(d != undefined){
-      return _function._date(d.substring(0, 10),d.substring(12, 16));
-    }else{ return ""; }
-  }
-  //rendom
-  $scope.random = function() {
-    return 0.5 - Math.random();
-  }
-  //replace
-  $scope.replace = function (str) {
-    if(str != undefined){
-      return str.replace(/(<([^>]+)>)/ig,"");
-    }else{ return ""; }
-  }
-  //substring
-  $scope.substring = function(str){
-    if(str.length > 50){
-      return str.substring(0, 50)+"...";
-    }else{
-      return str;
-    } 
-  }
-  //refresh
-  $scope.refresh = function(){    
-    SpringNews._oil($scope);
-    SpringNews._part($scope);
-    SpringNews._thaigold($scope);
-  }
-  //Show Silde News
-  $scope._slideHasChanged_newsupdate = function($index) {
-    $scope.newsupdate.title = $scope.news[$index].post_title;
-    $scope.newsupdate.date = _function._date($scope.news[$index].post_date.substring(0, 10),$scope.news[$index].post_date.substring(12, 16));
-    $ionicSlideBoxDelegate.update();
-    $ionicSlideBoxDelegate.loop(true); 
-  }
-  $scope._slideHasChanged_HotNews = function ($index) {
-    $scope.newshot.title = $scope.hots[$index].post_title;
-    $scope.newshot.date = _function._date($scope.hots[$index].post_date.substring(0, 10),$scope.hots[$index].post_date.substring(12, 16));
-    $ionicSlideBoxDelegate.update();
-    $ionicSlideBoxDelegate.loop(true); 
-  }
-  //------------\\
-  //------------ Silde Tab
-  var arr = [];
-  $scope.onSlideMove = function(data){
-    if(data.index != '0' && data.index != $scope.tabs.length+1 ){ 
-      if(arr.indexOf(data.index-1) == "-1"){
-        arr.push(data.index-1);
-        $scope.loading_catnews = true;
-        SpringNews._catNews($scope,$scope.tabs[data.index-1].term_id,0);
-      }
-    }
-  }
-  
-   //------ Popup Social
-  $scope.message = '';
-  $scope.img = '';
-  $scope.url = '';
-
-  $scope.share = function(title,url){
-    $scope.title_ = title
-    $scope.url = url
-    $cordovaSocialSharing
-    .share($scope.title_, null,null, $scope.url) // Share via native share sheet
-    .then(function(result) {
-      // Success!
-    }, function(err) {
-      alert("Error");
-    });
-  };
-  //-----------\\ 
-  // ------ loadMore Data -----
-  $scope.loadMore = function(id,length){  
-    $ionicLoading.show();
-    SpringNews._catNews($scope,id,length+1);
-  };
-  // ------------------------
-})
-
-
-// --------------------- HOMETEST ------------------------
-.controller('HometestCtrl', function($scope, $stateParams, SpringNews, $ionicSlideBoxDelegate,_function, $ionicModal,$ionicLoading,$cordovaSocialSharing,$ionicScrollDelegate, $ionicNavBarDelegate, $timeout, ConnectivityMonitor) { //admobSvc
 
  
   $ionicLoading.show();
@@ -1076,31 +939,33 @@ angular.module('starter.controllers', ['ngOpenFB'])
   $scope.message = '';
   $scope.url = '';
 
-  // var u_id = 0;
-  // var users_in_db = [];
-  // var q_select = "SELECT * FROM User";
-  // $cordovaSQLite.execute(db, q_select).then(function(result) {
-  //     for (var i = 0; i < result.rows.length; i++) {
-  //       users_in_db.push(result.rows.item(i));
-  //     }
-  //     if (users_in_db.length > 0) {
-  //       u_id = users_in_db[0].user_id;
-  //       $scope.like_btn = true;
-  //       new_info = { 
-  //           _postID: $stateParams.newsId,
-  //           _userID: u_id
-  //       }
-  //     }
-  // });
-  // var like_in_db =[];
-  // var q_select = "SELECT * FROM Action where news_id ="+$stateParams.newsId+"";
-  // $cordovaSQLite.execute(db, q_select).then(function(result) {
-  //   // console.log(result);
-  //   for (var i = 0; i < result.rows.length; i++) {
-  //     like_in_db.push(result.rows.item(i));
-  //     $scope.like = "ถูกใจแล้ว";
-  //   }
-  // });
+  var u_id = 0;
+  var users_in_db = [];
+  var q_select = "SELECT * FROM User";
+  $cordovaSQLite.execute(db, q_select).then(function(result) {
+      for (var i = 0; i < result.rows.length; i++) {
+        users_in_db.push(result.rows.item(i));
+      }
+      if (users_in_db.length > 0) {
+        if(users_in_db[0].login_stat == 1){
+          u_id = users_in_db[0].user_id;
+          $scope.like_btn = true;
+          new_info = { 
+              _postID: $stateParams.newsId,
+              _userID: u_id
+          }
+        }
+      }
+  });
+  var like_in_db =[];
+  var q_select = "SELECT * FROM Action where news_id ="+$stateParams.newsId+"";
+  $cordovaSQLite.execute(db, q_select).then(function(result) {
+    // console.log(result);
+    for (var i = 0; i < result.rows.length; i++) {
+      like_in_db.push(result.rows.item(i));
+      $scope.like = "ถูกใจแล้ว";
+    }
+  });
 
   Actions._read($scope,new_info);
 
@@ -1245,28 +1110,30 @@ angular.module('starter.controllers', ['ngOpenFB'])
 
 .controller('uploadfileCtrl', function($scope, $cordovaCamera, $ionicLoading,$localStorage,$cordovaFileTransfer) {
    
-    $scope.data = { "ImageURI" :  "Select Image" };
+    $scope.data = { "FileURI" :  "Select file" };
+    var file_type;
+    $scope.prevideo = false;
+    $scope.preimage = false;
 
-    $scope.takePicture = function() {
-    var options = {
-        quality: 50,
-        destinationType: Camera.DestinationType.FILE_URL,
-        sourceType: Camera.PictureSourceType.CAMERA
-      };
-    $cordovaCamera.getPicture(options).then(
-    function(imageData) {
-      $scope.picData = imageData;
-      $scope.ftLoad = true;
-      $localstorage.set('fotoUp', imageData);
-      $ionicLoading.show({template: 'Foto acquisita...', duration:500});
-    },
-    function(err){
-      $ionicLoading.show({template: 'Errore di caricamento...', duration:500});
-      })
-    }
+    // $scope.takePicture = function() {
+    // var options = {
+    //     quality: 50,
+    //     destinationType: Camera.DestinationType.FILE_URL,
+    //     sourceType: Camera.PictureSourceType.CAMERA
+    //   };
+    // $cordovaCamera.getPicture(options).then(
+    // function(imageData) {
+    //   $scope.picData = imageData;
+    //   $scope.ftLoad = true;
+    //   $localstorage.set('fotoUp', imageData);
+    //   $ionicLoading.show({template: 'Foto acquisita...', duration:500});
+    // },
+    // function(err){
+    //   $ionicLoading.show({template: 'Errore di caricamento...', duration:500});
+    //   })
+    // }
 
     $scope.selectPicture = function() { 
-    alert("11111");
     var options = {
         quality: 50,
         destinationType: Camera.DestinationType.FILE_URI,
@@ -1274,162 +1141,105 @@ angular.module('starter.controllers', ['ngOpenFB'])
         targetWidth: 300,
         targetHeight: 300
     };
-     alert("aaaaaa");
-    $cordovaCamera.getPicture(options).then(
-    function(imageURI) {
+    $cordovaCamera.getPicture(options).then(function(imageURI) {
+      file_type = 1;
+      $scope.preimage = true;
+      $scope.prevideo = false;
       window.resolveLocalFileSystemURI(imageURI, function(fileEntry) {
-        alert("bbbbb");
-        $scope.picData = fileEntry.nativeURL;
+        $scope.fileData = fileEntry.nativeURL;
         $scope.ftLoad = true;
         var image = document.getElementById('myImage');
         image.src = fileEntry.nativeURL;
         });
-      $ionicLoading.show({template: 'Foto acquisita...', duration:500});
+      $ionicLoading.show({template: 'Selecting File ...', duration:500});
     },
     function(err){
-      $ionicLoading.show({template: 'Errore di caricamento...', duration:500});
+      $ionicLoading.show({template: 'Select File error', duration:500});
     })
   };
 
-  $scope.captureVideo = function() {
-    alert("aaaaaaa")
-    var options = {   quality: 50,
-                      destinationType: Camera.DestinationType.FILE_URL,
-                      sourceType: Camera.PictureSourceType.CAMERA
-                      };
-    
-    $cordovaCapture.captureVideo(options).then(function(videoData) {
-    alert("bbbbbb")
-    $scope.clip = videoData[0].fullPath;
-    $scope.file=videoData[0].name;
-    var first=$scope.clip.substr(0,$scope.clip.lastIndexOf('/')+1);
-
-    $cordovaFile.readAsDataURL(first,$scope.file)
-    .then(function (success) {
-      alert("cccccccc")
-
-      var bucket = new AWS.S3({params: { Bucket: 'jbf-dev-bucket' }});
-
-      var params = {
-        Key: videoData[0].name, 
-        ContentEncoding: 'base64', 
-        ContentType: 'video/mp4', 
-        Body: success
+  $scope.selectVideo = function() {
+      var options = {
+        quality: 50,
+        destinationType: Camera.DestinationType.DATA_URL,
+        sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
+        mediaType: Camera.MediaType.VIDEO
       };
-
-      bucket.upload(params).on("http://artbeat.mfec.co.th/mail/upload.php" , function(evt) {
-        alert("ddddddd")
-        $scope.uploading = true;
-        $scope.progress = parseInt((evt.loaded * 100) / evt.total)+'%';
-        console.log("Uploaded :: " + $scope.progress );         
-        $scope.$apply();
-      }).send(function(err, data) {
-        alert("eeeeeee")
-        $scope.uploading = false;
-        /*$scope.images.push(data.Location);*/
-
-        /*console.log(data.Location);*/
-        $scope.$apply();
+      $cordovaCamera.getPicture(options).then(function(videoURI) {
+        file_type = 2;
+        $scope.prevideo = true;
+        $scope.preimage = false;
+        console.log("videoURI",JSON.stringify(videoURI));
+        window.resolveLocalFileSystemURI(videoURI, function(fileEntry) {
+          $scope.fileData = fileEntry.nativeURL;
+          $scope.ftLoad = true;
+          var image = document.getElementById('myImage');
+          image.src = fileEntry.nativeURL;
+        });
+      $ionicLoading.show({template: 'Selecting File ...', duration:500});
+      }, function(err) {
+        console.log("err",JSON.stringify(err));
+        $ionicLoading.show({template: 'Select File error', duration:500});
       });
-    
-      $scope.i++;
-
-      }, function (error) { 
-        console.log("==========error==========");
-        console.log(error);
-      })
-    })
-        
       
   }
 
 
   $scope.upload = function() {
+    
+    if(file_type == 1){
+      var date = new Date().getTime();
+      var filename = "img_upload"+date+".png";
 
-        var date = new Date().getTime();
-        var filename = "img_upload"+date+".png";
-        $ionicLoading.show({template: 'กำลังอัพโหลดไฟล์...'});
-        var fileURL = videodata;
-        var fileURL = $scope.picData;
+      $ionicLoading.show({template: 'กำลังอัพโหลดไฟล์...'});
+      var fileURL = $scope.fileData;
 
-        var options = {
-            fileKey: "file",
-            fileName: filename,
-            chunkedMode: false,
-            mimeType: "video/mp4",
-            params : {'directory':'photo', 'fileName': filename}
-        };
-        $cordovaFileTransfer.upload("http://artbeat.mfec.co.th/mail/upload.php", fileURL, options).then(function(result) {
-            console.log("SUCCESS: " + JSON.stringify(result.response));
-            alert(("SUCCESS: " + JSON.stringify(result.response)));
-        }, function(err) {
-            console.log("ERROR: " + JSON.stringify(err));
-            alert("ERROR: " + JSON.stringify(err));
-        }, function (progress) {
-            // constant progress updates
-        });
-        $ionicLoading.hide();
+      var options = {
+          fileKey: "file",
+          fileName: filename,
+          chunkedMode: false,
+          mimeType: "image/png",
+          params : {'directory':'uploads', 'fileName': filename}
+      };
+      $cordovaFileTransfer.upload("http://artbeat.mfec.co.th/mail/upload.php", fileURL, options).then(function(result) {
+          console.log("SUCCESS: " + JSON.stringify(result.response));
+          // alert(("SUCCESS: " + JSON.stringify(result.response)));
+      }, function(err) {
+          console.log("ERROR: " + JSON.stringify(err));
+          alert("ERROR: " + JSON.stringify(err));
+      }, function (progress) {
+          // constant progress updates
+      });
+      $ionicLoading.hide();
+    }
+    else if(file_type == 2){
+      var date = new Date().getTime();
+      var filename = "video_upload"+date+".mp4";
+
+      $ionicLoading.show({template: 'กำลังอัพโหลดไฟล์...'});
+      var fileURL = $scope.fileData;
+
+      var options = {
+          fileKey: "file",
+          fileName: filename,
+          chunkedMode: false,
+          mimeType: "video/mp4",
+          params : {'directory':'uploads', 'fileName': filename}
+      };
+      $cordovaFileTransfer.upload("http://artbeat.mfec.co.th/mail/upload.php", fileURL, options).then(function(result) {
+          console.log("SUCCESS: " + JSON.stringify(result.response));
+          // alert(("SUCCESS: " + JSON.stringify(result.response)));
+      }, function(err) {
+          console.log("ERROR: " + JSON.stringify(err));
+          alert("ERROR: " + JSON.stringify(err));
+      }, function (progress) {
+          // constant progress updates
+      });
+      $ionicLoading.hide();
+
+    }
   }
 
-    // $scope.uploadPicture = function() {
-    // $ionicLoading.show({template: 'Sto inviando la foto...'});
-    // var fileURL = $scope.picData;
-    // var options = new FileUploadOptions();
-    // options.fileKey = "file";
-    // options.fileName = fileURL.substr(fileURL.lastIndexOf('/') + 1);
-    // options.mimeType = "image/jpeg";
-    // options.chunkedMode = true;
-
-    // var params = {};
-    // params.value1 = "someparams";
-    // params.value2 = "otherparams";
-
-    // options.params = params;
-
-    // var ft = new FileTransfer();
-    // ft.upload(fileURL, encodeURI("http://artbeat.mfec.co.th/mail/upload.php"), viewUploadedPictures, function(error) {
-    //   $ionicLoading.show({template: 'Errore di connessione...'});
-    // $ionicLoading.hide();}, options);
-
-  var viewUploadedPictures = function() {
-    $ionicLoading.show({template: 'Sto cercando le tue foto...'});
-        server = "http://artbeat.mfec.co.th/mail/upload.php";
-        if (server) {
-            var xmlhttp = new XMLHttpRequest();
-            xmlhttp.onreadystatechange=function(){
-            if(xmlhttp.readyState === 4){
-                    if (xmlhttp.status === 200) {          
-                document.getElementById('server_images').innerHTML = xmlhttp.responseText;
-                    }
-                    else { $ionicLoading.show({template: 'Errore durante il caricamento...', duration: 1000});
-          return false;
-                    }
-                }
-            };
-            xmlhttp.open("GET", server , true);
-            xmlhttp.send()} ;
-    $ionicLoading.hide();
-    }
-
-  $scope.viewPictures = function() {
-    $ionicLoading.show({template: 'Sto cercando le tue foto...'});
-        server = "http://artbeat.mfec.co.th/mail/upload.php";
-        if (server) {
-            var xmlhttp = new XMLHttpRequest();
-            xmlhttp.onreadystatechange=function(){
-            if(xmlhttp.readyState === 4){
-                    if (xmlhttp.status === 200) {          
-                document.getElementById('server_images').innerHTML = xmlhttp.responseText;
-                    }
-                    else { $ionicLoading.show({template: 'Errore durante il caricamento...', duration: 1000});
-          return false;
-                    }
-                }
-            };
-            xmlhttp.open("GET", server , true);
-            xmlhttp.send()} ;
-    $ionicLoading.hide();
-    }
 })
 
 // --------------------- AllNews ------------------------
@@ -1458,7 +1268,7 @@ angular.module('starter.controllers', ['ngOpenFB'])
 
 
 // --------------------- Register ------------------------
-.controller('registerCtrl', function($scope,$stateParams,_function,$cordovaSQLite,SQLite_return) {
+.controller('registerCtrl', function($scope,$stateParams,_function,$cordovaSQLite,SQLite_return,$rootScope) {
 
   // /////////// Check User In SQLite ///////////
   var users_in_db = [];
@@ -1472,7 +1282,6 @@ angular.module('starter.controllers', ['ngOpenFB'])
   });
 
   $scope.submitForm = function(){
-    console.log(this.regis);
 
     var user_info = { 
       _email: this.regis.email ,
@@ -1487,6 +1296,7 @@ angular.module('starter.controllers', ['ngOpenFB'])
     }
     ///////////////////// Register User ////////////////////////
     SQLite_return._Register($scope,user_info).then(function(d) {
+       // alert(JSON.stringify(d));
       if(d.ID != null){
         SQLite_return._get_info($scope,d).then(function(get_u_info) {
 
@@ -1494,27 +1304,69 @@ angular.module('starter.controllers', ['ngOpenFB'])
             var u_id = get_u_info[0].ID;
             var full_name = get_u_info[0].display;
             var iv_code = get_u_info[0].mycode;
+            var path = './img/default_user.png';
             /////////// Insert or Update User to SQLite ///////////
             if(users_in_db.length > 0 ){
-              var query = "UPDATE User SET user_id = "+u_id+",fullname = '"+full_name+"',mycode ='"+iv_code+"',login_stat = 1 WHERE id = 1";
+              var query = "UPDATE User SET user_id = "+u_id+",fullname = '"+full_name+"',mycode ='"+iv_code+"',path ='"+path+"',login_stat = 1 WHERE id = 1";
               $cordovaSQLite.execute(db, query,[]).then(function(res) {
-                  console.log("UPDATE ID -> " + JSON.stringify(res));
+                  //alert("UPDATE ID -> " + JSON.stringify(res));
+                   var q_select = "SELECT * FROM User WHERE login_stat = 1";
+                    $cordovaSQLite.execute(db, q_select).then(function(result) {
+                      if(result.rows.length == 1){
+                        for (var i = 0; i < result.rows.length; i++) {
+                          users_for_check_login.push(result.rows.item(i));
+                        }
+                        $rootScope.userImg = users_for_check_login[0].path;
+                        $rootScope.userName = users_for_check_login[0].fullname;
+                        $rootScope.invite_code = users_for_check_login[0].mycode;
+                        $rootScope.profile = true;
+                        $rootScope.login_ = false;
+                        $rootScope.logout_ = true;
+                      }else{
+                        $rootScope.profile = false;
+                        $rootScope.login_ = true;
+                        $rootScope.logout_ = false;
+                      }
+                    });
+
               }, function (err) {
-                  console.error(err);
+                  alert(JSON.stringify(err));
               });
             }
             else{
-              var query = "INSERT INTO User (user_id,fullname ,mycode,login_stat) VALUES (?,?,?,?)";
-              $cordovaSQLite.execute(db, query, [u_id,full_name,iv_code,1]).then(function(res) {
-                  console.log("INSERT ID -> " + res.insertId);
+              var query = "INSERT INTO User (user_id,fullname ,mycode,login_stat,path) VALUES (?,?,?,?,?)";
+              $cordovaSQLite.execute(db, query, [u_id,full_name,iv_code,1,path]).then(function(res) {
+                  //alert("INSERT ID -> " + res.insertId);
+
+                  var q_select = "SELECT * FROM User WHERE login_stat = 1";
+                    $cordovaSQLite.execute(db, q_select).then(function(result) {
+                      if(result.rows.length == 1){
+                        for (var i = 0; i < result.rows.length; i++) {
+                          users_for_check_login.push(result.rows.item(i));
+                        }
+                        $rootScope.userImg = users_for_check_login[0].path;
+                        $rootScope.userName = users_for_check_login[0].fullname;
+                        $rootScope.invite_code = users_for_check_login[0].mycode;
+                        $rootScope.profile = true;
+                        $rootScope.login_ = false;
+                        $rootScope.logout_ = true;
+                      }else{
+                        $rootScope.profile = false;
+                        $rootScope.login_ = true;
+                        $rootScope.logout_ = false;
+                      }
+                    });
+
               }, function (err) {
-                  console.error(err);
+                  alert(JSON.stringify(err));
               });
              
             };
           }
 
         });
+      }else{
+        alert(d.message);
       }
         // /////////// Check Status login In SQLite ///////////
         // var users_stat_login = [];
@@ -1542,17 +1394,20 @@ angular.module('starter.controllers', ['ngOpenFB'])
 })
 
 // --------------------- login ------------------------
-.controller('loginCtrl', function($scope,$http,$stateParams,$localStorage,ngFB,$cordovaOauth,_function,SpringNews,SQLite_return,$cordovaSQLite) {
+.controller('loginCtrl', function($scope,$http,$stateParams,$localStorage,ngFB,$cordovaOauth,_function,SpringNews,SQLite_return,$cordovaSQLite,$rootScope) {
+  
   // /////////// Check User In SQLite ///////////
-  // var users_in_db = [];
-  // var q_select = "SELECT * FROM User";
-  // $cordovaSQLite.execute(db, q_select).then(function(result) {
-  //   console.log(result);
-  //   for (var i = 0; i < result.rows.length; i++) {
-  //     users_in_db.push(result.rows.item(i));
-  //   }
-  //   console.log(JSON.stringify(users_in_db));
-  // });
+  var users_in_db = [];
+  var q_select = "SELECT * FROM User";
+  $cordovaSQLite.execute(db, q_select).then(function(result) {
+    console.log(result);
+    for (var i = 0; i < result.rows.length; i++) {
+      users_in_db.push(result.rows.item(i));
+    }
+    console.log(JSON.stringify(users_in_db));
+  });
+  
+
 
   //Alert Fail Login
   $scope.showAlertFail = function() {
@@ -1576,35 +1431,83 @@ angular.module('starter.controllers', ['ngOpenFB'])
   // Perform the login action when the user submits the login form
   $scope.doLogin = function() {
 
-    SQLite_return._login($scope).then(function(d) {
+    var login_data = {
+      user: this.loginData.user,
+      pass: this.loginData.pass
+    }
+    // alert(JSON.stringify(login_data));
+    SQLite_return._login($scope,login_data).then(function(d) {
       if(d.ID != null){
         SQLite_return._get_info($scope,d).then(function(get_u_info) {
-
+          
           if(get_u_info[0].ID != null){
             var u_id = get_u_info[0].ID;
             var full_name = get_u_info[0].display;
             var iv_code = get_u_info[0].mycode;
+            var path = './img/default_user.png';
+            // alert("get_u_info_success");
             /////////// Insert or Update User to SQLite ///////////
             if(users_in_db.length > 0 ){
-              var query = "UPDATE User SET user_id = "+u_id+",fullname = '"+full_name+"',mycode ='"+iv_code+"',login_stat = 1 WHERE id = 1";
+              var query = "UPDATE User SET user_id = "+u_id+",fullname = '"+full_name+"',mycode ='"+iv_code+"',path ='"+path+"',login_stat = 1 WHERE id = 1";
               $cordovaSQLite.execute(db, query,[]).then(function(res) {
                   console.log("UPDATE ID -> " + JSON.stringify(res));
+                  var q_select = "SELECT * FROM User WHERE login_stat = 1";
+                    $cordovaSQLite.execute(db, q_select).then(function(result) {
+                      if(result.rows.length == 1){
+                        for (var i = 0; i < result.rows.length; i++) {
+                          users_for_check_login.push(result.rows.item(i));
+                        }
+                        $rootScope.userImg = users_for_check_login[0].path;
+                        $rootScope.userName = users_for_check_login[0].fullname;
+                        $rootScope.invite_code = users_for_check_login[0].mycode;
+                        $rootScope.profile = true;
+                        $rootScope.login_ = false;
+                        $rootScope.logout_ = true;
+                      }else{
+                        $rootScope.profile = false;
+                        $rootScope.login_ = true;
+                        $rootScope.logout_ = false;
+                      }
+                    });
+
               }, function (err) {
-                  console.error(err);
+                  alert(JSON.stringify(err));
               });
             }
             else{
-              var query = "INSERT INTO User (user_id,fullname ,mycode,login_stat) VALUES (?,?,?,?)";
-              $cordovaSQLite.execute(db, query, [u_id,full_name,iv_code,1]).then(function(res) {
+              var query = "INSERT INTO User (user_id,fullname ,mycode,login_stat) VALUES (?,?,?,?,?)";
+              $cordovaSQLite.execute(db, query, [u_id,full_name,iv_code,1,path]).then(function(res) {
                   console.log("INSERT ID -> " + res.insertId);
+                  var q_select = "SELECT * FROM User WHERE login_stat = 1";
+                    $cordovaSQLite.execute(db, q_select).then(function(result) {
+                      if(result.rows.length == 1){
+                        for (var i = 0; i < result.rows.length; i++) {
+                          users_for_check_login.push(result.rows.item(i));
+                        }
+                        $rootScope.userImg = users_for_check_login[0].path;
+                        $rootScope.userName = users_for_check_login[0].fullname;
+                        $rootScope.invite_code = users_for_check_login[0].mycode;
+                        $rootScope.profile = true;
+                        $rootScope.login_ = false;
+                        $rootScope.logout_ = true;
+                      }else{
+                        $rootScope.profile = false;
+                        $rootScope.login_ = true;
+                        $rootScope.logout_ = false;
+                      }
+                    });
+
               }, function (err) {
-                  console.error(err);
+                  alert(JSON.stringify(err));
               });
              
             };
-          }
 
+          }
         });
+      } 
+      else{
+        alert(d.message);
       }
     });
     // /////////// Check Status login In SQLite ///////////
@@ -1631,51 +1534,115 @@ angular.module('starter.controllers', ['ngOpenFB'])
   //Login Facebook 
   $scope.doLoginFacebook = function () { 
     ngFB.login({scope: 'email,publish_actions,user_friends'}).then(
-        function (response) {
-            if (response.status === 'connected') {
-                console.log(response)
-                console.log('Facebook login succeeded');
-                // $scope.closeLogin();
-                ngFB.api({
-                    path: '/me',
-                    params: {fields: 'id,name,email'}
-                }).then(
-                    function (user) {
-
-                        $scope.user = user;
-                        $localStorage.img = "https://graph.facebook.com/"+$scope.user.id+"/picture?width=400&height=400";
-
-
-                        // $scope.user.name = $localStorage.name
-                        // $scope.user.email = $localStorage.email 
-                        $scope.user.img = $localStorage.img
-                        $scope.profile = true;
-                        $scope.login_ = false;
-                        $scope.logout_ = true;
-                        console.log(user)
-
-                        var user_info = { 
-                          _email: $scope.user.email,
-                          _pass: $scope.user.id ,
-                          _name: $scope.user.name ,
-                          _display: $scope.user.name,
-                          _lastname: '' ,
-                          _address: '' ,
-                          _phone: '' ,
-                          _type: "facebook"
-
-                        }
-                        SQLite_return._register($scope,user_info).then(function(d) {
-                          console.log("_register_facebook "+JSON.stringify(d));
-                        });
-                        // SQLite_return._register($scope,user_info);
-                    },
-                    function (error) {
-                        alert('Facebook error: ' + error.error_description);
-                });
-            } else {
-                alert('Facebook login failed');
+      function (response) {
+        if (response.status === 'connected') {
+          console.log(response)
+          console.log('Facebook login succeeded');
+          // $scope.closeLogin();
+          ngFB.api({
+              path: '/me',
+              params: {fields: 'id,name,email'}
+          }).then(function (user){
+            $scope.user = user;
+            console.log($scope.user);
+            var user_info = { 
+              _email: $scope.user.email,
+              _pass: $scope.user.id ,
+              _name: $scope.user.name ,
+              _display: $scope.user.name,
+              _lastname: '' ,
+              _address: '' ,
+              _phone: '' ,
+              _type: "facebook"
             }
+
+            SQLite_return._Register($scope,user_info).then(function(d) {
+              console.log("_register_facebook " + JSON.stringify(d));
+              if(d[0].ID != null){
+                alert("d_not_null");
+                SQLite_return._get_info($scope,d[0]).then(function(get_u_info) {
+                  alert(JSON.stringify(get_u_info));
+                  if(get_u_info[0].ID != null){
+                    alert(JSON.stringify(get_u_info[0]));
+                    var u_id = get_u_info[0].ID;
+                    var full_name = get_u_info[0].display;
+                    var iv_code = get_u_info[0].mycode;
+                    var path = "https://graph.facebook.com/"+$scope.user.id+"/picture?width=400&height=400";
+                    // alert("get_u_info_success");
+                    /////////// Insert or Update User to SQLite ///////////
+                    if(users_in_db.length > 0 ){
+                      var query = "UPDATE User SET user_id = "+u_id+",fullname = '"+full_name+"',mycode ='"+iv_code+"',path ='"+path+"',login_stat = 1 WHERE id = 1";
+                      $cordovaSQLite.execute(db, query,[]).then(function(res) {
+                          console.log("UPDATE ID -> " + JSON.stringify(res));
+                          var q_select = "SELECT * FROM User WHERE login_stat = 1";
+                            $cordovaSQLite.execute(db, q_select).then(function(result) {
+                              if(result.rows.length == 1){
+                                for (var i = 0; i < result.rows.length; i++) {
+                                  users_for_check_login.push(result.rows.item(i));
+                                }
+                                $rootScope.userImg = users_for_check_login[0].path;
+                                $rootScope.userName = users_for_check_login[0].fullname;
+                                $rootScope.invite_code = users_for_check_login[0].mycode;
+                                $rootScope.profile = true;
+                                $rootScope.login_ = false;
+                                $rootScope.logout_ = true;
+                              }else{
+                                $rootScope.profile = false;
+                                $rootScope.login_ = true;
+                                $rootScope.logout_ = false;
+                              }
+                            });
+
+                      }, function (err) {
+                          alert(JSON.stringify(err));
+                      });
+                    }
+                    else{
+                      var query = "INSERT INTO User (user_id,fullname ,mycode,login_stat,path) VALUES (?,?,?,?,?)";
+                      $cordovaSQLite.execute(db, query, [u_id,full_name,iv_code,1,path]).then(function(res) {
+                          console.log("INSERT ID -> " + res.insertId);
+                          var q_select = "SELECT * FROM User WHERE login_stat = 1";
+                            $cordovaSQLite.execute(db, q_select).then(function(result) {
+                              if(result.rows.length == 1){
+                                for (var i = 0; i < result.rows.length; i++) {
+                                  users_for_check_login.push(result.rows.item(i));
+                                }
+                                $rootScope.userImg = users_for_check_login[0].path;
+                                $rootScope.userName = users_for_check_login[0].fullname;
+                                $rootScope.invite_code = users_for_check_login[0].mycode;
+                                $rootScope.profile = true;
+                                $rootScope.login_ = false;
+                                $rootScope.logout_ = true;
+                              }else{
+                                $rootScope.profile = false;
+                                $rootScope.login_ = true;
+                                $rootScope.logout_ = false;
+                              }
+                            });
+
+                      }, function (err) {
+                          alert(JSON.stringify(err));
+                      });
+                     
+                    };
+
+                  }
+                });
+              } 
+              else{
+                alert("_get_info_error"+d.message);
+              }
+            });
+                        //   console.log("_register_facebook "+JSON.stringify(d));
+
+                        // });
+                        // SQLite_return._register($scope,user_info);
+            },function (error) {
+                 alert('Facebook error: ' + error.error_description);
+            });
+        } else {
+          alert('Facebook login failed');
+        }
 
     });
 
@@ -1689,39 +1656,108 @@ angular.module('starter.controllers', ['ngOpenFB'])
         // alert("Response Object -> " + JSON.stringify(result));
         var url="https://www.googleapis.com/oauth2/v1/userinfo?access_token="+result.access_token; 
         $http.get(url).success(function(result2){ 
-            if(result2 != ""){
+          if(result2 != ""){
+            $scope.user = result2;
+            console.log("scope_USER"+ JSON.stringify($scope.user));
+            // $localStorage.img = result2.picture;
+            // // $localStorage.name = result2.name;
+            // // $localStorage.email = result2.email;
 
-                console.log("aaaaaaaaaaaaaaa"+result2);
-                $scope.user = result2;
-                console.log("scope_USER"+$scope.user );
-                $localStorage.img = result2.picture;
-                // $localStorage.name = result2.name;
-                // $localStorage.email = result2.email;
+            // // $scope.user.name = $localStorage.name
+            // // $scope.user.email = $localStorage.email 
+            // $scope.user.img = $localStorage.img
+            var user_info = { 
+              _email: $scope.user.email,
+              _pass: $scope.user.id ,
+              _name: $scope.user.given_name ,
+              _lastname: $scope.user.family_name ,
+              _address: '' ,
+              _display: $scope.user.name,
+              _phone: '',
+              _type: "google+"
 
-                // $scope.user.name = $localStorage.name
-                // $scope.user.email = $localStorage.email 
-                $scope.user.img = $localStorage.img
+            } 
 
-                var user_info = { 
-                  _email: $scope.user.email,
-                  _pass: $scope.user.id ,
-                  _name: $scope.user.given_name ,
-                  _lastname: $scope.user.family_name ,
-                  _address: '' ,
-                  _display: $scope.user.name,
-                  _phone: '',
-                  _type: "google+"
+            SQLite_return._Register($scope,user_info).then(function(d) {
+              console.log("_register_google "+JSON.stringify(d));
+              if(d[0].ID != null){
+                alert("d_not_null");
+                SQLite_return._get_info($scope,d[0]).then(function(get_u_info) {
+                  alert(JSON.stringify(get_u_info));
+                  if(get_u_info[0].ID != null){
+                    alert(JSON.stringify(get_u_info[0]));
+                    var u_id = get_u_info[0].ID;
+                    var full_name = get_u_info[0].display;
+                    var iv_code = get_u_info[0].mycode;
+                    var path = result2.picture;
+                    // alert("get_u_info_success");
+                    /////////// Insert or Update User to SQLite ///////////
+                    if(users_in_db.length > 0 ){
+                      var query = "UPDATE User SET user_id = "+u_id+",fullname = '"+full_name+"',mycode ='"+iv_code+"',path ='"+path+"',login_stat = 1 WHERE id = 1";
+                      $cordovaSQLite.execute(db, query,[]).then(function(res) {
+                          console.log("UPDATE ID -> " + JSON.stringify(res));
+                          var q_select = "SELECT * FROM User WHERE login_stat = 1";
+                            $cordovaSQLite.execute(db, q_select).then(function(result) {
+                              if(result.rows.length == 1){
+                                for (var i = 0; i < result.rows.length; i++) {
+                                  users_for_check_login.push(result.rows.item(i));
+                                }
+                                $rootScope.userImg = users_for_check_login[0].path;
+                                $rootScope.userName = users_for_check_login[0].fullname;
+                                $rootScope.invite_code = users_for_check_login[0].mycode;
+                                $rootScope.profile = true;
+                                $rootScope.login_ = false;
+                                $rootScope.logout_ = true;
+                              }else{
+                                $rootScope.profile = false;
+                                $rootScope.login_ = true;
+                                $rootScope.logout_ = false;
+                              }
+                            });
 
-                } 
-                SQLite_return._register($scope,user_info).then(function(d) {
-                  console.log("_register_google "+JSON.stringify(d));
+                      }, function (err) {
+                          alert(JSON.stringify(err));
+                      });
+                    }
+                    else{
+                      var query = "INSERT INTO User (user_id,fullname ,mycode,login_stat,path) VALUES (?,?,?,?,?)";
+                      $cordovaSQLite.execute(db, query, [u_id,full_name,iv_code,1,path]).then(function(res) {
+                          console.log("INSERT ID -> " + res.insertId);
+                          var q_select = "SELECT * FROM User WHERE login_stat = 1";
+                            $cordovaSQLite.execute(db, q_select).then(function(result) {
+                              if(result.rows.length == 1){
+                                for (var i = 0; i < result.rows.length; i++) {
+                                  users_for_check_login.push(result.rows.item(i));
+                                }
+                                $rootScope.userImg = users_for_check_login[0].path;
+                                $rootScope.userName = users_for_check_login[0].fullname;
+                                $rootScope.invite_code = users_for_check_login[0].mycode;
+                                $rootScope.profile = true;
+                                $rootScope.login_ = false;
+                                $rootScope.logout_ = true;
+                              }else{
+                                $rootScope.profile = false;
+                                $rootScope.login_ = true;
+                                $rootScope.logout_ = false;
+                              }
+                            });
+
+                      }, function (err) {
+                          alert(JSON.stringify(err));
+                      });
+                     
+                    };
+
+                  }
                 });
-
-                $scope.profile = true;
-                $scope.login_ = false;
-                $scope.logout_ = true;
-            }
-            $scope.closeLogin();
+              } 
+              else{
+                alert("_get_info_error"+d.message);
+              }
+              // //////
+            });
+          }
+          $scope.closeLogin();
 
 
             $scope.showloading=false; 

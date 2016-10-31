@@ -589,21 +589,22 @@ angular.module('services', ['ngCordova'])
                 var url=path+"be/Users/getID?api-key="+key+"&id="+d.ID; 
                 user_get_res = $http.get(url).then(function(result){
 
-                  alert(JSON.stringify(result.data));
+                  alert("_get_infooooooo"+JSON.stringify(result.data));
                   return result.data;
                 });
             }
             return user_get_res;
         },
 
-        _login: function($scope){
+        _login: function($scope,login_data){
+            alert("_loginnnnnnnnnn_before_if   "+JSON.stringify(login_data));
             if(!user_get_login){
-                alert(JSON.stringify($scope.loginData));
+                alert("_loginnnnnnnnnn      "+JSON.stringify(login_data));
                 var url=path+"be/Users/logInUser"; 
                 user_get_login =$http({
                     method  : 'POST',
                     url     :  url,
-                    data    :  $scope.loginData,  // pass in data as strings
+                    data    :  login_data,  // pass in data as strings
                     headers : {'api-key': key}  // set the headers so angular passing info as form data (not request payload)
                 }).then(function(response) {
                     return response.data;
