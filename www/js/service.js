@@ -650,7 +650,7 @@ angular.module('services', ['ngCordova'])
         });
     }
 
-     // ---------  ชอบข่าว
+    // ---------  ชอบข่าว
     this._like = function($scope,new_info){
         var url=path+"be/Socials/likes"; 
         $http({
@@ -663,6 +663,23 @@ angular.module('services', ['ngCordova'])
             console.log("countlike_success");
         }).error(function(err){  
             console.log("countlike_error"+err);
+        });
+    }
+
+    // ---------  เพิ่ม xp
+    this._upxp = function($scope,user_xp){
+        
+        var url=path+"be/Levels/insertuserLV"; 
+        $http({
+            method  : 'POST',
+            url     :  url,
+            data    :  user_xp,  // pass in data as strings
+            headers : {'api-key': key}  // set the headers so angular passing info as form data (not request payload)
+        })
+        .success(function(data) {
+            console.log("upxp_success");
+        }).error(function(err){  
+            console.log("upxp_error"+err);
         });
     }
 

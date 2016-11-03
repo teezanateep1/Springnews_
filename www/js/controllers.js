@@ -596,16 +596,48 @@ angular.module('starter.controllers', ['ngOpenFB'])
 
 })
 //==== shake
-.controller('ShakeCtrl', function($scope) {
+.controller('ShakeCtrl', function($scope,$cordovaSQLite,Actions) {
+  _sxp.clear;
   var game = new Phaser.Game(window.screen.availWidth * window.devicePixelRatio, window.screen.availHeight * window.devicePixelRatio, Phaser.AUTO, 'game');
       game.state.add('Boot', Shake.Boot);
       game.state.add('Preloader', Shake.Preloader);
       game.state.add('Menu',Shake.Menu);
       game.state.add('Game', Shake.Game);
       game.state.start('Boot');
+
+  var _id;
+  var q_select = "SELECT * FROM User WHERE login_stat = 1";
+  $cordovaSQLite.execute(db, q_select).then(function(result) {
+    if(result.rows.length > 0){
+        _id = result.rows.item(0).user_id;
+        console.log("ID_for_UP_XP"+_id);
+      }
+  });
+
+  $scope.$on('$ionicView.afterLeave', function(){
+    alert(_sxp.length);
+    if(_sxp.length > 0){
+      for (var i = 0; i < _sxp.length; i++) {
+        var user_xp ={
+          id: _id,
+          xp: _sxp[i]
+        }
+        Actions._upxp($scope,user_xp);
+      };
+    }
+  });
+  
 })
 //==== 360
-.controller('PanoGMCtrl', function($scope,$timeout,$window,$interval,SpringNews) {
+.controller('PanoGMCtrl', function($scope,$timeout,$window,$interval,SpringNews,$cordovaSQLite,Actions) {
+      var _id;
+      var q_select = "SELECT * FROM User WHERE login_stat = 1";
+      $cordovaSQLite.execute(db, q_select).then(function(result) {
+        if(result.rows.length > 0){
+            _id = result.rows.item(0).user_id;
+            console.log("ID_for_UP_XP"+_id);
+          }
+      });
 
       var seconds=60, num_gm = 0, play = false,myTimeOut, mouse;
       var camera, scene, renderer, mesh, controls ;
@@ -828,6 +860,12 @@ angular.module('starter.controllers', ['ngOpenFB'])
           document.getElementById("game_compl").style.visibility = "visible";
           blocker.className = 'bg-color';
           play = false;
+
+          var user_xp ={
+          id: _id,
+          xp: num_gm
+          }
+          Actions._upxp($scope,user_xp);
         }
 
         if(play == false){
@@ -858,9 +896,18 @@ angular.module('starter.controllers', ['ngOpenFB'])
           SpringNews._intxp(1,num_gm);
           blocker.className = 'bg-color';
           play = false;
-        }
+
+          var user_xp ={
+            id: _id,
+            xp: num_gm
+            }
+            Actions._upxp($scope,user_xp);
+          }
+
         if (seconds>0) { myTimeOut = $timeout($scope.onTimeout,1000);}
       }
+
+
 })
 
 // --------------------- Search ------------------------
@@ -1777,7 +1824,27 @@ angular.module('starter.controllers', ['ngOpenFB'])
 })
 
 // --------------------- Register ------------------------
-.controller('quizCtrl', function($scope,$stateParams,_function,quizFactory) {
+.controller('quizCtrl', function($scope,$stateParams,_function,quizFactory,Actions,$cordovaSQLite) {
+  _qxp.clear;
+  var _id;
+  var q_select = "SELECT * FROM User WHERE login_stat = 1";
+  $cordovaSQLite.execute(db, q_select).then(function(result) {
+    if(result.rows.length > 0){
+        _id = result.rows.item(0).user_id;
+        console.log("ID_for_UP_XP"+_id);
+      }
+  });
 
-
+  $scope.$on('$ionicView.afterLeave', function(){
+    alert(_qxp.length);
+    if(_qxp.length > 0){
+      for (var i = 0; i < _qxp.length; i++) {
+        var user_xp ={
+          id: _id,
+          xp: _qxp[i]
+        }
+        Actions._upxp($scope,user_xp);
+      };
+    }
+  });
 })

@@ -9,6 +9,7 @@ var path = "http://artbeat.mfec.co.th/SpringNews_mb/api/";
 var path_gm = "http://artbeat.mfec.co.th/SpringNews_mb/static/game/";
 var key = "EAACEdEose0cBAP3LZAULs0sfBDrAFiY0xzMTJHPdzlxArcn4kw";
 var users_for_check_login = [];
+var _qxp = [];
 angular.module('starter', ['ionic', 'starter.controllers',"angular-md5",'services','ngOpenFB','tabSlideBox','ngStorage', 'ionic-cache-src','ngCordova.plugins.googleAds','ngCordovaOauth','ionic-cache-src'])
 
 .run(function($ionicPlatform,$rootScope,$ionicPopup,$localStorage, $cordovaDialogs ,$cordovaSQLite,ngFB, ConnectivityMonitor) { //admobSvc
@@ -213,25 +214,41 @@ angular.module('starter', ['ionic', 'starter.controllers',"angular-md5",'service
           scope.answerMode = true;
         } else {
           scope.quizOver = true;
+          _qxp.push(scope.xp);
         }
       };
 
-      scope.checkAnswer = function() {
+      // scope.checkAnswer = function() {
+      //   if(!$('input[name=answer]:checked').length) return;
+
+      //   var ans = $('input[name=answer]:checked').val();
+
+      //   if(ans == scope.options[scope.answer]) {
+      //     scope.score++;
+      //     scope.correctAns = true;
+      //   } else {
+      //     scope.correctAns = false;
+      //   }
+
+      //   scope.answerMode = false;
+      // };
+
+      scope.nextQuestion = function() {
+        // Check And Next
         if(!$('input[name=answer]:checked').length) return;
 
         var ans = $('input[name=answer]:checked').val();
 
         if(ans == scope.options[scope.answer]) {
           scope.score++;
+          scope.xp =  scope.score*5
           scope.correctAns = true;
         } else {
           scope.correctAns = false;
         }
 
         scope.answerMode = false;
-      };
-
-      scope.nextQuestion = function() {
+        // Next
         scope.id++;
         scope.getQuestion();
       }
