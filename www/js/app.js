@@ -6,7 +6,9 @@
 // 'starter.controllers' is found in controllers.js
 var db;
 var path = "http://artbeat.mfec.co.th/SpringNews_mb/api/";
+// var path = "http://uat1.springnews.co.th/SpringNews_mb/api/";
 var path_gm = "http://artbeat.mfec.co.th/SpringNews_mb/static/game/";
+// var path_gm = "http://uat1.springnews.co.th/SpringNews_mb/static/game/";
 var key = "EAACEdEose0cBAP3LZAULs0sfBDrAFiY0xzMTJHPdzlxArcn4kw";
 var users_for_check_login = [];
 var _qxp = [];

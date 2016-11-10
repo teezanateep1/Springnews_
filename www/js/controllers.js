@@ -630,16 +630,8 @@ angular.module('starter.controllers', ['ngOpenFB'])
 })
 //==== 360
 .controller('PanoGMCtrl', function($scope,$timeout,$window,$interval,SpringNews,$cordovaSQLite,Actions) {
-      var _id;
-      var q_select = "SELECT * FROM User WHERE login_stat = 1";
-      $cordovaSQLite.execute(db, q_select).then(function(result) {
-        if(result.rows.length > 0){
-            _id = result.rows.item(0).user_id;
-            console.log("ID_for_UP_XP"+_id);
-          }
-      });
-
-      var seconds=60, num_gm = 0, play = false,myTimeOut, mouse;
+      
+      var seconds=10, num_gm = 0, play = false,myTimeOut, mouse;
       var camera, scene, renderer, mesh, controls ;
       var particles, materials_obj, i, h, color, sprite, imgX, imgY, loader;
       var parameters_obj, raycaster, objects = [], glitchPass, composer;
@@ -674,8 +666,8 @@ angular.module('starter.controllers', ['ngOpenFB'])
       }, false );
 
       start.addEventListener( 'click', function ( event ) {
-          $scope.gm_power--;
-          $scope.gm_power = window.localStorage.setItem("gm_power", $scope.gm_power);
+          // $scope.gm_power--;
+          //$scope.gm_power = window.localStorage.setItem("gm_power", $scope.gm_power);
           $window.location.reload(true)
       }, false );
 
@@ -860,7 +852,14 @@ angular.module('starter.controllers', ['ngOpenFB'])
           document.getElementById("game_compl").style.visibility = "visible";
           blocker.className = 'bg-color';
           play = false;
-
+          var _id;
+          var q_select = "SELECT * FROM User WHERE login_stat = 1";
+          $cordovaSQLite.execute(db, q_select).then(function(result) {
+            if(result.rows.length > 0){
+                _id = result.rows.item(0).user_id;
+                console.log("ID_for_UP_XP "+_id);
+              }
+          });
           var user_xp ={
           id: _id,
           xp: num_gm
@@ -896,7 +895,14 @@ angular.module('starter.controllers', ['ngOpenFB'])
           SpringNews._intxp(1,num_gm);
           blocker.className = 'bg-color';
           play = false;
-
+          var _id;
+          var q_select = "SELECT * FROM User WHERE login_stat = 1";
+          $cordovaSQLite.execute(db, q_select).then(function(result) {
+            if(result.rows.length > 0){
+                _id = result.rows.item(0).user_id;
+                console.log("ID_for_UP_XP "+_id);
+              }
+          });
           var user_xp ={
             id: _id,
             xp: num_gm
@@ -1522,7 +1528,7 @@ angular.module('starter.controllers', ['ngOpenFB'])
               });
             }
             else{
-              var query = "INSERT INTO User (user_id,fullname ,mycode,login_stat) VALUES (?,?,?,?,?)";
+              var query = "INSERT INTO User (user_id,fullname ,mycode,login_stat,path) VALUES (?,?,?,?,?)";
               $cordovaSQLite.execute(db, query, [u_id,full_name,iv_code,1,path]).then(function(res) {
                   console.log("INSERT ID -> " + res.insertId);
                   var q_select = "SELECT * FROM User WHERE login_stat = 1";
@@ -1824,8 +1830,11 @@ angular.module('starter.controllers', ['ngOpenFB'])
 })
 
 // --------------------- Register ------------------------
-.controller('quizCtrl', function($scope,$stateParams,_function,quizFactory,Actions,$cordovaSQLite) {
+.controller('quizCtrl', function($scope,$stateParams,_function,SpringNews,quizFactory,Actions,$cordovaSQLite) {
   _qxp.clear;
+
+  SpringNews._getquiz();
+
   var _id;
   var q_select = "SELECT * FROM User WHERE login_stat = 1";
   $cordovaSQLite.execute(db, q_select).then(function(result) {

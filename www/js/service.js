@@ -559,6 +559,21 @@ angular.module('services', ['ngCordova'])
 
         });
     }
+
+    //-------------- get XP 
+    this._getquiz = function(){
+        var url=path+"be/Quizs/getquizandanswers?api-key="+key; 
+        $http({
+            method  : 'GET',
+            url     :  url,
+            data    : null,
+            headers : {'api-key': key}  // set the headers so angular passing info as form data (not request payload)
+        })
+        .success(function(data) {
+            alert(JSON.stringify(data));
+            console.log(JSON.stringify(data));
+        });
+    }
       
     
 }])
