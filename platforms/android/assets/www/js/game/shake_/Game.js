@@ -3,7 +3,7 @@ Shake.Game = function(game) {
 };
 
 var bggame = null;
-
+var _sxp =[];
 var rewardGroup = null;
 var popup,tween;
 
@@ -43,7 +43,7 @@ Shake.Game.prototype = {
         emitter.gravity = 100;
 
         //Sound
-        spellSound = this.game.add.audio('spell');
+        // spellSound = this.game.add.audio('spell');
 
         // //icon
         group_iconPW = game.add.group();
@@ -98,6 +98,7 @@ Shake.Game.prototype = {
 	},
     stopreward:function(){
         point = xp[Math.floor(Math.random() * xp.length)];
+        _sxp.push(point);
         var textXP = game.add.text(pw, -ph, point+'  XP ');
         textXP.anchor.set(0,6);
         textXP.align = 'center';
@@ -125,7 +126,7 @@ Shake.Game.prototype = {
         score--;
         //  Create a tween that will close the window, but only if it's not already tweening or closed
         tween = game.add.tween(popup.scale).to( { x: 0, y: 0 }, 500, Phaser.Easing.Elastic.In, true);
-        alert(point)
+        // alert(point)
     },
     render:function() {
 
@@ -152,7 +153,7 @@ Shake.Game.prototype = {
            game.game.paused = false;
            bag.animations.play('bagshake');
            emitter.start(true, 3500, null, 15);
-           spellSound.play();
+           // spellSound.play();
            clearTimeout(timeout_) 
            timeout_ = setTimeout(function () {
                    bag.animations.stop(null, true);

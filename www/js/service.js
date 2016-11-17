@@ -530,7 +530,7 @@ angular.module('services', ['ngCordova'])
             headers : {'api-key': key}  // set the headers so angular passing info as form data (not request payload)
         })
         .success(function(data) {
-            alert(data)
+            // alert(data)
         });
     }
     //-------------- get XP 
@@ -543,7 +543,7 @@ angular.module('services', ['ngCordova'])
             headers : {'api-key': key}  // set the headers so angular passing info as form data (not request payload)
         })
         .success(function(data) {
-            alert(data)
+            // alert(data)
         });
     }
     //-------------- int XP 
@@ -559,29 +559,13 @@ angular.module('services', ['ngCordova'])
 
         });
     }
-
-    //-------------- get XP 
-    this._getquiz = function(){
-        var url=path+"be/Quizs/getquizandanswers?api-key="+key; 
-        $http({
-            method  : 'GET',
-            url     :  url,
-            data    : null,
-            headers : {'api-key': key}  // set the headers so angular passing info as form data (not request payload)
-        })
-        .success(function(data) {
-            alert(JSON.stringify(data));
-            console.log(JSON.stringify(data));
-        });
-    }
-      
     
 }])
 
 
 .factory('SQLite_return', function($http) {
-    var user_res,user_get_res,user_get_login;
-    var Data_User = {
+    var user_res,user_get_res,user_get_login,get_quiz;
+    var Data = {
         _Register: function($scope,user_info){ 
             if(!user_res){
                 var url=path+"be/Users/insert"; 
@@ -604,7 +588,7 @@ angular.module('services', ['ngCordova'])
                 var url=path+"be/Users/getID?api-key="+key+"&id="+d.ID; 
                 user_get_res = $http.get(url).then(function(result){
 
-                  alert("_get_infooooooo"+JSON.stringify(result.data));
+                  // alert("_get_infooooooo"+JSON.stringify(result.data));
                   return result.data;
                 });
             }
@@ -612,9 +596,9 @@ angular.module('services', ['ngCordova'])
         },
 
         _login: function($scope,login_data){
-            alert("_loginnnnnnnnnn_before_if   "+JSON.stringify(login_data));
+            // alert("_loginnnnnnnnnn_before_if   "+JSON.stringify(login_data));
             if(!user_get_login){
-                alert("_loginnnnnnnnnn      "+JSON.stringify(login_data));
+                // alert("_loginnnnnnnnnn      "+JSON.stringify(login_data));
                 var url=path+"be/Users/logInUser"; 
                 user_get_login =$http({
                     method  : 'POST',
@@ -626,10 +610,27 @@ angular.module('services', ['ngCordova'])
                 });
             }
             return user_get_login;
+        },
+
+        _getquiz: function($scope){
+            if(!get_quiz){
+                var url=path+"be/Quizs/getquizandanswers?api-key="+key; 
+                get_quiz = $http({
+                    method  : 'GET',
+                    url     :  url,
+                    data    : null,
+                    headers : {'api-key': key}  // set the headers so angular passing info as form data (not request payload)
+                })
+                .then(function(response) {
+                    console.log(JSON.stringify(response.data));
+                    return response.data
+                });
+            }
+            return get_quiz;
         }
 
     };
-    return Data_User;
+    return Data;
 })
 
 .service("Actions",["$http","$ionicSlideBoxDelegate","_function","$ionicLoading","$cordovaLocalNotification","$cordovaSQLite",function($http,$ionicSlideBoxDelegate,_function,$rootScope,$ionicLoading,$cordovaLocalNotification,$cordovaSQLite){ 
@@ -699,3 +700,4 @@ angular.module('services', ['ngCordova'])
     }
 
 }]) 
+

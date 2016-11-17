@@ -13,7 +13,7 @@
 				slide-interval="3000"  
 				show-pager="false" >  
 	      		<ion-slide ng-repeat="item in adver">  
-	      			<img ng-src="{{item.thumbnail.replace('$','http://artbeat.mfec.co.th/SpringNew/wp-content/')}}"></img> 
+	      			<img ng-src="{{item.thumbnail.replace('$',ad_url)}}"></img> 
 	      		</ion-slide>  
 	    	</ion-slide-box> 
 		</div>
@@ -25,7 +25,9 @@
 			<div class="box-item-clip" >
 				{{newsDetail[0].post_title}}
 				<div class="col box-clip-date">
-					<div style="float: left;" ng-click="kodlike()">{{like}}</div>
+					<div style="float: left;" ng-show="like_btn" ng-click="kodlike()">
+						{{like}}
+					</div>
 					<div style="float: right;">
 						<i class="icon ion-ios-calendar-outline box-news-icon"></i>	
 						{{date}}

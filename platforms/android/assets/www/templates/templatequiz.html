@@ -1,6 +1,7 @@
 <div class="quiz-area" ng-show="inProgress">
-	<div ng-show="!quizOver">
-		<h2 id="question">{{question}}</h2>
+
+	<div ng-show="!quizOver" >
+		<h2 class="question-box" style="margin: 20px" id="question">{{question}}</h2>
 		<ul id="options">
 			<li ng-repeat="option in options">
 				<label>
@@ -9,18 +10,18 @@
 				</label>
 			</li>
 		</ul>
-		<button ng-click="checkAnswer()" ng-show="answerMode">Submit</button>
+		<!-- <button ng-click="checkAnswer()" ng-show="answerMode">Submit</button> -->
 
-		<div ng-show="!answerMode">
-			<button ng-click="nextQuestion()" class="next-question">Next</button>
+		<!-- <div ng-show="!answerMode"> -->
+			<button ng-click="nextQuestion()" class="next-question" >Next</button>
 			<!-- <span ng-show="correctAns">That is correct!</span>
 			<span ng-show="!correctAns">Sorry, that is an incorrect answer.</span> -->
-		</div>
+		<!-- </div> -->
 	</div>
 
-	<div ng-show="quizOver">
-		<h2>Score: {{score}}</h2>
-		<button ng-click="reset()">Play again</button>
+	<div class="intro" ng-show="quizOver">
+		<h2> XP: {{xp}}</h2>
+		<button  ng-click="reset()">Play again</button>
 	</div>
 
 	<!-- <div id="score">
@@ -28,7 +29,7 @@
 	</div> -->
 </div>
 
-<div class="intro" ng-show="!inProgress">
-	<p>Welcome to the QuizApp</p>
-	<button id="startQuiz" ng-click="start()">Start the Quiz</button>
+<div class="intro" ng-show="!inProgress" >
+	<p>Welcome to the SpringNews Quiz </p>
+	<button id="startQuiz" ng-click="start()" text>Start the Quiz</button>
 </div>

@@ -472,7 +472,7 @@
 
 .box-news-icon{
   font-size: 20px;
-  padding: 5px;
+  padding: 5px 0;
 }
 
 .box-news-img{
@@ -920,7 +920,7 @@ color: #31b5c2;
 
 .sp-list-date{
     padding: 10px;
-    font-size: 13px;
+    font-size: 12px;
     float: left;
     display: inline-block;
 }

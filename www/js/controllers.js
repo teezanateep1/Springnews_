@@ -324,7 +324,6 @@ angular.module('starter.controllers', ['ngOpenFB'])
         
     }
      
-
 })
 
 // --------------------- INTRODUCE ------------------------
@@ -480,7 +479,7 @@ angular.module('starter.controllers', ['ngOpenFB'])
   $scope.loading_catnews = true;
   $ionicLoading.show();
   SpringNews._categoryProgram($scope,'30');
-
+ 
   //------------ Silde Tab
   var arr = [0];
   //SpringNews._catNews($scope,$scope.tabs[0].term_id,0);
@@ -597,13 +596,15 @@ angular.module('starter.controllers', ['ngOpenFB'])
 })
 //==== shake
 .controller('ShakeCtrl', function($scope,$cordovaSQLite,Actions) {
-  _sxp.clear;
-  var game = new Phaser.Game(window.screen.availWidth * window.devicePixelRatio, window.screen.availHeight * window.devicePixelRatio, Phaser.AUTO, 'game');
-      game.state.add('Boot', Shake.Boot);
-      game.state.add('Preloader', Shake.Preloader);
-      game.state.add('Menu',Shake.Menu);
-      game.state.add('Game', Shake.Game);
-      game.state.start('Boot');
+  _sxp = [];
+  var game = new Phaser.Game(window.screen.availWidth * window.devicePixelRatio, 
+                             window.screen.availHeight * window.devicePixelRatio, 
+                             Phaser.AUTO, 'game');
+  game.state.add('Boot', Shake.Boot);
+  game.state.add('Preloader', Shake.Preloader);
+  game.state.add('Menu',Shake.Menu);
+  game.state.add('Game', Shake.Game);
+  game.state.start('Boot');
 
   var _id;
   var q_select = "SELECT * FROM User WHERE login_stat = 1";
@@ -615,7 +616,6 @@ angular.module('starter.controllers', ['ngOpenFB'])
   });
 
   $scope.$on('$ionicView.afterLeave', function(){
-    alert(_sxp.length);
     if(_sxp.length > 0){
       for (var i = 0; i < _sxp.length; i++) {
         var user_xp ={
@@ -623,6 +623,7 @@ angular.module('starter.controllers', ['ngOpenFB'])
           xp: _sxp[i]
         }
         Actions._upxp($scope,user_xp);
+        
       };
     }
   });
@@ -631,7 +632,7 @@ angular.module('starter.controllers', ['ngOpenFB'])
 //==== 360
 .controller('PanoGMCtrl', function($scope,$timeout,$window,$interval,SpringNews,$cordovaSQLite,Actions) {
       
-      var seconds=10, num_gm = 0, play = false,myTimeOut, mouse;
+      var seconds=60, num_gm = 0, play = false,myTimeOut, mouse;
       var camera, scene, renderer, mesh, controls ;
       var particles, materials_obj, i, h, color, sprite, imgX, imgY, loader;
       var parameters_obj, raycaster, objects = [], glitchPass, composer;
@@ -679,7 +680,6 @@ angular.module('starter.controllers', ['ngOpenFB'])
       animate();
 
       function init() {
-
         camera = new THREE.PerspectiveCamera( 85, window.innerWidth / window.innerHeight, 1, 1000 );
         camera.target = new THREE.Vector3( 0, 0, 0 );
         controls = new THREE.DeviceOrientationControls( camera );
@@ -691,8 +691,8 @@ angular.module('starter.controllers', ['ngOpenFB'])
         geometry.scale( - 1, 1, 1 );
 
         var loader_bg = new THREE.TextureLoader();
-
           loader_bg.load(
+              
               // resource URL
               path_gm+'panoGM/360_game_'+Math.round(Math.random() * 3)+'.png',
               // Function when resource is loaded
@@ -733,8 +733,10 @@ angular.module('starter.controllers', ['ngOpenFB'])
         glitchPass = new THREE.GlitchPass();
         glitchPass.renderToScreen = true;
         composer.addPass( glitchPass );
-    
         document.addEventListener( 'mousedown', onDocumentMouseDown, false );
+        document.addEventListener( 'mousemove', onDocumentMouseDown, false );
+        document.addEventListener( 'mouseup', onDocumentMouseDown, false );
+        document.addEventListener( 'mouseout', onDocumentMouseDown, false );
         window.addEventListener( 'resize', onWindowResize, false );
       }
 
@@ -772,7 +774,7 @@ angular.module('starter.controllers', ['ngOpenFB'])
                 particles = new THREE.Mesh( new THREE.CubeGeometry(50,50,0), materials_obj );
                 particles.position.x = (Math.random() - 0.5) * 500;
                 particles.position.y = (Math.random() - 0.5) * 500;
-                particles.position.z = (Math.random() - 0.5) * 500;
+                particles.position.z = (Math.random() - 0.5) * 2000;
                 particles.name = 'item_'+i;
 
                 scene.add( particles );
@@ -802,13 +804,12 @@ angular.module('starter.controllers', ['ngOpenFB'])
       }
 
       function onDocumentMouseDown( event ) {
-     
         event.preventDefault();
 
-         var mouse3D = new THREE.Vector3( ( event.clientX / window.innerWidth ) * 2 - 1,   //x
+        var mouse3D = new THREE.Vector3( ( event.clientX / window.innerWidth ) * 2 - 1,   //x
                                         -( event.clientY / window.innerHeight ) * 2 + 1,  //y
                                         0.5);      
-
+        
         mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
         mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
         raycaster.setFromCamera( mouse, camera );
@@ -816,7 +817,6 @@ angular.module('starter.controllers', ['ngOpenFB'])
          
         $scope.object_gm = obj_gm;
         var intersects = raycaster.intersectObjects( objects ); 
-
         if ( intersects.length > 0 && seconds !=0 ){
             num_gm++;
             scene.remove(intersects[0].object);
@@ -1161,7 +1161,7 @@ angular.module('starter.controllers', ['ngOpenFB'])
 
 })
 
-.controller('uploadfileCtrl', function($scope, $cordovaCamera, $ionicLoading,$localStorage,$cordovaFileTransfer) {
+.controller('uploadfileCtrl', function($scope, $cordovaCamera,$ionicLoading,$localStorage,$cordovaFileTransfer) {
    
     $scope.data = { "FileURI" :  "Select file" };
     var file_type;
@@ -1239,58 +1239,60 @@ angular.module('starter.controllers', ['ngOpenFB'])
 
 
   $scope.upload = function() {
-    
+    $ionicLoading.show();
     if(file_type == 1){
       var date = new Date().getTime();
       var filename = "img_upload"+date+".png";
-
-      $ionicLoading.show({template: 'กำลังอัพโหลดไฟล์...'});
       var fileURL = $scope.fileData;
-
       var options = {
           fileKey: "file",
           fileName: filename,
+
           chunkedMode: false,
           mimeType: "image/png",
-          params : {'directory':'uploads', 'fileName': filename}
+          params : {'directory':'uploads', 
+                    '_fileName': filename , 
+                    '_title': this.uploadfile.title , 
+                    '_content': this.uploadfile.content ,
+                    '_type': "img"}
       };
-      $cordovaFileTransfer.upload("http://artbeat.mfec.co.th/mail/upload.php", fileURL, options).then(function(result) {
+      $cordovaFileTransfer.upload(path+"be/Uploads/uploadFileRequests", fileURL, options).then(function(result) {
           console.log("SUCCESS: " + JSON.stringify(result.response));
-          // alert(("SUCCESS: " + JSON.stringify(result.response)));
+          alert(("SUCCESS: " + JSON.stringify(result.response)));
       }, function(err) {
           console.log("ERROR: " + JSON.stringify(err));
           alert("ERROR: " + JSON.stringify(err));
       }, function (progress) {
           // constant progress updates
       });
-      $ionicLoading.hide();
     }
     else if(file_type == 2){
       var date = new Date().getTime();
       var filename = "video_upload"+date+".mp4";
-
-      $ionicLoading.show({template: 'กำลังอัพโหลดไฟล์...'});
       var fileURL = $scope.fileData;
-
       var options = {
           fileKey: "file",
           fileName: filename,
           chunkedMode: false,
           mimeType: "video/mp4",
-          params : {'directory':'uploads', 'fileName': filename}
+          params : {'directory':'uploads', 
+                    '_fileName': filename , 
+                    '_title': this.uploadfile.title , 
+                    '_content': this.uploadfile.content ,
+                    '_type': "clip"}
       };
-      $cordovaFileTransfer.upload("http://artbeat.mfec.co.th/mail/upload.php", fileURL, options).then(function(result) {
+      $cordovaFileTransfer.upload(path+"be/Uploads/uploadFileRequests", fileURL, options).then(function(result) {
           console.log("SUCCESS: " + JSON.stringify(result.response));
-          // alert(("SUCCESS: " + JSON.stringify(result.response)));
+          alert(("SUCCESS: " + JSON.stringify(result.response)));
       }, function(err) {
           console.log("ERROR: " + JSON.stringify(err));
           alert("ERROR: " + JSON.stringify(err));
       }, function (progress) {
           // constant progress updates
       });
-      $ionicLoading.hide();
-
+      
     }
+    $ionicLoading.hide();
   }
 
 })
@@ -1612,11 +1614,11 @@ angular.module('starter.controllers', ['ngOpenFB'])
             SQLite_return._Register($scope,user_info).then(function(d) {
               console.log("_register_facebook " + JSON.stringify(d));
               if(d[0].ID != null){
-                alert("d_not_null");
+                // alert("d_not_null");
                 SQLite_return._get_info($scope,d[0]).then(function(get_u_info) {
-                  alert(JSON.stringify(get_u_info));
+                  // alert(JSON.stringify(get_u_info));
                   if(get_u_info[0].ID != null){
-                    alert(JSON.stringify(get_u_info[0]));
+                    // alert(JSON.stringify(get_u_info[0]));
                     var u_id = get_u_info[0].ID;
                     var full_name = get_u_info[0].display;
                     var iv_code = get_u_info[0].mycode;
@@ -1734,11 +1736,11 @@ angular.module('starter.controllers', ['ngOpenFB'])
             SQLite_return._Register($scope,user_info).then(function(d) {
               console.log("_register_google "+JSON.stringify(d));
               if(d[0].ID != null){
-                alert("d_not_null");
+                // alert("d_not_null");
                 SQLite_return._get_info($scope,d[0]).then(function(get_u_info) {
-                  alert(JSON.stringify(get_u_info));
+                  // alert(JSON.stringify(get_u_info));
                   if(get_u_info[0].ID != null){
-                    alert(JSON.stringify(get_u_info[0]));
+                    // alert(JSON.stringify(get_u_info[0]));
                     var u_id = get_u_info[0].ID;
                     var full_name = get_u_info[0].display;
                     var iv_code = get_u_info[0].mycode;
@@ -1830,10 +1832,25 @@ angular.module('starter.controllers', ['ngOpenFB'])
 })
 
 // --------------------- Register ------------------------
-.controller('quizCtrl', function($scope,$stateParams,_function,SpringNews,quizFactory,Actions,$cordovaSQLite) {
-  _qxp.clear;
-
-  SpringNews._getquiz();
+.controller('quizCtrl', function($scope,$stateParams,_function,SQLite_return,Actions,$cordovaSQLite) {
+  _qxp = [];
+  questions_ = [];
+  var quizs = [];
+  SQLite_return._getquiz($scope).then(function(q) {
+    
+    for (var i = 0; i < q.length ; i++) {
+      var quiz = {
+        question: q[i].question,
+        options: q[i].options.split(','),
+        answer: q[i].answer
+      }
+      console.log(quiz);
+      quizs.push(quiz);
+      // alert("quizs   "+JSON.stringify(quizs));
+    };
+    questions_ = quizs;
+    // alert("question_   "+JSON.stringify(questions_[0]));
+  });
 
   var _id;
   var q_select = "SELECT * FROM User WHERE login_stat = 1";
@@ -1845,7 +1862,7 @@ angular.module('starter.controllers', ['ngOpenFB'])
   });
 
   $scope.$on('$ionicView.afterLeave', function(){
-    alert(_qxp.length);
+    // alert(_qxp.length);
     if(_qxp.length > 0){
       for (var i = 0; i < _qxp.length; i++) {
         var user_xp ={

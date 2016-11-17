@@ -1,7 +1,7 @@
   <ion-view >
       <ion-content class=" tab-item-top">
         <div class="row borderblue" style="padding: 0px;">
-          <div class="box-news-header col col-33" style="text-align: center;">
+          <div class="box-news-header col col-40" style="text-align: center;">
             พี่น้องร้องทุกข์
           </div>
         
@@ -12,8 +12,16 @@
           </video> -->
           <video ng-src="{{fileData}}" class="centerme" controls="controls" autoplay style="height: 200px;" ng-show="prevideo"></video>
         
-          <img ng-src="{{fileData}}" style="height: 200px;" ng-show="preimage">
+          <img ng-src="{{fileData}}" style="height: 200px;margin: 0 auto;display: block;" ng-show="preimage">
+          <div class="padding">
+            <label class="introduce_item item-input">
+                  <input type="text"  placeholder="title" ng-model="uploadfile.title">
+            </label>
 
+            <label class="introduce_item item-input">
+                <input type="text"  placeholder="content" ng-model="uploadfile.content">
+            </label>
+          </div>
 
           <div class="padding">
               <button class="button button-full button-assertive ink" ng-click="selectPicture()">SelectPic</button>

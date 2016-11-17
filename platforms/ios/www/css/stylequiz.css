@@ -17,25 +17,73 @@ button {
 	cursor: pointer;
 }
 
+.question-box{
+	padding: 15px 30px;
+    border-radius: 15px;
+    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.5);
+    box-sizing: border-box;
+}
 
 .container {
 	width: 480px;
+	max-width: 100%;
 	margin: 0 auto;
 	text-align: left;
+
 }
 
 #options {
-	margin: 10px 0;
+	margin: 10px 20px;
+}
+
+#options li{
+	padding: 10px;
+    margin-bottom: 2px;
+    background: rgba(0,0,0,0.1);
+}
+
+#options input[type="radio"]{
+	vertical-align: middle;
 }
 
 .next-question {
-	margin-right: 10px;
+	margin: 0 auto;
+    font-size: 14px;
+    width: 100px;
+    padding: 6px;
+    display: block;
+    text-align: center;
+    border: solid 2px #02818e;
+    color: #02818e;
+    font-weight: bold;
+    background: none;
+    border-radius: 6px;
 }
 
 #score {
 	margin-top: 10px;
 	font-size: 18px;
 	font-weight: bold;
+}
+
+.intro{
+	text-align: center;
+    margin-top: 30px;
+}
+
+.intro p{
+    font-size: 18px;
+    margin-bottom: 20px;
+}
+
+.intro button{
+    background: #5fc8d2;
+    border: none;
+    padding: 5px 15px;
+}
+
+.quiz-area{
+	margin: 5px;
 }
 
 

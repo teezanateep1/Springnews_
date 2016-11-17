@@ -530,7 +530,7 @@ angular.module('services', ['ngCordova'])
             headers : {'api-key': key}  // set the headers so angular passing info as form data (not request payload)
         })
         .success(function(data) {
-            alert(data)
+            // alert(data)
         });
     }
     //-------------- get XP 
@@ -543,7 +543,7 @@ angular.module('services', ['ngCordova'])
             headers : {'api-key': key}  // set the headers so angular passing info as form data (not request payload)
         })
         .success(function(data) {
-            alert(data)
+            // alert(data)
         });
     }
     //-------------- int XP 
@@ -559,18 +559,15 @@ angular.module('services', ['ngCordova'])
 
         });
     }
-      
     
 }])
 
 
 .factory('SQLite_return', function($http) {
-    var user_res,user_get_res,user_get_login;
-    var Data_User = {
+    var user_res,user_get_res,user_get_login,get_quiz;
+    var Data = {
         _Register: function($scope,user_info){ 
             if(!user_res){
-
-                console.log(user_info);
                 var url=path+"be/Users/insert"; 
                 user_res = $http({
                     method  : 'POST',
@@ -578,7 +575,6 @@ angular.module('services', ['ngCordova'])
                     data    :  user_info,  // pass in data as strings
                     headers : {'api-key': key}  // set the headers so angular passing info as form data (not request payload)
                 }).then(function(response) {
-                    console.log("register_success");
                     return response.data;
                 });
             }
@@ -589,36 +585,52 @@ angular.module('services', ['ngCordova'])
         _get_info: function($scope,d){
             if(!user_get_res){
                 console.log(d);
-
                 var url=path+"be/Users/getID?api-key="+key+"&id="+d.ID; 
                 user_get_res = $http.get(url).then(function(result){
-                  console.log(result.data);
+
+                  // alert("_get_infooooooo"+JSON.stringify(result.data));
                   return result.data;
                 });
             }
             return user_get_res;
         },
 
-        _login: function($scope){
+        _login: function($scope,login_data){
+            // alert("_loginnnnnnnnnn_before_if   "+JSON.stringify(login_data));
             if(!user_get_login){
-                console.log($scope.loginData);
-
+                // alert("_loginnnnnnnnnn      "+JSON.stringify(login_data));
                 var url=path+"be/Users/logInUser"; 
                 user_get_login =$http({
                     method  : 'POST',
                     url     :  url,
-                    data    :  $scope.loginData,  // pass in data as strings
+                    data    :  login_data,  // pass in data as strings
                     headers : {'api-key': key}  // set the headers so angular passing info as form data (not request payload)
                 }).then(function(response) {
-                    console.log("login_success");
                     return response.data;
                 });
             }
             return user_get_login;
+        },
+
+        _getquiz: function($scope){
+            if(!get_quiz){
+                var url=path+"be/Quizs/getquizandanswers?api-key="+key; 
+                get_quiz = $http({
+                    method  : 'GET',
+                    url     :  url,
+                    data    : null,
+                    headers : {'api-key': key}  // set the headers so angular passing info as form data (not request payload)
+                })
+                .then(function(response) {
+                    console.log(JSON.stringify(response.data));
+                    return response.data
+                });
+            }
+            return get_quiz;
         }
 
     };
-    return Data_User;
+    return Data;
 })
 
 .service("Actions",["$http","$ionicSlideBoxDelegate","_function","$ionicLoading","$cordovaLocalNotification","$cordovaSQLite",function($http,$ionicSlideBoxDelegate,_function,$rootScope,$ionicLoading,$cordovaLocalNotification,$cordovaSQLite){ 
@@ -654,7 +666,7 @@ angular.module('services', ['ngCordova'])
         });
     }
 
-     // ---------  แชร์ข่าว
+    // ---------  ชอบข่าว
     this._like = function($scope,new_info){
         var url=path+"be/Socials/likes"; 
         $http({
@@ -664,10 +676,28 @@ angular.module('services', ['ngCordova'])
             headers : {'api-key': key}  // set the headers so angular passing info as form data (not request payload)
         })
         .success(function(data) {
-            console.log("countshare_success");
-        }).error(function(){  
-            console.log("countshare_error");
+            console.log("countlike_success");
+        }).error(function(err){  
+            console.log("countlike_error"+err);
+        });
+    }
+
+    // ---------  เพิ่ม xp
+    this._upxp = function($scope,user_xp){
+        
+        var url=path+"be/Levels/insertuserLV"; 
+        $http({
+            method  : 'POST',
+            url     :  url,
+            data    :  user_xp,  // pass in data as strings
+            headers : {'api-key': key}  // set the headers so angular passing info as form data (not request payload)
+        })
+        .success(function(data) {
+            console.log("upxp_success");
+        }).error(function(err){  
+            console.log("upxp_error"+err);
         });
     }
 
 }]) 
+

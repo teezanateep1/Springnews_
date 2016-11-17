@@ -5,13 +5,14 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.controllers' is found in controllers.js
 var db;
-var path = "http://artbeat.mfec.co.th/SpringNews_mb/api/";
-// var path = "http://uat1.springnews.co.th/SpringNews_mb/api/";
-var path_gm = "http://artbeat.mfec.co.th/SpringNews_mb/static/game/";
-// var path_gm = "http://uat1.springnews.co.th/SpringNews_mb/static/game/";
+// var path = "http://artbeat.mfec.co.th/SpringNews_mb/api/";
+var path = "http://uat1.springnews.co.th/SpringNews_mb/api/";
+// var path_gm = "http://artbeat.mfec.co.th/SpringNews_mb/static/game/";
+var path_gm = "http://uat1.springnews.co.th/SpringNews_mb/static/game/";
 var key = "EAACEdEose0cBAP3LZAULs0sfBDrAFiY0xzMTJHPdzlxArcn4kw";
 var users_for_check_login = [];
 var _qxp = [];
+var questions_ ;
 angular.module('starter', ['ionic', 'starter.controllers',"angular-md5",'services','ngOpenFB','tabSlideBox','ngStorage', 'ionic-cache-src','ngCordova.plugins.googleAds','ngCordovaOauth','ionic-cache-src'])
 
 .run(function($ionicPlatform,$rootScope,$ionicPopup,$localStorage, $cordovaDialogs ,$cordovaSQLite,ngFB, ConnectivityMonitor) { //admobSvc
@@ -19,7 +20,7 @@ angular.module('starter', ['ionic', 'starter.controllers',"angular-md5",'service
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
-
+    $rootScope.ad_url = "http://uat1.springnews.co.th/wp-content";
     ConnectivityMonitor.startWatching()
 
     if (window.cordova && window.cordova.plugins.Keyboard) {
@@ -68,7 +69,7 @@ angular.module('starter', ['ionic', 'starter.controllers',"angular-md5",'service
           db = $cordovaSQLite.openDB({name:"springnew.db",location:'default'});
           // $cordovaSQLite.deleteDB("springnew.db");
       } catch (error) {
-          alert(error);
+          // alert(error);
       }
       $cordovaSQLite.execute(db, "CREATE TABLE IF NOT EXISTS User(id integer primary key,user_id text,fullname text ,mycode text ,login_stat integer, path text)");
       $cordovaSQLite.execute(db, "CREATE TABLE IF NOT EXISTS Action(id integer primary key, user_id integer,news_id integer)");
@@ -218,22 +219,18 @@ angular.module('starter', ['ionic', 'starter.controllers',"angular-md5",'service
           scope.quizOver = true;
           _qxp.push(scope.xp);
         }
+        // if(scope.id < questions_.length)
+        // {
+        //   var q = questions_[scope.id];
+        //   scope.question = q.question;
+        //   scope.options = q.options;
+        //   scope.answer = q.answer;
+        //   scope.answerMode = true;
+        // } else {
+        //   scope.quizOver = true;
+        //   _qxp.push(scope.xp);
+        // }
       };
-
-      // scope.checkAnswer = function() {
-      //   if(!$('input[name=answer]:checked').length) return;
-
-      //   var ans = $('input[name=answer]:checked').val();
-
-      //   if(ans == scope.options[scope.answer]) {
-      //     scope.score++;
-      //     scope.correctAns = true;
-      //   } else {
-      //     scope.correctAns = false;
-      //   }
-
-      //   scope.answerMode = false;
-      // };
 
       scope.nextQuestion = function() {
         // Check And Next
@@ -241,7 +238,7 @@ angular.module('starter', ['ionic', 'starter.controllers',"angular-md5",'service
 
         var ans = $('input[name=answer]:checked').val();
 
-        if(ans == scope.options[scope.answer]) {
+        if(ans == scope.answer) {
           scope.score++;
           scope.xp =  scope.score*5
           scope.correctAns = true;
@@ -261,38 +258,37 @@ angular.module('starter', ['ionic', 'starter.controllers',"angular-md5",'service
 })
 
 .factory('quizFactory', function() {
-  var questions = [
-    {
-      question: "Which is the largest country in the world by population?",
-      options: ["India", "USA", "China", "Russia"],
-      answer: 2
-    },
-    {
-      question: "When did the second world war end?",
-      options: ["1945", "1939", "1944", "1942"],
-      answer: 0
-    },
-    {
-      question: "Which was the first country to issue paper currency?",
-      options: ["USA", "France", "Italy", "China"],
-      answer: 3
-    },
-    {
-      question: "Which city hosted the 1996 Summer Olympics?",
-      options: ["Atlanta", "Sydney", "Athens", "Beijing"],
-      answer: 0
-    },
-    { 
-      question: "Who invented telephone?",
-      options: ["Albert Einstein", "Alexander Graham Bell", "Isaac Newton", "Marie Curie"],
-      answer: 1
-    }
-  ];
-
+  // var questions = [
+  //   {
+  //     question: "Which is the largest country in the world by population?",
+  //     options: ["India", "USA", "China", "Russia"],
+  //     answer: 2
+  //   },
+  //   {
+  //     question: "When did the second world war end?",
+  //     options: ["1945", "1939", "1944", "1942"],
+  //     answer: 0
+  //   },
+  //   {
+  //     question: "Which was the first country to issue paper currency?",
+  //     options: ["USA", "France", "Italy", "China"],
+  //     answer: 3
+  //   },
+  //   {
+  //     question: "Which city hosted the 1996 Summer Olympics?",
+  //     options: ["Atlanta", "Sydney", "Athens", "Beijing"],
+  //     answer: 0
+  //   },
+  //   { 
+  //     question: "Who invented telephone?",
+  //     options: ["Albert Einstein", "Alexander Graham Bell", "Isaac Newton", "Marie Curie"],
+  //     answer: 1
+  //   }
+  // ];
   return {
     getQuestion: function(id) {
-      if(id < questions.length) {
-        return questions[id];
+      if(id < questions_.length) {
+        return questions_[id];
       } else {
         return false;
       }

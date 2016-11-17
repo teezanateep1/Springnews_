@@ -43,7 +43,7 @@ Shake.Game.prototype = {
         emitter.gravity = 100;
 
         //Sound
-        spellSound = this.game.add.audio('spell');
+        // spellSound = this.game.add.audio('spell');
 
         // //icon
         group_iconPW = game.add.group();
@@ -153,7 +153,7 @@ Shake.Game.prototype = {
            game.game.paused = false;
            bag.animations.play('bagshake');
            emitter.start(true, 3500, null, 15);
-           spellSound.play();
+           // spellSound.play();
            clearTimeout(timeout_) 
            timeout_ = setTimeout(function () {
                    bag.animations.stop(null, true);
