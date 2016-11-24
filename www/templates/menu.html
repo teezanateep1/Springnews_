@@ -30,12 +30,13 @@
     <!-- <ion-header-bar class="bar-stable">
       <h1 class="title">Left</h1>
     </ion-header-bar> -->
-    <ion-header-bar class="bar-profile" ng-show="profile" >
+    <ion-header-bar class="bar-profile"  >
         <div class="profile">
             <!-- <img class="profile-picture" src="img/logo.png"  /> -->
             <img class="profile-picture" ng-src="{{ userImg }}"  />
-            <h3 class="name" >{{userName}}</h3>
-            <h1 class="name" >Invite : {{invite_code}}</h1>
+            <h4 class="name namesize" >teezanateep wongprapai{{userName}}</h3>
+            <h4 class="name" >Lv:{{LV}} xp:{{XPP}}/{{NLV}}  </h4>
+            <h4 class="name" >Invite code : {{invite_code}}</h1>
             <!-- <span class="lang-fr" ><a href="#">EN</a></span>
             <span class="lang-se" ><a href="#" class="active">TH</a></span> -->
        </div>
@@ -92,12 +93,12 @@
         </ion-item> -->
 
 
-        <ion-item menu-close class="menu" href="#/app/activity" ng-click="cl_link('/app/activity')" ng-show="login_">
+      <!--   <ion-item menu-close class="menu" href="#/app/activity" ng-click="cl_link('/app/activity')" ng-show="login_">
           <i class="nut-menu-activity" ng-class="{'active':link == '/app/activity'}" ></i> 
           <span ng-class="{'active':link == '/app/activity'}" style="margin-left: 10px;"> กิจกรรม </span>
-        </ion-item>
+        </ion-item> -->
 
-        <ion-item  class="menu" ng-click="toggleActivity(menu_toggle_act)" href="" style="cursor:pointer;"ng-show="logout_" >
+        <ion-item  class="menu" ng-click="toggleActivity(menu_toggle_act)" href="" style="cursor:pointer;">
           <i class="nut-menu-activity" ng-class="{'active':link == '/app/activity_'}" > </i> 
           <span ng-class="{'active':link == '/app/activity_'}" style="margin-left: 10px;">กิจกรรม </span>
         </ion-item>
