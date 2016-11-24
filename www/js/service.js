@@ -336,7 +336,7 @@ angular.module('services', ['ngCordova'])
                 $scope.newsDetail = result; 
                 video_id = regex.exec(result[0].post_content);         
                 if(video_id != null){
-                    $scope.video = "https://www.youtube.com/embed/"+video_id[0].replace("[/embed]","").split('/')[3];
+                    $scope.video = "https://www.youtube.com/embed/"+video_id[0].replace("[/embed]","").split('/')[3].replace("<","");
                 }
                 $scope.date = _function._date($scope.newsDetail[0].post_date.substring(0, 10),$scope.newsDetail[0].post_date.substring(12, 16));
 

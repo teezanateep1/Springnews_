@@ -1100,14 +1100,13 @@ angular.module('starter.controllers', ['ngOpenFB'])
     }
   }
 
-  // $scope.replace = function (str) {
-  //   if(str != undefined){
-  //     //return str.replace(/[embed]+/,"").replace('[',"");
-  //     return str
-  //   }else{
-  //     return "";
-  //   }
-  // }
+  $scope.replace = function (str) {
+    if(str != undefined){
+      return str.replace('[embed]','').replace('[/embed]','').replace(/(?:https:\/\/)?(?:\.)?(?:youtube\.com|youtu\.be)\/(?:watch\?v=)?(.+)/g, '');
+    }else{
+      return "";
+    }
+  }
   //วันที่
   $scope.date_ = function(d){
     return _function._date(d.substring(0, 10),d.substring(12, 16));
