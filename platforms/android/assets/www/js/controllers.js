@@ -123,6 +123,7 @@ angular.module('starter.controllers', ['ngOpenFB'])
     $rootScope.profile = false;
     $rootScope.login_ = true;
     $rootScope.logout_ = false;
+    alert("ออกจากระบบ");
 
   }
 
@@ -130,7 +131,7 @@ angular.module('starter.controllers', ['ngOpenFB'])
 })
 
 // --------------------- HOME ------------------------
-.controller('HomeCtrl', function($scope,$rootScope, $stateParams,$ionicPlatform, SpringNews,SQLite_return, $ionicSlideBoxDelegate,_function, $ionicModal,$ionicLoading,$cordovaSocialSharing,$ionicScrollDelegate, $ionicNavBarDelegate, $timeout, ConnectivityMonitor) { //admobSvc
+.controller('HomeCtrl', function($scope,$rootScope,$sessionStorage, $stateParams,$ionicPlatform, SpringNews,SQLite_return, $ionicSlideBoxDelegate,_function, $ionicModal,$ionicLoading,$cordovaSocialSharing,$ionicScrollDelegate, $ionicNavBarDelegate, $timeout, ConnectivityMonitor) { //admobSvc
 
  
   $ionicLoading.show();
@@ -169,9 +170,12 @@ angular.module('starter.controllers', ['ngOpenFB'])
     SpringNews._thaigold($scope);
     $timeout(function(){
       SQLite_return._getxp($scope,$rootScope.us_id).then(function(d){
-        $rootScope.LV = d.level;
-        $rootScope.XPP = d.userXP;
-        $rootScope.NLV = d.next_lv;
+        $sessionStorage.LV = d.level;
+        $sessionStorage.XPP = d.userXP;
+        $sessionStorage.NLV = d.next_lv;
+        $rootScope.LV = $sessionStorage.LV;
+        $rootScope.XPP = $sessionStorage.userXP;
+        $rootScope.NLV = $sessionStorage.next_lv;
       });
     },10000);
   // },3000);
@@ -657,6 +661,9 @@ angular.module('starter.controllers', ['ngOpenFB'])
       phi = 0, theta = 0;
       $scope.countdown = seconds;
       $scope.gm_power = window.localStorage.getItem("gm_power");
+      $rootScope.LV = $sessionStorage.LV;
+      $rootScope.XPP = $sessionStorage.userXP;
+      $rootScope.NLV = $sessionStorage.next_lv;
     
 
       var blocker = document.getElementById( 'blocker' );
@@ -877,25 +884,25 @@ angular.module('starter.controllers', ['ngOpenFB'])
           document.getElementById("game_compl").style.visibility = "visible";
           blocker.className = 'bg-color';
           $scope.target_ = false;
-          var _id;
-          var q_select = "SELECT * FROM User WHERE login_stat = 1";
-          $cordovaSQLite.execute(db, q_select).then(function(result) {
-            if(result.rows.length > 0){
-                _id = result.rows.item(0).user_id;
-                console.log("ID_for_UP_XP "+_id);
-              }
-          });
-          if (plat == true) {
+          if (play == true) {
+            var _id;
+            var q_select = "SELECT * FROM User WHERE login_stat = 1";
+            $cordovaSQLite.execute(db, q_select).then(function(result) {
+              if(result.rows.length > 0){
+                  _id = result.rows.item(0).user_id;
+                  console.log("ID_for_UP_XP "+_id);
+                }
+            });
+         
             var user_xp ={
               id: _id,
               xp: num_gm
             }
             Actions._upxp($scope,user_xp);
-
-            SQLite_return._getxp($scope,_id).then(function(d){
-              $rootScope.LV = d.level;
-              $rootScope.XPP = d.userXP;
-              $rootScope.NLV = d.next_lv;
+             SQLite_return._getxp($scope,$rootScope.us_id).then(function(d){
+              $sessionStorage.LV = d.level;
+              $sessionStorage.XPP = d.userXP;
+              $sessionStorage.NLV = d.next_lv;
             });
           }
           play = false;
@@ -929,29 +936,29 @@ angular.module('starter.controllers', ['ngOpenFB'])
           document.getElementById("xp").innerHTML = num_gm+" XP";
           SpringNews._intxp(1,num_gm);
           blocker.className = 'bg-color';
-          
           $scope.target_ = false;
-          var _id;
-          var q_select = "SELECT * FROM User WHERE login_stat = 1";
-          $cordovaSQLite.execute(db, q_select).then(function(result) {
-            if(result.rows.length > 0){
-                _id = result.rows.item(0).user_id;
-                console.log("ID_for_UP_XP "+_id);
-              }
-          });
           if(play == true){
+            var _id;
+            var q_select = "SELECT * FROM User WHERE login_stat = 1";
+            $cordovaSQLite.execute(db, q_select).then(function(result) {
+              if(result.rows.length > 0){
+                  _id = result.rows.item(0).user_id;
+                  console.log("ID_for_UP_XP "+_id);
+                }
+            });
+            
             var user_xp ={
               id: _id,
               xp: num_gm*6
             }
             Actions._upxp($scope,user_xp);
             SQLite_return._getxp($scope,_id).then(function(d){
-              $rootScope.LV = d.level;
-              $rootScope.XPP = d.userXP;
-              $rootScope.NLV = d.next_lv;
+              $sessionStorage.LV = d.level;
+              $sessionStorage.XPP = d.userXP;
+              $sessionStorage.NLV = d.next_lv;
             });
           }
-          play = false;
+            play = false;
         }
 
 
@@ -1052,6 +1059,7 @@ angular.module('starter.controllers', ['ngOpenFB'])
               _postID: $stateParams.newsId,
               _userID: u_id
           }
+          Actions._read($scope,new_info);
         }
       }
   });
@@ -1065,7 +1073,7 @@ angular.module('starter.controllers', ['ngOpenFB'])
     }
   });
 
-  Actions._read($scope,new_info);
+  
 
   $scope.share = function (title,url){
     $scope.title_ = title
@@ -1118,14 +1126,13 @@ angular.module('starter.controllers', ['ngOpenFB'])
     }
   }
 
-  // $scope.replace = function (str) {
-  //   if(str != undefined){
-  //     //return str.replace(/[embed]+/,"").replace('[',"");
-  //     return str
-  //   }else{
-  //     return "";
-  //   }
-  // }
+  $scope.replace = function (str) {
+    if(str != undefined){
+      return str.replace('[embed]','').replace('[/embed]','').replace(/(?:https:\/\/)?(?:\.)?(?:youtube\.com|youtu\.be)\/(?:watch\?v=)?(.+)/g, '');
+    }else{
+      return "";
+    }
+  }
   //วันที่
   $scope.date_ = function(d){
     return _function._date(d.substring(0, 10),d.substring(12, 16));
@@ -1431,7 +1438,7 @@ angular.module('starter.controllers', ['ngOpenFB'])
                         $rootScope.logout_ = false;
                       }
                     });
-
+                alert("Register Success");
               }, function (err) {
                   alert(JSON.stringify(err));
               });
@@ -1439,27 +1446,26 @@ angular.module('starter.controllers', ['ngOpenFB'])
             else{
               var query = "INSERT INTO User (user_id,fullname ,mycode,login_stat,path) VALUES (?,?,?,?,?)";
               $cordovaSQLite.execute(db, query, [u_id,full_name,iv_code,1,path]).then(function(res) {
-                  //alert("INSERT ID -> " + res.insertId);
-
-                  var q_select = "SELECT * FROM User WHERE login_stat = 1";
-                    $cordovaSQLite.execute(db, q_select).then(function(result) {
-                      if(result.rows.length == 1){
-                        for (var i = 0; i < result.rows.length; i++) {
-                          users_for_check_login.push(result.rows.item(i));
-                        }
-                        $rootScope.userImg = users_for_check_login[0].path;
-                        $rootScope.userName = users_for_check_login[0].fullname;
-                        $rootScope.invite_code = users_for_check_login[0].mycode;
-                        $rootScope.profile = true;
-                        $rootScope.login_ = false;
-                        $rootScope.logout_ = true;
-                      }else{
-                        $rootScope.profile = false;
-                        $rootScope.login_ = true;
-                        $rootScope.logout_ = false;
-                      }
-                    });
-
+                //alert("INSERT ID -> " + res.insertId);
+                var q_select = "SELECT * FROM User WHERE login_stat = 1";
+                $cordovaSQLite.execute(db, q_select).then(function(result) {
+                  if(result.rows.length == 1){
+                    for (var i = 0; i < result.rows.length; i++) {
+                      users_for_check_login.push(result.rows.item(i));
+                    }
+                    $rootScope.userImg = users_for_check_login[0].path;
+                    $rootScope.userName = users_for_check_login[0].fullname;
+                    $rootScope.invite_code = users_for_check_login[0].mycode;
+                    $rootScope.profile = true;
+                    $rootScope.login_ = false;
+                    $rootScope.logout_ = true;
+                  }else{
+                    $rootScope.profile = false;
+                    $rootScope.login_ = true;
+                    $rootScope.logout_ = false;
+                  }
+                });
+                alert("Register Success");
               }, function (err) {
                   alert(JSON.stringify(err));
               });
@@ -1538,7 +1544,7 @@ angular.module('starter.controllers', ['ngOpenFB'])
       user: this.loginData.user,
       pass: this.loginData.pass
     }
-    // alert(JSON.stringify(login_data));
+
     SQLite_return._login($scope,login_data).then(function(d) {
       if(d.ID != null){
         SQLite_return._get_info($scope,d).then(function(get_u_info) {
@@ -1553,26 +1559,26 @@ angular.module('starter.controllers', ['ngOpenFB'])
             if(users_in_db.length > 0 ){
               var query = "UPDATE User SET user_id = "+u_id+",fullname = '"+full_name+"',mycode ='"+iv_code+"',path ='"+path+"',login_stat = 1 WHERE id = 1";
               $cordovaSQLite.execute(db, query,[]).then(function(res) {
-                  console.log("UPDATE ID -> " + JSON.stringify(res));
-                  var q_select = "SELECT * FROM User WHERE login_stat = 1";
-                    $cordovaSQLite.execute(db, q_select).then(function(result) {
-                      if(result.rows.length == 1){
-                        for (var i = 0; i < result.rows.length; i++) {
-                          users_for_check_login.push(result.rows.item(i));
-                        }
-                        $rootScope.userImg = users_for_check_login[0].path;
-                        $rootScope.userName = users_for_check_login[0].fullname;
-                        $rootScope.invite_code = users_for_check_login[0].mycode;
-                        $rootScope.profile = true;
-                        $rootScope.login_ = false;
-                        $rootScope.logout_ = true;
-                      }else{
-                        $rootScope.profile = false;
-                        $rootScope.login_ = true;
-                        $rootScope.logout_ = false;
+                console.log("UPDATE ID -> " + JSON.stringify(res));
+                var q_select = "SELECT * FROM User WHERE login_stat = 1";
+                  $cordovaSQLite.execute(db, q_select).then(function(result) {
+                    if(result.rows.length == 1){
+                      for (var i = 0; i < result.rows.length; i++) {
+                        users_for_check_login.push(result.rows.item(i));
                       }
-                    });
-
+                      $rootScope.userImg = users_for_check_login[0].path;
+                      $rootScope.userName = users_for_check_login[0].fullname;
+                      $rootScope.invite_code = users_for_check_login[0].mycode;
+                      $rootScope.profile = true;
+                      $rootScope.login_ = false;
+                      $rootScope.logout_ = true;
+                    }else{
+                      $rootScope.profile = false;
+                      $rootScope.login_ = true;
+                      $rootScope.logout_ = false;
+                    }
+                  });
+                alert("Login Success");
               }, function (err) {
                   alert(JSON.stringify(err));
               });
@@ -1580,26 +1586,26 @@ angular.module('starter.controllers', ['ngOpenFB'])
             else{
               var query = "INSERT INTO User (user_id,fullname ,mycode,login_stat,path) VALUES (?,?,?,?,?)";
               $cordovaSQLite.execute(db, query, [u_id,full_name,iv_code,1,path]).then(function(res) {
-                  console.log("INSERT ID -> " + res.insertId);
-                  var q_select = "SELECT * FROM User WHERE login_stat = 1";
-                    $cordovaSQLite.execute(db, q_select).then(function(result) {
-                      if(result.rows.length == 1){
-                        for (var i = 0; i < result.rows.length; i++) {
-                          users_for_check_login.push(result.rows.item(i));
-                        }
-                        $rootScope.userImg = users_for_check_login[0].path;
-                        $rootScope.userName = users_for_check_login[0].fullname;
-                        $rootScope.invite_code = users_for_check_login[0].mycode;
-                        $rootScope.profile = true;
-                        $rootScope.login_ = false;
-                        $rootScope.logout_ = true;
-                      }else{
-                        $rootScope.profile = false;
-                        $rootScope.login_ = true;
-                        $rootScope.logout_ = false;
+                console.log("INSERT ID -> " + res.insertId);
+                var q_select = "SELECT * FROM User WHERE login_stat = 1";
+                  $cordovaSQLite.execute(db, q_select).then(function(result) {
+                    if(result.rows.length == 1){
+                      for (var i = 0; i < result.rows.length; i++) {
+                        users_for_check_login.push(result.rows.item(i));
                       }
-                    });
-
+                      $rootScope.userImg = users_for_check_login[0].path;
+                      $rootScope.userName = users_for_check_login[0].fullname;
+                      $rootScope.invite_code = users_for_check_login[0].mycode;
+                      $rootScope.profile = true;
+                      $rootScope.login_ = false;
+                      $rootScope.logout_ = true;
+                    }else{
+                      $rootScope.profile = false;
+                      $rootScope.login_ = true;
+                      $rootScope.logout_ = false;
+                    }
+                  });
+                alert("Login Success");
               }, function (err) {
                   alert(JSON.stringify(err));
               });
@@ -1676,26 +1682,26 @@ angular.module('starter.controllers', ['ngOpenFB'])
                     if(users_in_db.length > 0 ){
                       var query = "UPDATE User SET user_id = "+u_id+",fullname = '"+full_name+"',mycode ='"+iv_code+"',path ='"+path+"',login_stat = 1 WHERE id = 1";
                       $cordovaSQLite.execute(db, query,[]).then(function(res) {
-                          console.log("UPDATE ID -> " + JSON.stringify(res));
-                          var q_select = "SELECT * FROM User WHERE login_stat = 1";
-                            $cordovaSQLite.execute(db, q_select).then(function(result) {
-                              if(result.rows.length == 1){
-                                for (var i = 0; i < result.rows.length; i++) {
-                                  users_for_check_login.push(result.rows.item(i));
-                                }
-                                $rootScope.userImg = users_for_check_login[0].path;
-                                $rootScope.userName = users_for_check_login[0].fullname;
-                                $rootScope.invite_code = users_for_check_login[0].mycode;
-                                $rootScope.profile = true;
-                                $rootScope.login_ = false;
-                                $rootScope.logout_ = true;
-                              }else{
-                                $rootScope.profile = false;
-                                $rootScope.login_ = true;
-                                $rootScope.logout_ = false;
+                        console.log("UPDATE ID -> " + JSON.stringify(res));
+                        var q_select = "SELECT * FROM User WHERE login_stat = 1";
+                          $cordovaSQLite.execute(db, q_select).then(function(result) {
+                            if(result.rows.length == 1){
+                              for (var i = 0; i < result.rows.length; i++) {
+                                users_for_check_login.push(result.rows.item(i));
                               }
-                            });
-
+                              $rootScope.userImg = users_for_check_login[0].path;
+                              $rootScope.userName = users_for_check_login[0].fullname;
+                              $rootScope.invite_code = users_for_check_login[0].mycode;
+                              $rootScope.profile = true;
+                              $rootScope.login_ = false;
+                              $rootScope.logout_ = true;
+                            }else{
+                              $rootScope.profile = false;
+                              $rootScope.login_ = true;
+                              $rootScope.logout_ = false;
+                            }
+                          });
+                        alert("Login Success");
                       }, function (err) {
                           alert(JSON.stringify(err));
                       });
@@ -1703,26 +1709,26 @@ angular.module('starter.controllers', ['ngOpenFB'])
                     else{
                       var query = "INSERT INTO User (user_id,fullname ,mycode,login_stat,path) VALUES (?,?,?,?,?)";
                       $cordovaSQLite.execute(db, query, [u_id,full_name,iv_code,1,path]).then(function(res) {
-                          console.log("INSERT ID -> " + res.insertId);
-                          var q_select = "SELECT * FROM User WHERE login_stat = 1";
-                            $cordovaSQLite.execute(db, q_select).then(function(result) {
-                              if(result.rows.length == 1){
-                                for (var i = 0; i < result.rows.length; i++) {
-                                  users_for_check_login.push(result.rows.item(i));
-                                }
-                                $rootScope.userImg = users_for_check_login[0].path;
-                                $rootScope.userName = users_for_check_login[0].fullname;
-                                $rootScope.invite_code = users_for_check_login[0].mycode;
-                                $rootScope.profile = true;
-                                $rootScope.login_ = false;
-                                $rootScope.logout_ = true;
-                              }else{
-                                $rootScope.profile = false;
-                                $rootScope.login_ = true;
-                                $rootScope.logout_ = false;
+                        console.log("INSERT ID -> " + res.insertId);
+                        var q_select = "SELECT * FROM User WHERE login_stat = 1";
+                          $cordovaSQLite.execute(db, q_select).then(function(result) {
+                            if(result.rows.length == 1){
+                              for (var i = 0; i < result.rows.length; i++) {
+                                users_for_check_login.push(result.rows.item(i));
                               }
-                            });
-
+                              $rootScope.userImg = users_for_check_login[0].path;
+                              $rootScope.userName = users_for_check_login[0].fullname;
+                              $rootScope.invite_code = users_for_check_login[0].mycode;
+                              $rootScope.profile = true;
+                              $rootScope.login_ = false;
+                              $rootScope.logout_ = true;
+                            }else{
+                              $rootScope.profile = false;
+                              $rootScope.login_ = true;
+                              $rootScope.logout_ = false;
+                            }
+                          });
+                        alert("Login Success");
                       }, function (err) {
                           alert(JSON.stringify(err));
                       });
@@ -1798,26 +1804,26 @@ angular.module('starter.controllers', ['ngOpenFB'])
                     if(users_in_db.length > 0 ){
                       var query = "UPDATE User SET user_id = "+u_id+",fullname = '"+full_name+"',mycode ='"+iv_code+"',path ='"+path+"',login_stat = 1 WHERE id = 1";
                       $cordovaSQLite.execute(db, query,[]).then(function(res) {
-                          console.log("UPDATE ID -> " + JSON.stringify(res));
-                          var q_select = "SELECT * FROM User WHERE login_stat = 1";
-                            $cordovaSQLite.execute(db, q_select).then(function(result) {
-                              if(result.rows.length == 1){
-                                for (var i = 0; i < result.rows.length; i++) {
-                                  users_for_check_login.push(result.rows.item(i));
-                                }
-                                $rootScope.userImg = users_for_check_login[0].path;
-                                $rootScope.userName = users_for_check_login[0].fullname;
-                                $rootScope.invite_code = users_for_check_login[0].mycode;
-                                $rootScope.profile = true;
-                                $rootScope.login_ = false;
-                                $rootScope.logout_ = true;
-                              }else{
-                                $rootScope.profile = false;
-                                $rootScope.login_ = true;
-                                $rootScope.logout_ = false;
+                        console.log("UPDATE ID -> " + JSON.stringify(res));
+                        var q_select = "SELECT * FROM User WHERE login_stat = 1";
+                          $cordovaSQLite.execute(db, q_select).then(function(result) {
+                            if(result.rows.length == 1){
+                              for (var i = 0; i < result.rows.length; i++) {
+                                users_for_check_login.push(result.rows.item(i));
                               }
-                            });
-
+                              $rootScope.userImg = users_for_check_login[0].path;
+                              $rootScope.userName = users_for_check_login[0].fullname;
+                              $rootScope.invite_code = users_for_check_login[0].mycode;
+                              $rootScope.profile = true;
+                              $rootScope.login_ = false;
+                              $rootScope.logout_ = true;
+                            }else{
+                              $rootScope.profile = false;
+                              $rootScope.login_ = true;
+                              $rootScope.logout_ = false;
+                            }
+                          });
+                        alert("Login Success");    
                       }, function (err) {
                           alert(JSON.stringify(err));
                       });
@@ -1825,26 +1831,26 @@ angular.module('starter.controllers', ['ngOpenFB'])
                     else{
                       var query = "INSERT INTO User (user_id,fullname ,mycode,login_stat,path) VALUES (?,?,?,?,?)";
                       $cordovaSQLite.execute(db, query, [u_id,full_name,iv_code,1,path]).then(function(res) {
-                          console.log("INSERT ID -> " + res.insertId);
-                          var q_select = "SELECT * FROM User WHERE login_stat = 1";
-                            $cordovaSQLite.execute(db, q_select).then(function(result) {
-                              if(result.rows.length == 1){
-                                for (var i = 0; i < result.rows.length; i++) {
-                                  users_for_check_login.push(result.rows.item(i));
-                                }
-                                $rootScope.userImg = users_for_check_login[0].path;
-                                $rootScope.userName = users_for_check_login[0].fullname;
-                                $rootScope.invite_code = users_for_check_login[0].mycode;
-                                $rootScope.profile = true;
-                                $rootScope.login_ = false;
-                                $rootScope.logout_ = true;
-                              }else{
-                                $rootScope.profile = false;
-                                $rootScope.login_ = true;
-                                $rootScope.logout_ = false;
+                        console.log("INSERT ID -> " + res.insertId);
+                        var q_select = "SELECT * FROM User WHERE login_stat = 1";
+                          $cordovaSQLite.execute(db, q_select).then(function(result) {
+                            if(result.rows.length == 1){
+                              for (var i = 0; i < result.rows.length; i++) {
+                                users_for_check_login.push(result.rows.item(i));
                               }
-                            });
-
+                              $rootScope.userImg = users_for_check_login[0].path;
+                              $rootScope.userName = users_for_check_login[0].fullname;
+                              $rootScope.invite_code = users_for_check_login[0].mycode;
+                              $rootScope.profile = true;
+                              $rootScope.login_ = false;
+                              $rootScope.logout_ = true;
+                            }else{
+                              $rootScope.profile = false;
+                              $rootScope.login_ = true;
+                              $rootScope.logout_ = false;
+                            }
+                          });
+                        alert("Login Success");
                       }, function (err) {
                           alert(JSON.stringify(err));
                       });

@@ -131,7 +131,7 @@ angular.module('starter.controllers', ['ngOpenFB'])
 })
 
 // --------------------- HOME ------------------------
-.controller('HomeCtrl', function($scope,$rootScope, $stateParams,$ionicPlatform, SpringNews,SQLite_return, $ionicSlideBoxDelegate,_function, $ionicModal,$ionicLoading,$cordovaSocialSharing,$ionicScrollDelegate, $ionicNavBarDelegate, $timeout, ConnectivityMonitor) { //admobSvc
+.controller('HomeCtrl', function($scope,$rootScope,$window, $stateParams,$ionicPlatform, SpringNews,SQLite_return, $ionicSlideBoxDelegate,_function, $ionicModal,$ionicLoading,$cordovaSocialSharing,$ionicScrollDelegate, $ionicNavBarDelegate, $timeout, ConnectivityMonitor) { //admobSvc
 
  
   $ionicLoading.show();
@@ -170,9 +170,13 @@ angular.module('starter.controllers', ['ngOpenFB'])
     SpringNews._thaigold($scope);
     $timeout(function(){
       SQLite_return._getxp($scope,$rootScope.us_id).then(function(d){
-        $rootScope.LV = d.level;
-        $rootScope.XPP = d.userXP;
-        $rootScope.NLV = d.next_lv;
+        // alert(JSON.stringify(d));
+        $window.sessionStorage.LV = d.level;
+        $window.sessionStorage.XPP = d.userXP;
+        $window.sessionStorage.NLV = d.next_lv;
+        $rootScope.LV = $window.sessionStorage.LV;
+        $rootScope.XPP = $window.sessionStorage.XPP;
+        $rootScope.NLV = $window.sessionStorage.NLV;
       });
     },10000);
   // },3000);
@@ -658,6 +662,10 @@ angular.module('starter.controllers', ['ngOpenFB'])
       phi = 0, theta = 0;
       $scope.countdown = seconds;
       $scope.gm_power = window.localStorage.getItem("gm_power");
+      
+      $rootScope.LV = $window.sessionStorage.LV;
+      $rootScope.XPP = $window.sessionStorage.XPP;
+      $rootScope.NLV = $window.sessionStorage.NLV;
     
 
       var blocker = document.getElementById( 'blocker' );
@@ -893,11 +901,10 @@ angular.module('starter.controllers', ['ngOpenFB'])
               xp: num_gm
             }
             Actions._upxp($scope,user_xp);
-
-            SQLite_return._getxp($scope,_id).then(function(d){
-              $rootScope.LV = d.level;
-              $rootScope.XPP = d.userXP;
-              $rootScope.NLV = d.next_lv;
+             SQLite_return._getxp($scope,$rootScope.us_id).then(function(d){
+              $window.sessionStorage.LV = d.level;
+              $window.sessionStorage.XPP = d.userXP;
+              $window.sessionStorage.NLV = d.next_lv;
             });
           }
           play = false;
@@ -948,11 +955,11 @@ angular.module('starter.controllers', ['ngOpenFB'])
             }
             Actions._upxp($scope,user_xp);
             SQLite_return._getxp($scope,_id).then(function(d){
-              $rootScope.LV = d.level;
-              $rootScope.XPP = d.userXP;
-              $rootScope.NLV = d.next_lv;
+              $window.sessionStorage.LV = d.level;
+              $window.sessionStorage.XPP = d.userXP;
+              $window.sessionStorage.NLV = d.next_lv;
             });
-            }
+          }
             play = false;
         }
 
@@ -1209,12 +1216,15 @@ angular.module('starter.controllers', ['ngOpenFB'])
 
 })
 
-.controller('uploadfileCtrl', function($scope, $window,$cordovaCamera,$ionicLoading,$localStorage,$cordovaFileTransfer) {
-   
+.controller('uploadfileCtrl', function($scope, $window,$rootScope,$cordovaCamera,$ionicLoading,$localStorage,$cordovaFileTransfer) {
+    $rootScope.LV = $window.sessionStorage.LV;
+    $rootScope.XPP = $window.sessionStorage.XPP;
+    $rootScope.NLV = $window.sessionStorage.NLV;
     $scope.data = { "FileURI" :  "Select file" };
     var file_type;
     $scope.prevideo = false;
     $scope.preimage = false;
+
 
     // $scope.takePicture = function() {
     // var options = {
