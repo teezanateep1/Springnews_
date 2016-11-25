@@ -336,7 +336,7 @@ angular.module('services', ['ngCordova'])
                 $scope.newsDetail = result; 
                 video_id = regex.exec(result[0].post_content);         
                 if(video_id != null){
-                    $scope.video = "https://www.youtube.com/embed/"+video_id[0].replace("[/embed]","").split('/')[3];
+                    $scope.video = "https://www.youtube.com/embed/"+video_id[0].replace("[/embed]","").split('/')[3].replace("<","");
                 }
                 $scope.date = _function._date($scope.newsDetail[0].post_date.substring(0, 10),$scope.newsDetail[0].post_date.substring(12, 16));
 
@@ -530,20 +530,7 @@ angular.module('services', ['ngCordova'])
             headers : {'api-key': key}  // set the headers so angular passing info as form data (not request payload)
         })
         .success(function(data) {
-            // alert(data)
-        });
-    }
-    //-------------- get XP 
-    this._getxp = function(value,id){
-        var url=path+"be/Levels/getUserLV"; 
-        $http({
-            method  : 'GET',
-            url     :  url,
-            data    :  value,  // pass in data as strings
-            headers : {'api-key': key}  // set the headers so angular passing info as form data (not request payload)
-        })
-        .success(function(data) {
-            // alert(data)
+            alert(data)
         });
     }
     //-------------- int XP 
@@ -564,7 +551,7 @@ angular.module('services', ['ngCordova'])
 
 
 .factory('SQLite_return', function($http) {
-    var user_res,user_get_res,user_get_login,get_quiz;
+    var user_res,user_get_res,user_get_login;
     var Data = {
         _Register: function($scope,user_info){ 
             if(!user_res){
@@ -596,9 +583,7 @@ angular.module('services', ['ngCordova'])
         },
 
         _login: function($scope,login_data){
-            // alert("_loginnnnnnnnnn_before_if   "+JSON.stringify(login_data));
             if(!user_get_login){
-                // alert("_loginnnnnnnnnn      "+JSON.stringify(login_data));
                 var url=path+"be/Users/logInUser"; 
                 user_get_login =$http({
                     method  : 'POST',
@@ -606,27 +591,39 @@ angular.module('services', ['ngCordova'])
                     data    :  login_data,  // pass in data as strings
                     headers : {'api-key': key}  // set the headers so angular passing info as form data (not request payload)
                 }).then(function(response) {
+                    // console.log(response.data);
                     return response.data;
+                    
                 });
             }
             return user_get_login;
         },
 
         _getquiz: function($scope){
-            if(!get_quiz){
-                var url=path+"be/Quizs/getquizandanswers?api-key="+key; 
-                get_quiz = $http({
-                    method  : 'GET',
-                    url     :  url,
-                    data    : null,
-                    headers : {'api-key': key}  // set the headers so angular passing info as form data (not request payload)
-                })
-                .then(function(response) {
-                    console.log(JSON.stringify(response.data));
-                    return response.data
-                });
-            }
+            var url=path+"be/Quizs/getquizandanswers?api-key="+key; 
+            var get_quiz = $http({
+                method  : 'GET',
+                url     :  url,
+                data    : null,
+                headers : {'api-key': key}  // set the headers so angular passing info as form data (not request payload)
+            })
+            .then(function(response) {
+                console.log(JSON.stringify(response.data));
+                return response.data
+            });
             return get_quiz;
+        },
+        //-------------- get XP 
+        _getxp: function($scope,us_id){
+            var url=path+"be/Levels/getUserLV?api-key="+key+"&ID="+us_id; 
+            var get_uxp = $http.get(url,{
+                cache: false
+            }).then(function(result){
+              // alert("_get_xpppppp "+JSON.stringify(result.data));
+              return result.data;
+              
+            });
+            return get_uxp;
         }
 
     };
@@ -644,6 +641,7 @@ angular.module('services', ['ngCordova'])
             headers : {'api-key': key}  // set the headers so angular passing info as form data (not request payload)
         })
         .success(function(data) {
+            // alert(JSON.stringify(data));
             console.log("countread_success");
         }).error(function(){  
             console.log("countread_error");

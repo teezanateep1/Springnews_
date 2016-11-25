@@ -6,9 +6,9 @@
 // 'starter.controllers' is found in controllers.js
 var db;
 // var path = "http://artbeat.mfec.co.th/SpringNews_mb/api/";
-var path = "http://uat1.springnews.co.th/SpringNews_mb/api/";
+var path = "http://uat2.springnews.co.th/SpringNews_mb/api/";
 // var path_gm = "http://artbeat.mfec.co.th/SpringNews_mb/static/game/";
-var path_gm = "http://uat1.springnews.co.th/SpringNews_mb/static/game/";
+var path_gm = "http://uat2.springnews.co.th/SpringNews_mb/static/game/";
 var key = "EAACEdEose0cBAP3LZAULs0sfBDrAFiY0xzMTJHPdzlxArcn4kw";
 var users_for_check_login = [];
 var _qxp = [];
@@ -20,7 +20,7 @@ angular.module('starter', ['ionic', 'starter.controllers',"angular-md5",'service
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
-    $rootScope.ad_url = "http://uat1.springnews.co.th/wp-content";
+    $rootScope.ad_url = "http://uat2.springnews.co.th/wp-content";
     ConnectivityMonitor.startWatching()
 
     if (window.cordova && window.cordova.plugins.Keyboard) {
@@ -80,6 +80,9 @@ angular.module('starter', ['ionic', 'starter.controllers',"angular-md5",'service
           for (var i = 0; i < result.rows.length; i++) {
             users_for_check_login.push(result.rows.item(i));
           }
+          $rootScope.us_id = users_for_check_login[0].user_id;
+          // $rootScope.us_id = 134;
+          // alert(users_for_check_login[0].user_id);
           $rootScope.userImg = users_for_check_login[0].path;
           $rootScope.userName = users_for_check_login[0].fullname;
           $rootScope.invite_code = users_for_check_login[0].mycode;
@@ -201,6 +204,7 @@ angular.module('starter', ['ionic', 'starter.controllers',"angular-md5",'service
         scope.quizOver = false;
         scope.inProgress = true;
         scope.getQuestion();
+        scope.score = 0;
       };
 
       scope.reset = function() {
@@ -243,7 +247,8 @@ angular.module('starter', ['ionic', 'starter.controllers',"angular-md5",'service
           scope.xp =  scope.score*5
           scope.correctAns = true;
         } else {
-          scope.correctAns = false;
+          scope.correctAns = false
+          scope.xp = scope.score*5;
         }
 
         scope.answerMode = false;

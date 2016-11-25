@@ -530,7 +530,7 @@ angular.module('services', ['ngCordova'])
             headers : {'api-key': key}  // set the headers so angular passing info as form data (not request payload)
         })
         .success(function(data) {
-            // alert(data)
+            alert(data)
         });
     }
     //-------------- int XP 
@@ -591,7 +591,9 @@ angular.module('services', ['ngCordova'])
                     data    :  login_data,  // pass in data as strings
                     headers : {'api-key': key}  // set the headers so angular passing info as form data (not request payload)
                 }).then(function(response) {
+                    // console.log(response.data);
                     return response.data;
+                    
                 });
             }
             return user_get_login;
@@ -639,6 +641,7 @@ angular.module('services', ['ngCordova'])
             headers : {'api-key': key}  // set the headers so angular passing info as form data (not request payload)
         })
         .success(function(data) {
+            // alert(JSON.stringify(data));
             console.log("countread_success");
         }).error(function(){  
             console.log("countread_error");

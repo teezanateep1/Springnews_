@@ -30,19 +30,20 @@
     <!-- <ion-header-bar class="bar-stable">
       <h1 class="title">Left</h1>
     </ion-header-bar> -->
-    <ion-header-bar class="bar-profile" ng-show="profile" >
+    <ion-header-bar class="bar-profile" ng-show="profile">
         <div class="profile">
             <!-- <img class="profile-picture" src="img/logo.png"  /> -->
             <img class="profile-picture" ng-src="{{ userImg }}"  />
-            <h3 class="name" >{{userName}}</h3>
-            <h1 class="name" >Invite : {{invite_code}}</h1>
+            <h4 class="name namesize" >{{userName}}</h3>
+            <h4 class="name" >Lv:{{LV}} xp:{{XPP}}/{{NLV}}  </h4>
+            <h4 class="name" >Invite code : {{invite_code}}</h1>
             <!-- <span class="lang-fr" ><a href="#">EN</a></span>
             <span class="lang-se" ><a href="#" class="active">TH</a></span> -->
        </div>
     </ion-header-bar>
     <!-- ///////// -->
-    <ion-content style="background-color: #4c4c4c;">
-      <ion-list>
+    <ion-content  style="background-color: #4c4c4c;">
+      <ion-list overflow-scroll="true" >
 
         <div class="list list-inset" >
           <label class="item item-input input-search" >
@@ -97,7 +98,7 @@
           <span ng-class="{'active':link == '/app/activity'}" style="margin-left: 10px;"> กิจกรรม </span>
         </ion-item>
 
-        <ion-item  class="menu" ng-click="toggleActivity(menu_toggle_act)" href="" style="cursor:pointer;"ng-show="logout_" >
+        <ion-item  class="menu" ng-click="toggleActivity(menu_toggle_act)" href="" ng-show="logout_" style="cursor:pointer;">
           <i class="nut-menu-activity" ng-class="{'active':link == '/app/activity_'}" > </i> 
           <span ng-class="{'active':link == '/app/activity_'}" style="margin-left: 10px;">กิจกรรม </span>
         </ion-item>
@@ -123,7 +124,7 @@
              <ion-item menu-close class="sub-menu" ng-click="cl_link('vision')" href="#/app/vision"><span ng-class="{'active':sublink_aboutUs == 'vision'}">วิสัยทัศ์ / ภารกิจ </span></ion-item>
              <ion-item menu-close class="sub-menu" ng-click="cl_link('history')" href="#/app/history"><span ng-class="{'active':sublink_aboutUs == 'history'}"> ประวัติ </span></ion-item>
              <ion-item menu-close class="sub-menu" ng-click="cl_link('contact')" href="#/app/contact"><span ng-class="{'active':sublink_aboutUs == 'contact'}">ติดต่อเรา </span></ion-item>
-            <!--  <ion-item menu-close class="sub-menu" ng-click="cl_link('introduce')" href="#/app/introduce"><span ng-class="{'active':sublink_aboutUs == 'introduce'}"> แนะนำติชม / ร้องเรียน </span></ion-item> -->
+             <ion-item menu-close class="sub-menu" ng-click="cl_link('introduce')" href="#/app/introduce"><span ng-class="{'active':sublink_aboutUs == 'introduce'}"> แนะนำติชม / ร้องเรียน </span></ion-item>
         </div>
 
 
