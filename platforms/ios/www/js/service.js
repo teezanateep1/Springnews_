@@ -351,8 +351,8 @@ angular.module('services', ['ngCordova'])
         });  
     } 
     //---------- รายละเอียดข่าว ที่เกี่ยวข้อง
-    this._newsconnected = function($scope,id,catId){ 
-        var url=path+"wp/Posts/categoryID?api-key="+key+"&cat_id="+catId+"&limit=2&order=RAND()"; 
+    this._newsconnected = function($scope,id,catId,newId){ 
+        var url=path+"wp/Posts/categoryID?api-key="+key+"&cat_id="+catId+"&post_id="+newId+"&limit=2&order=RAND()"; 
         $http.get(url).success(function(result){ 
             if(result != ""){
                 $scope.newsConnected = result; 
@@ -615,6 +615,7 @@ angular.module('services', ['ngCordova'])
         },
         //-------------- get XP 
         _getxp: function($scope,us_id){
+
             var url=path+"be/Levels/getUserLV?api-key="+key+"&ID="+us_id; 
             var get_uxp = $http.get(url,{
                 cache: false
@@ -682,7 +683,6 @@ angular.module('services', ['ngCordova'])
 
     // ---------  เพิ่ม xp
     this._upxp = function($scope,user_xp){
-        
         var url=path+"be/Levels/insertuserLV"; 
         $http({
             method  : 'POST',

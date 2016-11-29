@@ -15,7 +15,7 @@ var _qxp = [];
 var questions_ ;
 angular.module('starter', ['ionic', 'starter.controllers',"angular-md5",'services','ngOpenFB','tabSlideBox','ngStorage', 'ionic-cache-src','ngCordova.plugins.googleAds','ngCordovaOauth','ionic-cache-src'])
 
-.run(function($ionicPlatform,$rootScope,$ionicPopup,$localStorage, $cordovaDialogs ,$cordovaSQLite,ngFB, ConnectivityMonitor) { //admobSvc
+.run(function($ionicPlatform,$rootScope,$ionicPopup,$localStorage,$cordovaDialogs ,$cordovaSQLite,ngFB, ConnectivityMonitor) { //admobSvc
   ngFB.init({appId: '647791618729432'});
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
@@ -115,7 +115,7 @@ angular.module('starter', ['ionic', 'starter.controllers',"angular-md5",'service
     noBackdrop:false, // ไม่แสดพื้นหลังทึบ หรือไม่ true ไม่แสดง | false แสดง  
     delay:500,// กำหนดแสดงหลังจากกี่วินาที ตัวเลข milisecond หาร 1000 เท่ากับ 1 วินาที   
     duration:1500  // กำหนดให้ซ่อนอัตโนมัติในกี่วินาที แบบไม่ต้องเรียก method hide() อีก  
-})  
+}) 
 
 .directive('headerHome', function($document,$timeout,$rootScope) {
   var fadeAmt;

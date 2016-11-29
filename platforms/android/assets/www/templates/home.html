@@ -223,7 +223,7 @@
 						</div> -->
 
 						<ul ng-style="{width:'100%'}"  item-height="99px" >
-							<li ng-repeat="item in newsCategory |filter: tab.term_id " style="    margin-bottom: 5px;"   item-height="99px"  id="newsList_{{tab.term_id}}" >	
+							<li ng-repeat="item in newsCategory |filter: tab.term_id " ng-if="$index > 0" style="    margin-bottom: 5px;"   item-height="99px"  id="newsList_{{tab.term_id}}" >	
 								<div style="background-color: #fff;" ng-style="{width:'100%'}" >    
 								    <a href="#/app/news/{{item.ID}}/{{item.term_taxonomy_id}}" >
 									    <div class="sp-list" >

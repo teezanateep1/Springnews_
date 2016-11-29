@@ -113,8 +113,9 @@ angular.module('starter.controllers', ['ngOpenFB'])
     var query = "UPDATE User SET login_stat = 0 WHERE id = 1";
     $cordovaSQLite.execute(db, query,[]).then(function(res) {
         // alert("UPDATE ID -> " + JSON.stringify(res));
+      $window.location.reload(true);
     }, function (err) {
-        alert(JSON.stringify(err));
+      alert(JSON.stringify(err));
     });
 
     $rootScope.userImg = '';
@@ -131,7 +132,7 @@ angular.module('starter.controllers', ['ngOpenFB'])
 })
 
 // --------------------- HOME ------------------------
-.controller('HomeCtrl', function($scope,$rootScope,$sessionStorage, $stateParams,$ionicPlatform, SpringNews,SQLite_return, $ionicSlideBoxDelegate,_function, $ionicModal,$ionicLoading,$cordovaSocialSharing,$ionicScrollDelegate, $ionicNavBarDelegate, $timeout, ConnectivityMonitor) { //admobSvc
+.controller('HomeCtrl', function($scope,$rootScope,$window, $stateParams,$ionicPlatform, SpringNews,SQLite_return, $ionicSlideBoxDelegate,_function, $ionicModal,$ionicLoading,$cordovaSocialSharing,$ionicScrollDelegate, $ionicNavBarDelegate, $timeout, ConnectivityMonitor) { //admobSvc
 
  
   $ionicLoading.show();
@@ -170,12 +171,13 @@ angular.module('starter.controllers', ['ngOpenFB'])
     SpringNews._thaigold($scope);
     $timeout(function(){
       SQLite_return._getxp($scope,$rootScope.us_id).then(function(d){
-        $sessionStorage.LV = d.level;
-        $sessionStorage.XPP = d.userXP;
-        $sessionStorage.NLV = d.next_lv;
-        $rootScope.LV = $sessionStorage.LV;
-        $rootScope.XPP = $sessionStorage.userXP;
-        $rootScope.NLV = $sessionStorage.next_lv;
+        // alert(JSON.stringify(d));
+        $window.localStorage.LV = d.level;
+        $window.localStorage.XPP = d.userXP;
+        $window.localStorage.NLV = d.next_lv;
+        $rootScope.LV = $window.localStorage.LV;
+        $rootScope.XPP = $window.localStorage.XPP;
+        $rootScope.NLV = $window.localStorage.NLV;
       });
     },10000);
   // },3000);
@@ -370,7 +372,7 @@ angular.module('starter.controllers', ['ngOpenFB'])
   $scope.sharing = function(){
 
     $cordovaSocialSharing
-    .share("Live TV",null,"http://www.springnews.co.th/live") // Share via native share sheet
+    .share("Live TV",null,null,"http://www.springnews.co.th/live") // Share via native share sheet
     .then(function(result) {
       // Success!
     }, function(err) {
@@ -637,13 +639,16 @@ angular.module('starter.controllers', ['ngOpenFB'])
           xp: _sxp[i]
         }
         Actions._upxp($scope,user_xp);
+        if(i == _sxp.length -1)
+        {
+          SQLite_return._getxp($scope,_id).then(function(d){
+            $rootScope.LV = d.level;
+            $rootScope.XPP = d.userXP;
+            $rootScope.NLV = d.next_lv;
+          });
+        }
       };
     }
-    SQLite_return._getxp($scope,_id).then(function(d){
-        $rootScope.LV = d.level;
-        $rootScope.XPP = d.userXP;
-        $rootScope.NLV = d.next_lv;
-    });
   });
   
 })
@@ -661,12 +666,13 @@ angular.module('starter.controllers', ['ngOpenFB'])
       phi = 0, theta = 0;
       $scope.countdown = seconds;
       $scope.gm_power = window.localStorage.getItem("gm_power");
-      $rootScope.LV = $sessionStorage.LV;
-      $rootScope.XPP = $sessionStorage.userXP;
-      $rootScope.NLV = $sessionStorage.next_lv;
-    
 
-      var blocker = document.getElementById( 'blocker' );
+      $rootScope.LV = $window.localStorage.LV;
+      $rootScope.XPP = $window.localStorage.XPP;
+      $rootScope.NLV = $window.localStorage.NLV;
+      
+
+      var blocker = document.getElementById( 'blocker' )
       var container = document.getElementById( 'container' );
       var instructions = document.getElementById( 'instructions' );
       var start = document.getElementById( 'start' );
@@ -691,12 +697,12 @@ angular.module('starter.controllers', ['ngOpenFB'])
       start.addEventListener( 'click', function ( event ) {
           // $scope.gm_power--;
           //$scope.gm_power = window.localStorage.setItem("gm_power", $scope.gm_power);
-          $window.location.reload(true)
+          $window.location.reload(true);
           
       }, false );
 
       start_.addEventListener( 'click', function ( event ) {
-          $window.location.reload(true)
+          $window.location.reload(true);
       }, false );
 
       init();
@@ -793,7 +799,7 @@ angular.module('starter.controllers', ['ngOpenFB'])
                   });
                 materials_obj.map.minFilter = THREE.LinearFilter;
 
-                particles = new THREE.Mesh( new THREE.CubeGeometry(50,50,50), materials_obj );
+                particles = new THREE.Mesh( new THREE.CubeGeometry(50,50,0), materials_obj );
                 particles.position.x = (Math.random() - 0.5) * 500;
                 particles.position.y = (Math.random() - 0.5) * 500;
                 particles.position.z = (Math.random() - 0.5) * 500;
@@ -891,18 +897,17 @@ angular.module('starter.controllers', ['ngOpenFB'])
               if(result.rows.length > 0){
                   _id = result.rows.item(0).user_id;
                   console.log("ID_for_UP_XP "+_id);
+                  var user_xp ={
+                    id: _id,
+                    xp: num_gm*6
+                  }
+                  Actions._upxp($scope,user_xp);
+                  SQLite_return._getxp($scope,_id).then(function(d){
+                    $window.localStorage.LV = d.level;
+                    $window.localStorage.XPP = d.userXP;
+                    $window.localStorage.NLV = d.next_lv;
+                  });
                 }
-            });
-         
-            var user_xp ={
-              id: _id,
-              xp: num_gm
-            }
-            Actions._upxp($scope,user_xp);
-             SQLite_return._getxp($scope,$rootScope.us_id).then(function(d){
-              $sessionStorage.LV = d.level;
-              $sessionStorage.XPP = d.userXP;
-              $sessionStorage.NLV = d.next_lv;
             });
           }
           play = false;
@@ -944,19 +949,19 @@ angular.module('starter.controllers', ['ngOpenFB'])
               if(result.rows.length > 0){
                   _id = result.rows.item(0).user_id;
                   console.log("ID_for_UP_XP "+_id);
+                  var user_xp ={
+                    id: _id,
+                    xp: num_gm
+                  }
+                  Actions._upxp($scope,user_xp);
+                  SQLite_return._getxp($scope,_id).then(function(d){
+                    $window.localStorage.LV = d.level;
+                    $window.localStorage.XPP = d.userXP;
+                    $window.localStorage.NLV = d.next_lv;
+                  });
                 }
             });
             
-            var user_xp ={
-              id: _id,
-              xp: num_gm*6
-            }
-            Actions._upxp($scope,user_xp);
-            SQLite_return._getxp($scope,_id).then(function(d){
-              $sessionStorage.LV = d.level;
-              $sessionStorage.XPP = d.userXP;
-              $sessionStorage.NLV = d.next_lv;
-            });
           }
             play = false;
         }
@@ -1035,7 +1040,7 @@ angular.module('starter.controllers', ['ngOpenFB'])
   $timeout(function(){ 
     SpringNews._advertise($scope,'14');
     SpringNews._newsdetail($scope,$stateParams.newsId);
-    SpringNews._newsconnected($scope,$stateParams.newsId,$stateParams.catId);
+    SpringNews._newsconnected($scope,$stateParams.newsId,$stateParams.catId,$stateParams.newsId);
     $timeout(function(){ 
      $scope.newsShow = false
     },100);
@@ -1214,12 +1219,15 @@ angular.module('starter.controllers', ['ngOpenFB'])
 
 })
 
-.controller('uploadfileCtrl', function($scope, $window,$cordovaCamera,$ionicLoading,$localStorage,$cordovaFileTransfer) {
-   
+.controller('uploadfileCtrl', function($scope, $window,$rootScope,$cordovaCamera,$ionicLoading,$localStorage,$cordovaFileTransfer) {
+    $rootScope.LV = $window.localStorage.LV;
+    $rootScope.XPP = $window.localStorage.XPP;
+    $rootScope.NLV = $window.localStorage.NLV;
     $scope.data = { "FileURI" :  "Select file" };
     var file_type;
     $scope.prevideo = false;
     $scope.preimage = false;
+
 
     // $scope.takePicture = function() {
     // var options = {
@@ -1311,9 +1319,11 @@ angular.module('starter.controllers', ['ngOpenFB'])
       };
       $cordovaFileTransfer.upload(path+"be/Uploads/uploadFileRequests", fileURL, options).then(function(result) {
           console.log("SUCCESS: " + JSON.stringify(result.response));
+          $ionicLoading.hide();
           alert("SUCCESS: " + "File Uploaded");
           $window.location.reload(true);
       }, function(err) {
+         $ionicLoading.hide();
           console.log("ERROR: " + JSON.stringify(err));
           alert("ERROR: " + JSON.stringify(err));
       }, function (progress) {
@@ -1337,17 +1347,19 @@ angular.module('starter.controllers', ['ngOpenFB'])
       };
       $cordovaFileTransfer.upload(path+"be/Uploads/uploadFileRequests", fileURL, options).then(function(result) {
           console.log("SUCCESS: " + JSON.stringify(result.response));
+          $ionicLoading.hide();
           alert("SUCCESS: " + "File Uploaded");
           $window.location.reload(true);
       }, function(err) {
           console.log("ERROR: " + JSON.stringify(err));
+          $ionicLoading.hide();
           alert("ERROR: " + JSON.stringify(err));
       }, function (progress) {
           // constant progress updates
       });
       
     }
-    $ionicLoading.hide();
+    
   }
 
 })
@@ -1561,23 +1573,28 @@ angular.module('starter.controllers', ['ngOpenFB'])
               $cordovaSQLite.execute(db, query,[]).then(function(res) {
                 console.log("UPDATE ID -> " + JSON.stringify(res));
                 var q_select = "SELECT * FROM User WHERE login_stat = 1";
-                  $cordovaSQLite.execute(db, q_select).then(function(result) {
-                    if(result.rows.length == 1){
-                      for (var i = 0; i < result.rows.length; i++) {
-                        users_for_check_login.push(result.rows.item(i));
-                      }
-                      $rootScope.userImg = users_for_check_login[0].path;
-                      $rootScope.userName = users_for_check_login[0].fullname;
-                      $rootScope.invite_code = users_for_check_login[0].mycode;
-                      $rootScope.profile = true;
-                      $rootScope.login_ = false;
-                      $rootScope.logout_ = true;
-                    }else{
-                      $rootScope.profile = false;
-                      $rootScope.login_ = true;
-                      $rootScope.logout_ = false;
+                $cordovaSQLite.execute(db, q_select).then(function(result) {
+                  if(result.rows.length == 1){
+                    for (var i = 0; i < result.rows.length; i++) {
+                      users_for_check_login.push(result.rows.item(i));
                     }
-                  });
+                    $rootScope.userImg = users_for_check_login[0].path;
+                    $rootScope.userName = users_for_check_login[0].fullname;
+                    $rootScope.invite_code = users_for_check_login[0].mycode;
+                    $rootScope.profile = true;
+                    $rootScope.login_ = false;
+                    $rootScope.logout_ = true;
+                    SQLite_return._getxp($scope,u_id).then(function(d){
+                      $rootScope.LV  = d.level;
+                      $rootScope.XPP= d.userXP;
+                      $rootScope.NLV = d.next_lv;
+                    });
+                  }else{
+                    $rootScope.profile = false;
+                    $rootScope.login_ = true;
+                    $rootScope.logout_ = false;
+                  }
+                });
                 alert("Login Success");
               }, function (err) {
                   alert(JSON.stringify(err));
@@ -1588,23 +1605,28 @@ angular.module('starter.controllers', ['ngOpenFB'])
               $cordovaSQLite.execute(db, query, [u_id,full_name,iv_code,1,path]).then(function(res) {
                 console.log("INSERT ID -> " + res.insertId);
                 var q_select = "SELECT * FROM User WHERE login_stat = 1";
-                  $cordovaSQLite.execute(db, q_select).then(function(result) {
-                    if(result.rows.length == 1){
-                      for (var i = 0; i < result.rows.length; i++) {
-                        users_for_check_login.push(result.rows.item(i));
-                      }
-                      $rootScope.userImg = users_for_check_login[0].path;
-                      $rootScope.userName = users_for_check_login[0].fullname;
-                      $rootScope.invite_code = users_for_check_login[0].mycode;
-                      $rootScope.profile = true;
-                      $rootScope.login_ = false;
-                      $rootScope.logout_ = true;
-                    }else{
-                      $rootScope.profile = false;
-                      $rootScope.login_ = true;
-                      $rootScope.logout_ = false;
+                $cordovaSQLite.execute(db, q_select).then(function(result) {
+                  if(result.rows.length == 1){
+                    for (var i = 0; i < result.rows.length; i++) {
+                      users_for_check_login.push(result.rows.item(i));
                     }
-                  });
+                    $rootScope.userImg = users_for_check_login[0].path;
+                    $rootScope.userName = users_for_check_login[0].fullname;
+                    $rootScope.invite_code = users_for_check_login[0].mycode;
+                    $rootScope.profile = true;
+                    $rootScope.login_ = false;
+                    $rootScope.logout_ = true;
+                    SQLite_return._getxp($scope,u_id).then(function(d){
+                      $rootScope.LV  = d.level;
+                      $rootScope.XPP= d.userXP;
+                      $rootScope.NLV = d.next_lv;
+                    });
+                  }else{
+                    $rootScope.profile = false;
+                    $rootScope.login_ = true;
+                    $rootScope.logout_ = false;
+                  }
+                });
                 alert("Login Success");
               }, function (err) {
                   alert(JSON.stringify(err));
@@ -1667,6 +1689,7 @@ angular.module('starter.controllers', ['ngOpenFB'])
 
             SQLite_return._Register($scope,user_info).then(function(d) {
               console.log("_register_facebook " + JSON.stringify(d));
+              // alert(JSON.stringify(d));
               if(d[0].ID != null){
                 // alert("d_not_null");
                 SQLite_return._get_info($scope,d[0]).then(function(get_u_info) {
@@ -1695,6 +1718,11 @@ angular.module('starter.controllers', ['ngOpenFB'])
                               $rootScope.profile = true;
                               $rootScope.login_ = false;
                               $rootScope.logout_ = true;
+                              SQLite_return._getxp($scope,u_id).then(function(d){
+                                $rootScope.LV = d.level;
+                                $rootScope.XPP = d.userXP;
+                                $rootScope.NLV = d.next_lv;
+                              });
                             }else{
                               $rootScope.profile = false;
                               $rootScope.login_ = true;
@@ -1722,6 +1750,11 @@ angular.module('starter.controllers', ['ngOpenFB'])
                               $rootScope.profile = true;
                               $rootScope.login_ = false;
                               $rootScope.logout_ = true;
+                              SQLite_return._getxp($scope,u_id).then(function(d){
+                                $rootScope.LV  = d.level;
+                                $rootScope.XPP= d.userXP;
+                                $rootScope.NLV = d.next_lv;
+                              });
                             }else{
                               $rootScope.profile = false;
                               $rootScope.login_ = true;
@@ -1817,6 +1850,11 @@ angular.module('starter.controllers', ['ngOpenFB'])
                               $rootScope.profile = true;
                               $rootScope.login_ = false;
                               $rootScope.logout_ = true;
+                              SQLite_return._getxp($scope,u_id).then(function(d){
+                                $rootScope.LV  = d.level;
+                                $rootScope.XPP= d.userXP;
+                                $rootScope.NLV = d.next_lv;
+                              });
                             }else{
                               $rootScope.profile = false;
                               $rootScope.login_ = true;
@@ -1844,6 +1882,11 @@ angular.module('starter.controllers', ['ngOpenFB'])
                               $rootScope.profile = true;
                               $rootScope.login_ = false;
                               $rootScope.logout_ = true;
+                              SQLite_return._getxp($scope,u_id).then(function(d){
+                                $rootScope.LV  = d.level;
+                                $rootScope.XPP= d.userXP;
+                                $rootScope.NLV = d.next_lv;
+                              });
                             }else{
                               $rootScope.profile = false;
                               $rootScope.login_ = true;
@@ -1924,12 +1967,16 @@ angular.module('starter.controllers', ['ngOpenFB'])
           xp: _qxp[i]
         }
         Actions._upxp($scope,user_xp);
+        if(i == _qxp.length -1)
+        {
+          SQLite_return._getxp($scope,_id).then(function(d){
+            $rootScope.LV = d.level;
+            $rootScope.XPP = d.userXP;
+            $rootScope.NLV = d.next_lv;
+          });
+        }
       };
     }
-    SQLite_return._getxp($scope,_id).then(function(d){
-        $rootScope.LV = d.level;
-        $rootScope.XPP = d.userXP;
-        $rootScope.NLV = d.next_lv;
-    });
+   
   });
 })
