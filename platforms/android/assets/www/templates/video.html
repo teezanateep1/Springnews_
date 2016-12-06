@@ -23,7 +23,7 @@
 		<div class="box-news">
 			<div ng-click="playVideo()" class="item item-text-wrap program-video" style="padding: 0px;">
 			    <img  ng-src="{{video.slides[0].image != null ? 'img/play_button.png':''}}"  class="but-play" > 
-			    <img  ng-src="{{videosDetail[0].guid != null ? videosDetail[0].guid:'img/default.jpg'}}"  class="box-news-img"> 
+			    <img  ng-src="{{replaceurlimg(videosDetail[0].guid)}}"  class="box-news-img"> 
 
 			</div>
 			<div class="box-item-clip" >
@@ -49,7 +49,7 @@
 						    <a  href="#/app/videos/{{_newsConnected.ID}}/{{_newsConnected.term_taxonomy_id}}/{{title}}" class=" ">
 							    <div class="sp-list-news ohters-list" >
 									<div class="col-40">
-									    <img ng-src="{{_newsConnected.guid != null ? _newsConnected.guid:'img/default.jpg'}}" style="margin: 1px;">
+									    <img ng-src="{{replaceurlimg(_newsConnected.guid)}}" style="margin: 1px;">
 									</div>
 									<div class="sp-list-detail-news ">
 									    <div class="sp-list-header">

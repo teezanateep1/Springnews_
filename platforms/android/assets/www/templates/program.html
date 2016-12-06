@@ -26,7 +26,7 @@
 									<a href="#/app/videos/{{item.ID}}/{{item.term_taxonomy_id}}/" style="text-decoration: none;">
 										<div style="height: 100%;padding-bottom: 5px; position: relative;">
 											<div class="item item-text-wrap " style="border-color: #31b5c2;height: 100%;padding: 0px;">
-												<img ng-src="{{item.guid != null ? item.guid:'img/default.jpg'}}" class="box-news-img" >
+												<img ng-src="{{replaceurlimg(item.guid)}}" class="box-news-img" >
 											</div>
 											<div class="box-item-new box-news-footer" style="z-index: 100;">
 											  	{{substring(item.post_title)}}	

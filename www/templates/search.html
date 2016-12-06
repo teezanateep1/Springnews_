@@ -22,7 +22,7 @@
 				<a href="#/app/news/{{item.ID}}/{{item.term_taxonomy_id}}" >
 					<div class="sp-list" >
 						<div class="col-40">
-							<img id="img_{{item.ID}}" ng-src="{{item.guid != null ? item.guid:'img/default.jpg'}}">
+							<img id="img_{{item.ID}}" ng-src="{{replaceurlimg(item.guid}}">
 						</div>
 						<div class="sp-list-detail ">
 							<div class="sp-list-header">

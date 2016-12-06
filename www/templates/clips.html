@@ -23,7 +23,7 @@
 		<div class="box-news">
 			<a href="#/app/videos/{{clips[0].ID}}/{{clips[0].term_taxonomy_id}}/{{title}}" class=" ">
 			    <div class="item item-text-wrap" style="border-color: #31b5c2;height: 100%;padding: 0px;margin: 0px;">
-					<img  ng-src="{{clips[0].guid != null ? clips[0].guid:'img/default.jpg'}}" class="box-news-img"> 
+					<img  ng-src="{{replaceurlimg(clips[0].guid)}}" class="box-news-img"> 
 				</div>
 			</a>
 			 <a href="#/app/videos/{{clips[0].ID}}/{{clips[0].term_taxonomy_id}}/{{title}}" style="text-decoration:none;">
@@ -45,7 +45,7 @@
 						    <a href="#/app/videos/{{_clips.ID}}/{{_clips.term_taxonomy_id}}/{{title}}" >
 							    <div class="sp-list" >
 									<div class="col-40">
-									    <img ng-src="{{_clips.guid != null ? _clips.guid:'img/default.jpg'}}" style="margin: 1px;">
+									    <img ng-src="{{replaceurlimg(_clips.guid)}}" style="margin: 1px;">
 								    </div>
 									<div class="sp-list-detail ">
 									    <div class="sp-list-header">

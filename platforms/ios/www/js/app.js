@@ -5,22 +5,17 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.controllers' is found in controllers.js
 var db;
-// var path = "http://artbeat.mfec.co.th/SpringNews_mb/api/";
-var path = "http://uat2.springnews.co.th/SpringNews_mb/api/";
-// var path_gm = "http://artbeat.mfec.co.th/SpringNews_mb/static/game/";
-var path_gm = "http://uat2.springnews.co.th/SpringNews_mb/static/game/";
-var key = "EAACEdEose0cBAP3LZAULs0sfBDrAFiY0xzMTJHPdzlxArcn4kw";
 var users_for_check_login = [];
 var _qxp = [];
 var questions_ ;
 angular.module('starter', ['ionic', 'starter.controllers',"angular-md5",'services','ngOpenFB','tabSlideBox','ngStorage', 'ionic-cache-src','ngCordova.plugins.googleAds','ngCordovaOauth','ionic-cache-src'])
 
-.run(function($ionicPlatform,$rootScope,$ionicPopup,$localStorage,$cordovaDialogs ,$cordovaSQLite,ngFB, ConnectivityMonitor) { //admobSvc
+.run(function($ionicPlatform,$window,$rootScope,$ionicPopup,$localStorage,$cordovaDialogs ,$cordovaSQLite,ngFB, ConnectivityMonitor) { //admobSvc
   ngFB.init({appId: '647791618729432'});
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
-    $rootScope.ad_url = "http://uat2.springnews.co.th/wp-content";
+    $rootScope.ad_url = "http://"+host+"/wp-content";
     ConnectivityMonitor.startWatching()
 
     if (window.cordova && window.cordova.plugins.Keyboard) {

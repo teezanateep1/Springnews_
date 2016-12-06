@@ -198,6 +198,13 @@ angular.module('starter.controllers', ['ngOpenFB'])
       return str.replace(/(<([^>]+)>)/ig,"");
     }else{ return ""; }
   }
+  //replaceurlimg
+  $scope.replaceurlimg = function (str) {
+    if(str != undefined){
+      str = str.replace(old_host,host);
+      return str
+    }else{ return "img/default.jpg"; }
+  }
   //substring
   $scope.substring = function(str){
     if(str.length > 50){
@@ -484,6 +491,13 @@ angular.module('starter.controllers', ['ngOpenFB'])
          });
       });
   }
+  //replaceurlimg
+  $scope.replaceurlimg = function (str) {
+    if(str != undefined){
+      str = str.replace(old_host,host);
+      return str
+    }else{ return "img/default.jpg"; }
+  }
 
 })
 
@@ -505,6 +519,14 @@ angular.module('starter.controllers', ['ngOpenFB'])
       $scope.loading_catnews = true;
       SpringNews._programNews($scope,$scope.tabs[data.index].term_id,0);
     }
+  }
+
+  //replaceurlimg
+  $scope.replaceurlimg = function (str) {
+    if(str != undefined){
+      str = str.replace(old_host,host);
+      return str
+    }else{ return "img/default.jpg"; }
   }
 
   //substring
@@ -1018,6 +1040,14 @@ angular.module('starter.controllers', ['ngOpenFB'])
     }
   }
 
+  //replaceurlimg
+  $scope.replaceurlimg = function (str) {
+    if(str != undefined){
+      str = str.replace(old_host,host);
+      return str
+    }else{ return "img/default.jpg"; }
+  }
+
 
 })
 
@@ -1138,6 +1168,13 @@ angular.module('starter.controllers', ['ngOpenFB'])
       return "";
     }
   }
+  //replaceurlimg
+  $scope.replaceurlimg = function (str) {
+    if(str != undefined){
+      str = str.replace(old_host,host);
+      return str
+    }else{ return "img/default.jpg"; }
+  }
   //วันที่
   $scope.date_ = function(d){
     return _function._date(d.substring(0, 10),d.substring(12, 16));
@@ -1216,10 +1253,17 @@ angular.module('starter.controllers', ['ngOpenFB'])
   $scope.date_ = function(d){
     return _function._date(d.substring(0, 10),d.substring(12, 16));
   }
+  //replaceurlimg
+  $scope.replaceurlimg = function (str) {
+    if(str != undefined){
+      str = str.replace(old_host,host);
+      return str
+    }else{ return "img/default.jpg"; }
+  }
 
 })
 
-.controller('uploadfileCtrl', function($scope, $window,$rootScope,$cordovaCamera,$ionicLoading,$localStorage,$cordovaFileTransfer) {
+.controller('uploadfileCtrl', function($scope, $window,$rootScope,$ionicPopup,$cordovaCamera,$ionicLoading,$localStorage,$cordovaFileTransfer) {
     $rootScope.LV = $window.localStorage.LV;
     $rootScope.XPP = $window.localStorage.XPP;
     $rootScope.NLV = $window.localStorage.NLV;
@@ -1302,10 +1346,6 @@ angular.module('starter.controllers', ['ngOpenFB'])
   $scope.upload = function() {
     $ionicLoading.show();
 
-    var alertPopup = $ionicPopup.alert({
-      title: '',
-      template: 'ส่งข้อมูลเรียบร้อยแล้ว'
-    });
     if(file_type == 1){
       var date = new Date().getTime();
       var filename = "img_upload"+date+".png";
@@ -1325,10 +1365,10 @@ angular.module('starter.controllers', ['ngOpenFB'])
       $cordovaFileTransfer.upload(path+"be/Uploads/uploadFileRequests", fileURL, options).then(function(result) {
           console.log("SUCCESS: " + JSON.stringify(result.response));
           $ionicLoading.hide();
-          alertPopup.then(function(res) {
-            // console.log('Thank you for not eating my delicious ice cream cone');
-          });
-            
+          $ionicPopup.alert({
+            title: 'SpringNews',
+            template: 'ส่งข้อมูลเรียบร้อยแล้ว'
+          });         
           $window.location.reload(true);
       }, function(err) {
          $ionicLoading.hide();
@@ -1356,8 +1396,9 @@ angular.module('starter.controllers', ['ngOpenFB'])
       $cordovaFileTransfer.upload(path+"be/Uploads/uploadFileRequests", fileURL, options).then(function(result) {
           console.log("SUCCESS: " + JSON.stringify(result.response));
           $ionicLoading.hide();
-          alertPopup.then(function(res) {
-            // console.log('Thank you for not eating my delicious ice cream cone');
+          $ionicPopup.alert({
+            title: 'SpringNews',
+            template: 'ส่งข้อมูลเรียบร้อยแล้ว'
           });
           $window.location.reload(true);
       }, function(err) {
@@ -1396,11 +1437,19 @@ angular.module('starter.controllers', ['ngOpenFB'])
       return str;
     } 
   }
+
+  //replaceurlimg
+  $scope.replaceurlimg = function (str) {
+    if(str != undefined){
+      str = str.replace(old_host,host);
+      return str
+    }else{ return "img/default.jpg"; }
+  }
 })
 
 
 // --------------------- Register ------------------------
-.controller('registerCtrl', function($scope,$stateParams,_function,$cordovaSQLite,SQLite_return,$rootScope) {
+.controller('registerCtrl', function($scope,$stateParams,_function,$ionicPopup,$cordovaSQLite,SQLite_return,$rootScope) {
 
   // /////////// Check User In SQLite ///////////
   var users_in_db = [];
@@ -1460,7 +1509,10 @@ angular.module('starter.controllers', ['ngOpenFB'])
                         $rootScope.logout_ = false;
                       }
                     });
-                alert("Register Success");
+                $ionicPopup.alert({
+                  title: 'SpringNews',
+                  template: 'สมัครสมาชิกเรียบร้อยแล้ว'
+                }); 
               }, function (err) {
                   alert(JSON.stringify(err));
               });
@@ -1487,7 +1539,10 @@ angular.module('starter.controllers', ['ngOpenFB'])
                     $rootScope.logout_ = false;
                   }
                 });
-                alert("Register Success");
+                $ionicPopup.alert({
+                  title: 'SpringNews',
+                  template: 'สมัครสมาชิกเรียบร้อยแล้ว'
+                });     
               }, function (err) {
                   alert(JSON.stringify(err));
               });
@@ -1525,7 +1580,7 @@ angular.module('starter.controllers', ['ngOpenFB'])
 })
 
 // --------------------- login ------------------------
-.controller('loginCtrl', function($scope,$http,$stateParams,$localStorage,ngFB,$cordovaOauth,_function,SpringNews,SQLite_return,$cordovaSQLite,$rootScope) {
+.controller('loginCtrl', function($scope,$http,$stateParams,$ionicPopup,$localStorage,ngFB,$cordovaOauth,_function,SpringNews,SQLite_return,$cordovaSQLite,$rootScope) {
   
   // /////////// Check User In SQLite ///////////
   var users_in_db = [];
@@ -1605,7 +1660,10 @@ angular.module('starter.controllers', ['ngOpenFB'])
                     $rootScope.logout_ = false;
                   }
                 });
-                alert("Login Success");
+                $ionicPopup.alert({
+                  title: 'SpringNews',
+                  template: 'เข้าสู่ระบบสำเร็จ'
+                }); 
               }, function (err) {
                   alert(JSON.stringify(err));
               });
@@ -1637,7 +1695,10 @@ angular.module('starter.controllers', ['ngOpenFB'])
                     $rootScope.logout_ = false;
                   }
                 });
-                alert("Login Success");
+                $ionicPopup.alert({
+                  title: 'SpringNews',
+                  template: 'เข้าสู่ระบบสำเร็จ'
+                });
               }, function (err) {
                   alert(JSON.stringify(err));
               });
@@ -1739,7 +1800,10 @@ angular.module('starter.controllers', ['ngOpenFB'])
                               $rootScope.logout_ = false;
                             }
                           });
-                        alert("Login Success");
+                        $ionicPopup.alert({
+                          title: 'SpringNews',
+                          template: 'เข้าสู่ระบบสำเร็จ'
+                        });
                       }, function (err) {
                           alert(JSON.stringify(err));
                       });
@@ -1771,7 +1835,10 @@ angular.module('starter.controllers', ['ngOpenFB'])
                               $rootScope.logout_ = false;
                             }
                           });
-                        alert("Login Success");
+                        $ionicPopup.alert({
+                          title: 'SpringNews',
+                          template: 'เข้าสู่ระบบสำเร็จ'
+                        });
                       }, function (err) {
                           alert(JSON.stringify(err));
                       });
@@ -1871,7 +1938,10 @@ angular.module('starter.controllers', ['ngOpenFB'])
                               $rootScope.logout_ = false;
                             }
                           });
-                        alert("Login Success");    
+                        $ionicPopup.alert({
+                          title: 'SpringNews',
+                          template: 'เข้าสู่ระบบสำเร็จ'
+                        });   
                       }, function (err) {
                           alert(JSON.stringify(err));
                       });
@@ -1903,7 +1973,10 @@ angular.module('starter.controllers', ['ngOpenFB'])
                               $rootScope.logout_ = false;
                             }
                           });
-                        alert("Login Success");
+                        $ionicPopup.alert({
+                          title: 'SpringNews',
+                          template: 'เข้าสู่ระบบสำเร็จ'
+                        });
                       }, function (err) {
                           alert(JSON.stringify(err));
                       });

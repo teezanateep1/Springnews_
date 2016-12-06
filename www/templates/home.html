@@ -47,7 +47,8 @@
 		        				>
 							  <ion-slide ng-repeat="new in news | limitTo: 5">
 							  <a style="cursor:pointer;" ng-click="share(new.post_title,new.url)"> <i class="nut-menu-share float-right"></i></a>
-							  <img  ng-src="{{new.guid != null ? new.guid:'img/default.jpg'}}" class="box-news-img">
+							  <img  ng-src="{{replaceurlimg(new.guid)}}" class="box-news-img">
+
 							  <a href="#/app/news/{{new.ID}}/{{new.term_taxonomy_id}}" class="a-link" ></a>
 							  </ion-slide>
 							</ion-slide-box>
@@ -88,7 +89,7 @@
 							    	<i class="nut-menu-share float-right"></i>
 							    </a>
 							  	
-								  	<img  ng-src="{{hot.guid != null ? hot.guid:'img/default.jpg'}}" class="box-news-img"> 
+							  	<img  ng-src="{{replaceurlimg(hot.guid)}}" class="box-news-img"> 
 							  	<a href="#/app/news/{{hot.ID}}/{{hot.term_taxonomy_id}}" class="a-link"></a>
 							  </ion-slide>
 							</ion-slide-box>
@@ -113,7 +114,7 @@
 				    	  </div>
 				    	  <a href="#/app/clips/{{title}}" style="text-decoration: none;">
 							  <div class="item item-text-wrap item-respon">
-							  		<img  ng-src="{{clips[0].guid != null ? clips[0].guid:'img/default.jpg'}}" class="box-news-img"> 
+							  		<img  ng-src="{{replaceurlimg(clips[0].guid)}}" class="box-news-img"> 
 							  </div>
 						  </a>
 							   <div class="box-item-clip" >
@@ -134,7 +135,7 @@
 						            <a href="#/app/clips/{{title}}" >
 							            <div class="sp-list" >
 									        <div class="col-40">
-									          <img ng-src="{{_clips.guid != null ? _clips.guid:'img/default.jpg'}}" style="margin: 1px;">
+									          <img ng-src="{{replaceurlimg(_clips.guid)}}" style="margin: 1px;">
 									        </div>
 									        <div class="sp-list-detail ">
 									        	<div class="sp-list-header">
@@ -201,7 +202,7 @@
 							    </div>
 					    	  </div>
 							  <div class="item item-text-wrap ohters-ipad" style="border-color: #31b5c2;padding: 0px;margin: 0px;">
-							    <img  ng-src="{{item.guid != null ? item.guid:'img/default.jpg'}}" class="box-news-img"> 
+							    <img  ng-src="{{replaceurlimg(item.guid)}}" class="box-news-img"> 
 
 							  </div>
 							  <div class="box-item-new box-news-footer" >
@@ -228,7 +229,7 @@
 								    <a href="#/app/news/{{item.ID}}/{{item.term_taxonomy_id}}" >
 									    <div class="sp-list" >
 											<div class="col-40">
-											    <img id="img_{{item.ID}}" ng-src="{{item.guid != null ? item.guid:'img/default.jpg'}}">
+											    <img id="img_{{item.ID}}" ng-src="{{replaceurlimg(item.guid)}}">
 										    </div>
 											<div class="sp-list-detail ">
 											    <div class="sp-list-header">
