@@ -244,35 +244,36 @@
 									</a>
 									<div style="width: 100px;height: 0.5px;" ng-style="{width:'100%'}"></div>
 								</div> 
-								
-						    	
+								<!-- แสดงเพิ่มทีละ 10 ข่าว -->
+								<div style="cursor:pointer;" ng-click="loadMore(tab.term_id,$index)" class="sp-readmore" ng-show="$last" >
+								<i class="nut-menu-seemore but-seemore"></i> แสดงข่าวเพิ่ม 10 ข่าว</div>
 							</li>
-						
 						</ul>
-						<a href="#/app/allnews/{{tab.term_id}}/{{tab.name}}" style="text-decoration: none;color: #000;">
+						<!-- แสดงข่าวในหน้าใหม่ -->
+						<!-- <a href="#/app/allnews/{{tab.term_id}}/{{tab.name}}" style="text-decoration: none;color: #000;">
 							<div style="cursor:pointer;"  class="sp-readmore" >
 					    	<i class="nut-menu-seemore but-seemore"></i>ข่าวในหัวข้อนี้ทั้งหมด</div>
-				    	</a>	
+				    	</a>	 -->
 						<br/>
 						<br/>
 						
-								<div class="sp-follow-us">
-									<div class="sp-title">FOLLOW US</div>
-									<div class="sp-social">
+						<div class="sp-follow-us">
+							<div class="sp-title">FOLLOW US</div>
+							<div class="sp-social">
 
-										<a href="https://www.facebook.com/SpringNewsTV" target="_system" alt="Facebook" title="Facebook"><img  ng-src="./img/social/facebook.png" class="box-news-img"></a>
+								<a href="https://www.facebook.com/SpringNewsTV" target="_system" alt="Facebook" title="Facebook"><img  ng-src="./img/social/facebook.png" class="box-news-img"></a>
 
-										<a href="https://www.twitter.com/SpringNews_TV" target="_system" alt="Twitter" title="Twitter"><img  ng-src="./img/social/twitter.png" class="box-news-img"></a>
+								<a href="https://www.twitter.com/SpringNews_TV" target="_system" alt="Twitter" title="Twitter"><img  ng-src="./img/social/twitter.png" class="box-news-img"></a>
 
-										<a href="https://www.google.com/+springnews" target="_system" alt="Google+" title="Google+"><img  ng-src="./img/social/google_plus.png" class="box-news-img"></a>
+								<a href="https://www.google.com/+springnews" target="_system" alt="Google+" title="Google+"><img  ng-src="./img/social/google_plus.png" class="box-news-img"></a>
 
-										<a href="https://www.instagram.com/springnewstv/" class="the-social-links tsl-circle tsl-24 tsl-default tsl-youtube" target="_system" alt="Instagram" title="Instagram"><img  ng-src="./img/social/ig.png" class="box-news-img"></a>
+								<a href="https://www.instagram.com/springnewstv/" class="the-social-links tsl-circle tsl-24 tsl-default tsl-youtube" target="_system" alt="Instagram" title="Instagram"><img  ng-src="./img/social/ig.png" class="box-news-img"></a>
 
-										<a href="https://www.youtube.com/springnewsonline" class="the-social-links tsl-circle tsl-24 tsl-default tsl-instagram" target="_system" alt="Youtube" title="Youtube"><img  ng-src="./img/social/tyoutube.png" class="box-news-img"></a>
+								<a href="https://www.youtube.com/springnewsonline" class="the-social-links tsl-circle tsl-24 tsl-default tsl-instagram" target="_system" alt="Youtube" title="Youtube"><img  ng-src="./img/social/tyoutube.png" class="box-news-img"></a>
 
-										<a href="http://line.me/ti/p/~odeen" target="_system" alt="Line" title="Line"><img  ng-src="./img/social/line.png" class="box-news-img"></a>
-									</div>
-								</div>	
+								<a href="http://line.me/ti/p/~odeen" target="_system" alt="Line" title="Line"><img  ng-src="./img/social/line.png" class="box-news-img"></a>
+							</div>
+						</div>	
 						 <br/>
 						<br/>
 						<br/>

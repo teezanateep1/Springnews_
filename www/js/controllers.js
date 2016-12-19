@@ -92,6 +92,14 @@ angular.module('starter.controllers', ['ngOpenFB'])
     }
   }
 
+  //-------------- IOS Live TV------------
+  $scope.livetv =function(){
+    $ionicPopup.alert({
+      title: 'SpringNews',
+      template: 'รายการนี้ยังไม่รองรับในระบบ IOS'
+    });   
+  }
+
   //---------------- Search ----------
   var timeoutID=null;  
   $scope.showMydict = function(keyword,event){  
@@ -124,8 +132,10 @@ angular.module('starter.controllers', ['ngOpenFB'])
     $rootScope.profile = false;
     $rootScope.login_ = true;
     $rootScope.logout_ = false;
-    alert("ออกจากระบบ");
-
+    $ionicPopup.alert({
+      title: 'SpringNews',
+      template: 'ออกจากระบบ'
+    });  
   }
 
   
@@ -333,7 +343,10 @@ angular.module('starter.controllers', ['ngOpenFB'])
         $cordovaFileTransfer.download(uri, targetPath, options, trustHosts)
           .then(function(result) {
              $ionicLoading.hide();
-               alert("Success");
+              $ionicPopup.alert({
+                title: 'SpringNews',
+                template: 'บันทึกภาพแล้ว'
+              });  
           }, function(err) {
              $ionicLoading.hide();
                alert("Error");
@@ -1096,6 +1109,13 @@ angular.module('starter.controllers', ['ngOpenFB'])
           }
           Actions._read($scope,new_info);
         }
+      }
+      else{
+        new_info = { 
+          _postID: $stateParams.newsId,
+          _userID: 0
+        }
+        Actions._read($scope,new_info);
       }
   });
   var like_in_db =[];

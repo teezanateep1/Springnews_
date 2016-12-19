@@ -1,6 +1,6 @@
 // Host DATA //
-var host = "www.springnews.co.th";
-
+// var host = "www.springnews.co.th";
+var host = "uat1.springnews.co.th"
 // OLD HOST FOR REPLACE URL //
 var old_host = /uat1.springnews.co.th|uat2.springnews.co.th/g;
 

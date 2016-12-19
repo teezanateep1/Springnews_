@@ -4,6 +4,17 @@
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
 // 'starter.controllers' is found in controllers.js
+/////////////////////////////////////////////////////////////////////////////
+var host = "www.springnews.co.th";
+// var host = "uat1.springnews.co.th"
+// OLD HOST FOR REPLACE URL //
+var old_host = /uat1.springnews.co.th|uat2.springnews.co.th/g;
+
+// Constant DATA //
+var path = "http://"+host+"/SpringNews_mb/api/";
+var path_gm = "http://"+host+"/SpringNews_mb/static/game/";
+var key = "EAACEdEose0cBAP3LZAULs0sfBDrAFiY0xzMTJHPdzlxArcn4kw";
+////////////////////////////////////////////////////////////////////////////
 var db;
 var users_for_check_login = [];
 var _qxp = [];

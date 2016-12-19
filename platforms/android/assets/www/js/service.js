@@ -530,7 +530,7 @@ angular.module('services', ['ngCordova'])
             headers : {'api-key': key}  // set the headers so angular passing info as form data (not request payload)
         })
         .success(function(data) {
-            alert(data)
+            // alert(data)
         });
     }
     //-------------- int XP 

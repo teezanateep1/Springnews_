@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.dev.springnews" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="com.dev.springnews" version="1.0.5" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <feature name="LocalStorage">
         <param name="ios-package" value="CDVLocalStorage" />
     </feature>
@@ -104,6 +104,15 @@
     <allow-intent href="mailto:*" />
     <allow-intent href="geo:*" />
     <icon src="resources/android/icon/drawable-xhdpi-icon.png" />
+    <config-file parent="NSCalendarsUsageDescription" target="*-Info.plist">
+        <string>Allow App use Calenders</string>
+    </config-file>
+    <config-file parent="NSPhotoLibraryUsageDescription" target="*-Info.plist">
+        <string>Allow App use PhotoLibrary</string>
+    </config-file>
+    <config-file parent="NSBluetoothPeripheralUsageDescription" target="*-Info.plist">
+        <string>Allow App use Bluetooth</string>
+    </config-file>
     <icon height="57" src="resources/ios/icon/icon.png" width="57" />
     <icon height="114" src="resources/ios/icon/icon@2x.png" width="114" />
     <icon height="40" src="resources/ios/icon/icon-40.png" width="40" />
